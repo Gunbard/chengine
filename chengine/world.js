@@ -318,7 +318,8 @@ var objTestBall = Class.create(PhySphere,
     initialize: function (radius)
     {
         PhySphere.call(this, radius);
-        this.mesh.texture = new Texture(game.assets['soccerball.png']);
+        // Texture needs to be preloaded
+        this.mesh.texture = new Texture(game.assets['images/soccerball.png']);
         chengine.tileMesh(this.mesh, 1);
         
         var newLife = new chengine.component.life(3);
