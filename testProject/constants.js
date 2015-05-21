@@ -17,6 +17,7 @@ MODEL_REI_PATH = 'model/rei/Rei.pmd';
 MOTION_PATH = 'motion/walk.vmd';
 MOTION_JUMP_PATH = 'motion/jumpfix2.vmd';
 MOTION_TEST = 'motion/everybody.vmd';
+TEXTURE_SKYDOME = 'images/skydome.jpg';
 
 // Cardinal directions
 DIRECTION_NORTH = 180;

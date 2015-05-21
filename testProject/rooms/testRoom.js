@@ -12,13 +12,6 @@ var testRoom = Class.create(objRoom,
         
         objRoom.prototype.prepare.call(this);
         //chengine.input.enableGamepads();
-     
-        // Enable alpha blending
-        gl.enable(gl.BLEND);
-        gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
-        
-        // Bind keys
-        chengine.input.setKeybindings();
         
         // Make a pad
         pad = new APad();
@@ -28,8 +21,6 @@ var testRoom = Class.create(objRoom,
         scene.backgroundColor = '#FFFFFF';    
         scene.setFog(1.0);
         
-        // Create the main camera
-        //camera = this.getCamera();
         camera.x = 80;
         camera.z = 80;
         

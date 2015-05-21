@@ -16,20 +16,9 @@ var objCharacter = Class.create(PhyCapsule,
     initialize: function (model, radius, height, mass)
     {
         // Default attributes for the collision capsule
-        if (!radius)
-        {
-            radius = 4;
-        }
-        
-        if (!height)
-        {
-            height = 12;
-        }
-        
-        if (!mass)
-        {
-            mass = 1;
-        }
+        radius = radius || 4;
+        height = height || 12;
+        mass = mass || 1;
     
         PhyCapsule.call(this, radius, height, mass);
         
@@ -62,11 +51,6 @@ var objCharacter = Class.create(PhyCapsule,
     
     removeFromScene: function (scene)
     {
-        //this.model.program.destroy();
-        //this.model.program = null;
-        //enchant.Core.instance.GL.currentProgram.setAttributes({});
-        //debugger;
-        //this.model.dead = true;
         this.model.clearEventListener();
         var i = this.model.skeleton.childNodes.length;
         while (i--)
