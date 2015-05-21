@@ -1,0 +1,15 @@
+身体 W_FacePartsA_CgfxShader
+身体 W_FacePartsA_CgfxShader
+身体 FACE
+身体 W_FacePartsB
+身体 W_Body_CgfxShader
+身体 mimi
+前髪 Kami_CgfxShader
+前髪 W_FacePartsA_CgfxShader
+後髪 Kami_CgfxShader
+後髪 W_FacePartsA_CgfxShader
+頭皮 W_Face_Hitai_CgfxShader
+瞳 EYE
+全身下着・水着 W_Body_CgfxShader
+全身下着・水着 Leotard_TEX
+頭部装備 HANA_CgfxShader
