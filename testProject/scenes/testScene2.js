@@ -64,7 +64,7 @@ var testRoom2 = Class.create(objRoom,
         
         var floor = new PhyBox(400, 1, 400, 0);
         floor.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
-        floor.mesh.texture = new Texture(game.assets['tex.jpg']);
+        floor.mesh.texture = new Texture(game.assets['images/tex.jpg']);
         floor.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
         floor.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
         floor.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];

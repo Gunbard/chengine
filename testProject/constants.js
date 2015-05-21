@@ -12,7 +12,6 @@ DEFAULT_MSGTEXT_FONT = DEFAULT_MSGTEXT_SIZE.toString() + 'pt Verdana';
 DEFAULT_MSGTEXT_COLOR = 'white';
 
 // Assets
-//MODEL_PATH = 'model/Rin_Kagamine.pmd';
 MODEL_PATH = 'model/asuka/Asuka.pmd';
 MODEL_REI_PATH = 'model/rei/Rei.pmd';
 MOTION_PATH = 'motion/walk.vmd';

@@ -11,7 +11,7 @@ chengine = {};
 //TEST_AREA = 'model/ground/ground.dae';
 //TEST_AREA = 'ground.dae';
 //COLLADA_TEST = 'model/testblock.dae'
-TEXTURE_SKYDOME = 'skydome.jpg';
+TEXTURE_SKYDOME = 'images/skydome.jpg';
  
 // Mouse coordinates adjusted for canvas position in the page
 mouseX = 0;
@@ -27,7 +27,7 @@ chengine.preloadGameAssets = function ()
         MODEL_PATH, 
         MODEL_REI_PATH, 
         MOTION_PATH, 
-        MOTION_JUMP_PATH, 
+        MOTION_JUMP_PATH,
         'images/tex.jpg',  
         'images/grass.gif', 
         'images/tex.png',
@@ -36,13 +36,9 @@ chengine.preloadGameAssets = function ()
         'sounds/explode.wav', 
         'images/cockpit.png',
         'images/crosshairs.png',
-        MOTION_TEST,
-        TEXTURE_SKYDOME,
+        //MOTION_TEST,
+        TEXTURE_SKYDOME
         //TEST_AREA,
-        'images/apad.png',
-        'images/pad.png',
-        'images/icon0.png',
-        'images/font0.png'
         //COLLADA_TEST
     );
 };
@@ -52,8 +48,6 @@ chengine.preloadGameAssets = function ()
  */
 chengine.gameInit = function ()
 {    
-    //chengine.changeScene3D(null, testScene);
-    
     var mainScene3D = new objScene();
     enchant.Core.instance.GL.currentScene3D = mainScene3D;
     scene = mainScene3D;

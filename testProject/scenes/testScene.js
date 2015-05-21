@@ -62,7 +62,7 @@ var testRoom = Class.create(objRoom,
                     
         var floor = new PhyBox(400, 1, 400, 0);
         floor.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
-        floor.mesh.texture = new Texture(game.assets['tex.jpg']);
+        floor.mesh.texture = new Texture(game.assets['images/tex.jpg']);
         floor.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
         floor.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
         floor.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
@@ -114,31 +114,16 @@ var testRoom = Class.create(objRoom,
         //thing.updateRigid(0, thing.getVertices());
         
         this.target = new Plane(10);
-        this.target.mesh.texture = new Texture(game.assets['crosshairs.png']);
+        this.target.mesh.texture = new Texture(game.assets['images/crosshairs.png']);
         chengine.unsetLighting(this.target.mesh);
         
         this.target2 = new Plane(10);
-        this.target2.mesh.texture = new Texture(game.assets['crosshairs.png']);
+        this.target2.mesh.texture = new Texture(game.assets['images/crosshairs.png']);
         chengine.unsetLighting(this.target2.mesh);
         
         this.targetPost = new Cylinder(1, 100);
         this.targetPost.mesh.setBaseColor('rgba(0, 255, 0, 0.2)');
         chengine.unsetLighting(this.targetPost.mesh);
-
-        //this.world._dynamicsWorld.getDispatchInfo().set_m_allowedCcdPenetration(0.0001);
-
-        
-        //var colladatest = game.assets[COLLADA_TEST].colladaClone();
-
-        //colladatest.y = 50;
-        //colladatest.scale(1, 11, 10);
-        
-        //colladatest.updateRigid(0, 1, colladatest.getVertices());
-        //colladatest.y = -20;
-        //colladatest.x = 20;
-        //colladatest.rotatePitch(degToRad(-90));
-        //colladatest.rigid.rigidBody.getCollisionShape().setMargin(8);
-
         
         this.scene.addChild(skybox);
         this.scene.addChild(thing);
@@ -161,11 +146,11 @@ var testRoom = Class.create(objRoom,
         this.scene.scene2D.addChild(fade);
         
         var cross = new Sprite(256, 256);
-        cross.image = game.assets['crosshairs.png'].clone();
+        cross.image = game.assets['images/crosshairs.png'].clone();
         this.scene.scene2D.addChild(cross);
         
         var cockpit = new Sprite(640, 480);
-        cockpit.image = game.assets['cockpit.png'].clone();
+        cockpit.image = game.assets['images/cockpit.png'].clone();
         cockpit.y -= 50;
         //game.rootScene.addChild(cockpit);
         
