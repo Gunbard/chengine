@@ -5,7 +5,8 @@
  
  
 /**
- Scene. Manages cameras, lighting, objects, etc.
+ Scene that supports 3D and physics. Manages cameras, lighting, objects, etc.
+ This is a singleton.
  */
 var objScene = Class.create(PhyScene3D,
 {

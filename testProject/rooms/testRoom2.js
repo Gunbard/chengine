@@ -19,18 +19,10 @@ var testRoom2 = Class.create(objRoom,
         pad.y = 220;
     
         this.scene.scene2D.addChild(pad);
-    
-        // Enable alpha blending
-        //gl.enable(gl.BLEND);
-        //gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
         
-        // this.backgroundColor = '#FFFFFF';    
-        // this.setFog(1.0);
-    
-        // camera = this.getCamera();
-        // camera.x = 80;
-        // camera.z = 80;
-        
+        this.scene.backgroundColor = '#FFFFFF';    
+        this.scene.setFog(1.0);
+
         // Add gravity
         //var gravVector = new Ammo.btVector3(0, -980, 0);
         //this.world._dynamicsWorld.setGravity(gravVector);
@@ -44,7 +36,6 @@ var testRoom2 = Class.create(objRoom,
         light.directionZ = -1;
         this.scene.setDirectionalLight(light);
         
-
         var fade = new objFade(FADE_TYPES.FADE_OUT, null, null, function ()
         {
             that.scene.removeChild(this);
@@ -77,9 +68,7 @@ var testRoom2 = Class.create(objRoom,
         var ball = new objTestBall(5);
         ball.z = 70;
         ball.y = 40;
-        //this.scene.addChild(ball);
-        
-        //alert(this.scene.childNodes.length);   
+        this.scene.addChild(ball);
     },
     
     enterframe: function (e) 

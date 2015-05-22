@@ -6,6 +6,15 @@
 // Initialize enchant.js 
 enchant();
 
+// CONSTANTS
+// Assets
+MODEL_PATH = 'model/asuka/Asuka.pmd';
+MODEL_REI_PATH = 'model/rei/Rei.pmd';
+MOTION_PATH = 'motion/walk.vmd';
+MOTION_JUMP_PATH = 'motion/jumpfix2.vmd';
+MOTION_TEST = 'motion/everybody.vmd';
+TEXTURE_SKYDOME = 'images/skydome.jpg';
+
 // Globalize these for testing purposes 
 var game;
 var scene;
