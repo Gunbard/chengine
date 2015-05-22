@@ -20,7 +20,7 @@ var testRoom = Class.create(objRoom,
         
         scene.backgroundColor = '#000000';    
         scene.setFog(1.0);
-        scene.setFogColor([0.0, 1.0, 1.0, 1.0]);
+        scene.setFogColor(1.0, 0.0, 0.0, 1.0);
         
         camera.x = 80;
         camera.z = 80;
@@ -102,7 +102,6 @@ var testRoom = Class.create(objRoom,
         //thing = game.assets[TEST_AREA].clone();
         thing = floor;
         console.log(thing);
-        alert('READY');
         //thing.updateRigid(0, thing.getVertices());
         
         this.target = new Plane(10);
