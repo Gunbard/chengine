@@ -20,8 +20,10 @@ var testRoom2 = Class.create(objRoom,
     
         this.scene.scene2D.addChild(pad);
         
-        this.scene.backgroundColor = '#FFFFFF';    
-        this.scene.setFog(1.0);
+        scene.backgroundColor = '#FFFFFF';    
+        scene.setFog(1.0);
+        scene.setFogColor(0.0, 0.0, 0.0, 1.0);
+
 
         // Add gravity
         //var gravVector = new Ammo.btVector3(0, -980, 0);

@@ -281,6 +281,18 @@ enchant.gl.Scene3D.prototype.setFog = function (boolFloat)
     enchant.Core.instance.GL.defaultProgram.setUniforms({uUseFog: boolFloat});
 };
 
+/**
+ Sets the fog color, if enabled
+ @param r {float} red value
+ @param g {float} green value
+ @param b {float} blue value
+ @param a {float} alpha value
+ */
+enchant.gl.Scene3D.prototype.setFogColor = function (r, g, b, a)
+{
+    enchant.Core.instance.GL.defaultProgram.setUniforms({uFogColor: [r, g, b, a]});
+};
+
 /****
  UI
  ****/
