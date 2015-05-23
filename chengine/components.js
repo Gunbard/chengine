@@ -62,7 +62,7 @@ chengine.component.add = function (obj, component)
     
     if (component.enterframe)
     {
-        obj.addEventListener('enterframe', obj.components[obj.components.length - 1].enterframe);
+        chengine.scene.scene2D.addEventListener('enterframe', obj.components[obj.components.length - 1].enterframe);
     }
 };
  
@@ -127,7 +127,8 @@ chengine.component.controlInit = function (obj)
  *********/
  
 /**
- 
+ Generic component for handling arrow key movement
+ @param speed {float} Movement speed
  */ 
 chengine.component.controlWalk = Class.create
 ({
@@ -160,12 +161,21 @@ chengine.component.controlWalk = Class.create
     }
 });
 
+/**
+ Controls an object such that movement is relative to the camera.
+ This assumes the object is a physics object and it has a model
+ property which is the visible model that will be manipulated.
+ @param speed {float} Movement speed
+ @param input {game.input} Input state object
+ @param pad {APad} An optional virtual analog stick
+ */
 chengine.component.controlCameraMovable = Class.create
 ({    
-    initialize: function (speed, input)
+    initialize: function (speed, input, pad)
     {
         this.speed = speed;
         this.input = input;
+        this.pad = pad;
         
         // A quat that the object should be rotating towards
         this.heading = null;
@@ -271,10 +281,10 @@ chengine.component.controlCameraMovable = Class.create
             this.heading = null;
         }
         
-        if (pad.isTouched)
+        if (this.pad.isTouched)
         {
             this.obj.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-90)));
-            this.obj.rotationApply(new enchant.gl.Quat(0, 1, 0, -pad.rad));            
+            this.obj.rotationApply(new enchant.gl.Quat(0, 1, 0, -this.pad.rad));            
             this.obj.forward(this.speed * pad.dist);
             
             //this.obj.model.animationSpeed = Math.ceil(this.speed * pad.dist);
@@ -304,7 +314,7 @@ chengine.component.controlCameraMovable = Class.create
         
         if (this.heading && 
            (this.input.up || this.input.down || this.input.left || this.input.right || 
-            pad.isTouched || chengine.input.gamepadIsUsed(0)))
+            this.pad.isTouched || chengine.input.gamepadIsUsed(0)))
         {   
             var targetRotation = getRot(this.heading);
             var targetRot = Math.round(targetRotation.y);

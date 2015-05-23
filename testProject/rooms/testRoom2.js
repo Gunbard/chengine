@@ -14,12 +14,10 @@ var testRoom2 = Class.create(objRoom,
         var that = this;
         
         // Make a pad
-        pad = new APad();
-        pad.x = 20;
-        pad.y = 220;
-    
-        this.scene.scene2D.addChild(pad);
-        
+        this.pad = new APad();
+        this.pad.x = 20;
+        this.pad.y = 220;
+            
         scene.backgroundColor = '#FFFFFF';    
         scene.setFog(1.0);
         scene.setFogColor(0.0, 0.0, 0.0, 1.0);
@@ -71,6 +69,11 @@ var testRoom2 = Class.create(objRoom,
         ball.z = 70;
         ball.y = 40;
         this.scene.addChild(ball);
+        
+        // Needs to be on top of everything to get touches
+        this.scene.scene2D.addChild(this.pad);
+        
+        chengine.component.add(scene.getCamera(), new chengine.component.controlCameraMovable(1, game.input, this.pad));
     },
     
     enterframe: function (e) 
@@ -82,7 +85,7 @@ var testRoom2 = Class.create(objRoom,
         //camera.setFixed(this.ball, null);
         
         var vec = this.scene.getCamera()._getForwardVec();
-        this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, null);
+        this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, {x: vec[0], y: vec[1], z: vec[2]});
         
         if (chengine.input.keyPressed('i'))
         {   
@@ -93,6 +96,17 @@ var testRoom2 = Class.create(objRoom,
             
             this.scene.scene2D.addChild(fade);
         }
+    },
+    
+    touchstart: function (e)
+    {
+        objRoom.prototype.touchstart.call(this);
+        
+        // if (this.pad.isTouched)
+        // {
+            // return;
+        // }
     }
+    
     
 });

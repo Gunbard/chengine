@@ -122,6 +122,9 @@ var objScene = Class.create(PhyScene3D,
         this.rigidTable = {};
         
         this.scene2D.clearEventListener('enterframe');
+        this.scene2D.clearEventListener('touchstart');
+        this.scene2D.clearEventListener('touchend');
+        this.scene2D.clearEventListener('touchmove');
         
         this.world = new enchant.gl.physics.World();
         this.stop();
@@ -156,7 +159,22 @@ var objRoom = Class.create(
         this.scene.setCamera(camera);
     },
     
-    enterframe: function ()
+    enterframe: function (e)
+    {
+    
+    },
+    
+    touchstart: function (e)
+    {
+    
+    },
+    
+    touchend: function (e)
+    {
+    
+    }, 
+    
+    touchmove: function (e)
     {
     
     }
@@ -177,6 +195,8 @@ var objCamera = Class.create(Camera3D,
          
         //this.phyObj = new PhyCube(1);
         //chengine.attach(this.phyObj, this);
+        
+        this.tmpMat = [];
         
         this.allowRotate = true;
         
@@ -302,12 +322,48 @@ var objCamera = Class.create(Camera3D,
         
         if (!targetOffset)
         {
-            targetOffset = {x: 0, y: 0, z: 0};
+            targetOffset = {x: 1, y: 0, z: 1};
         }
         
         this.targetOffset = targetOffset;
         this.mode = this.modes.FIXED;
-    }
+    },
+    
+    setPitch: function (rad)
+    {
+        var u = this._getUpVec();
+        var f = this._getForwardVec();
+        var s = this._getSideVec();
+        var sx = s[0];
+        var sy = s[1];
+        var sz = s[2];
+        var quat = new enchant.gl.Quat(sx, sy, sz, -rad);
+        var vec = quat.multiplyVec3(f);
+        this._centerX = vec[0];
+        this._centerY = vec[1];
+        this._centerZ = vec[2];
+        vec = vec3.normalize(quat.multiplyVec3(u));
+        this._upVectorX = vec[0];
+        this._upVectorY = vec[1];
+        this._upVectorZ = vec[2];
+        this._changedCenter = true;
+        this._changedUpVector = true;
+    },
+    
+    rotationSet: function(quat) 
+    {
+        quat.toMat4(this._projMat);
+        this._changedRotation = true;
+    },
+    
+    rotationApply: function(quat) 
+    {
+        quat.toMat4(this.tmpMat);
+        mat4.multiply(this._projMat, this.tmpMat);
+        this._changedRotation = true;
+    },
+    
+    
 });
 
 

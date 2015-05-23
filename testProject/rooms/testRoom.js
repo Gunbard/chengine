@@ -72,7 +72,7 @@ var testRoom = Class.create(objRoom,
         reiPhy.z = -100;
         
         //chengine.component.add(mikuPhy, new chengine.component.controlWalk(mikuPhy, 1));
-        chengine.component.add(mikuPhy, new chengine.component.controlCameraMovable(1, game.input));
+        chengine.component.add(mikuPhy, new chengine.component.controlCameraMovable(1, game.input, pad));
         
         var jumpComponent = new chengine.component.jumpable();
         jumpComponent.onJump = function ()
@@ -289,7 +289,7 @@ var testRoom = Class.create(objRoom,
             cross.y = mouseY - 128;
         });
         
-        //game.rootScene.addChild(pad);    
+        this.scene.scene2D.addChild(pad);    
         
         /*var button = new Button("PHYS", "light");
         button.moveTo(540, 10);
@@ -386,7 +386,7 @@ var testRoom = Class.create(objRoom,
         //camera.setFixed(null, {x: 0, y: 0, z: 0});
         
         var vec = this.scene.getCamera()._getForwardVec();
-        this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, null);
+        this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, {x: vec[0], y: vec[1], z: vec[2]});
         
         
         //miku.x = mikuPhy.x;

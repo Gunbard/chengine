@@ -430,33 +430,6 @@ chengine.tileMesh = function (mesh, repeat)
 
 /**
  */
-chengine.changeScene3D = function (currentScene, newScene)
-{
-    // Clean out old scene
-    if (currentScene)
-    {
-        //alert(currentScene.name);
-        currentScene.tearDown();
-        //alert("Finished cleaning");
-    }
-    
-    
-    // Create a new scene to go to
-    var nextScene = new newScene();
-    nextScene.prepare();
-
-    
-    var core = enchant.Core.instance;
-    core.currentScene3D = nextScene;    
-    
-    
-    nextScene.scene2D.addEventListener('enterframe', function (e) 
-    {
-        nextScene.enterframe(e);
-    });
-    
-};
-
 chengine.changeRoom = function (currentRoom, newRoom)
 {
     var scene = enchant.Core.instance.GL.currentScene3D;
@@ -475,21 +448,22 @@ chengine.changeRoom = function (currentRoom, newRoom)
     
     scene.scene2D.addEventListener('enterframe', function (e) 
     {
-        scene.enterframe();
+        scene.enterframe(e);
         nextRoom.enterframe(e);
     });
     
+    scene.scene2D.addEventListener('touchstart', function (e) 
+    {
+        nextRoom.touchstart(e);
+    });
+    
+    scene.scene2D.addEventListener('touchend', function (e) 
+    {
+        nextRoom.touchend(e);
+    });
+    
+    scene.scene2D.addEventListener('touchmove', function (e) 
+    {
+        nextRoom.touchmove(e);
+    });
 };
-
-/*chengine.changeScene = function (currentScene, newScene)
-{
-    var core = enchant.Core.instance;
-    core.currentScene = null;
-    
-    var nextScene = new newScene();
-    currentScene.tearDown();
-    currentScene = nextScene;
-    nextScene.prepare();
-    
-    core.currentScene3D = nextScene;
-};*/
