@@ -73,7 +73,7 @@ var testRoom2 = Class.create(objRoom,
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
         
-        chengine.component.add(scene.getCamera(), new chengine.component.controlCameraMovable(1, game.input, this.pad));
+        //chengine.component.add(scene.getCamera(), new chengine.component.controlCameraMovable(1, game.input, this.pad));
     },
     
     enterframe: function (e) 

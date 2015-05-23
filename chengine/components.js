@@ -285,7 +285,7 @@ chengine.component.controlCameraMovable = Class.create
         {
             this.obj.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-90)));
             this.obj.rotationApply(new enchant.gl.Quat(0, 1, 0, -this.pad.rad));            
-            this.obj.forward(this.speed * pad.dist);
+            this.obj.forward(this.speed * this.pad.dist);
             
             //this.obj.model.animationSpeed = Math.ceil(this.speed * pad.dist);
             
