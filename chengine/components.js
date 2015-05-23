@@ -186,8 +186,15 @@ chengine.component.controlCameraMovable = Class.create
     
     enterframe: function ()
     {      
-        //this.obj.rotation = camera.invMatY;
-        //this.obj.rotateYaw(degToRad(180));
+        if (this.obj instanceof objCamera)
+        {
+            if (this.pad.isTouched)
+            {    
+                this.obj.forward(this.speed * -this.pad.vy);
+                this.obj.rotateYaw(degToRad(this.speed * this.pad.vx));
+            }
+            return;
+        }
         
         this.obj.rotation = chengine.getCameraLockedRotation();
 
@@ -195,27 +202,6 @@ chengine.component.controlCameraMovable = Class.create
         var objRotDir = Math.round(objRot.y);
         
         var direction = 0;
-        
-        /*if (this.input.up && this.input.left)
-        {
-            direction = DIRECTION_SOUTH + 45;
-        }
-        
-        else if (this.input.up && this.input.right)
-        {
-            direction = DIRECTION_SOUTH - 45;
-        }
-        
-        else if (this.input.down && this.input.left)
-        {
-            direction = DIRECTION_NORTH - 45;
-        }
-        
-        else if (this.input.down && this.input.right)
-        {
-            direction = DIRECTION_NORTH + 45;
-        }*/
-        
         
         if (this.input.up)
         {   
@@ -230,18 +216,7 @@ chengine.component.controlCameraMovable = Class.create
             {
                 direction -= 45;
             }
-            
-            /*
-            if (direction > 360)
-            {
-                direction -= 360;
-            }
-            else if (direction < 0)
-            {
-                direction += 360;
-            }*/
         }
-        
         else if (this.input.down)
         {
             direction = DIRECTION_NORTH;
@@ -256,12 +231,10 @@ chengine.component.controlCameraMovable = Class.create
                 direction += 45;
             }
         }
-        
         else if (this.input.left)
         {   
             direction = DIRECTION_WEST;
         }
-        
         else if (this.input.right)
         {
             direction = DIRECTION_EAST;
@@ -273,8 +246,6 @@ chengine.component.controlCameraMovable = Class.create
             this.obj.forward(this.speed);
             
             this.heading = this.obj.rotation;
-            //var copyRot = mat4.create(this.obj.rotation);
-            //this.obj.heading = copyRot;
         }
         else
         {
@@ -306,11 +277,9 @@ chengine.component.controlCameraMovable = Class.create
                 this.obj.forward(this.speed * dist);
                 
                 var copyRot = mat4.create(this.obj.rotation);
-                //this.obj.heading = copyRot;
                 this.heading = copyRot;
             }
         }
-        
         
         if (this.heading && 
            (this.input.up || this.input.down || this.input.left || this.input.right || 
@@ -334,7 +303,6 @@ chengine.component.controlCameraMovable = Class.create
             
             //alert(yRotation + ' / ' + targetRot);
             
-                
             // Determine shortest rotation. 1: clockwise, -1: anti-clockwise
             var dir = -1;
             
@@ -359,11 +327,9 @@ chengine.component.controlCameraMovable = Class.create
             
             if (this.heading)
             {
-                //this.obj.model.rotateYaw(degToRad(this.rotSpeed * dir));
                 var amt = (Math.abs(targetRot - yRotation) / this.rotSpeed);
                 this.obj.model.rotateYaw(degToRad(Math.min(amt, this.rotSpeed) * dir));
             }
-            
         }
     }
 });
