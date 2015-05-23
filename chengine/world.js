@@ -27,6 +27,13 @@ var objScene = Class.create(PhyScene3D,
         game.rootScene = this.scene2D;
         
         chengine.input.setKeybindings();
+        
+        // Default background color
+        this.backgroundColor = '#000000';    
+        
+        // Default fog settings
+        this.setFog(0.0);
+        this.setFogColor(0.0, 0.0, 0.0, 1.0);
     
         /**
          A hash table mapping rigidBodies to their owners. Since Ammo.js is a C++ port of Bullet,

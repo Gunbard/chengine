@@ -18,7 +18,6 @@ var testRoom = Class.create(objRoom,
         pad.x = 20;
         pad.y = 220;
         
-        scene.backgroundColor = '#000000';    
         scene.setFog(1.0);
         scene.setFogColor(1.0, 0.0, 0.0, 1.0);
         
