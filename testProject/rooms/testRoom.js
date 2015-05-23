@@ -24,19 +24,6 @@ var testRoom = Class.create(objRoom,
         camera.x = 80;
         camera.z = 80;
         
-        // Add gravity
-        var gravVector = new Ammo.btVector3(0, -980, 0);
-        this.scene.world._dynamicsWorld.setGravity(gravVector);
-        Ammo.destroy(gravVector);
-        
-        // Add a light
-        var light = new DirectionalLight();
-        light.color = [1.0, 1.0, 1.0];
-        light.directionX = 1;
-        light.directionY = 1;
-        light.directionZ = -1;
-        this.scene.setDirectionalLight(light);
-        
         var ball = new objTestBall(5);
         ball.z = 70;
         ball.y = 30;

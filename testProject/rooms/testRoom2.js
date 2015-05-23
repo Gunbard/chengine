@@ -17,19 +17,6 @@ var testRoom2 = Class.create(objRoom,
         this.pad = new APad();
         this.pad.x = 20;
         this.pad.y = 220;
-
-        // Add gravity
-        //var gravVector = new Ammo.btVector3(0, -980, 0);
-        //this.world._dynamicsWorld.setGravity(gravVector);
-        //Ammo.destroy(gravVector);
-        
-        // Add a light
-        var light = new DirectionalLight();
-        light.color = [1.0, 1.0, 1.0];
-        light.directionX = 1;
-        light.directionY = 1;
-        light.directionZ = -1;
-        this.scene.setDirectionalLight(light);
         
         var fade = new objFade(FADE_TYPES.FADE_OUT, null, null, function ()
         {
@@ -77,7 +64,6 @@ var testRoom2 = Class.create(objRoom,
         objRoom.prototype.enterframe.call(this);
         
         chengine.debugCamera(this.scene, this.scene.getCamera());
-        //camera.setFixed(this.ball, null);
         
         var vec = this.scene.getCamera()._getForwardVec();
         this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, {x: vec[0], y: vec[1], z: vec[2]});
@@ -91,17 +77,5 @@ var testRoom2 = Class.create(objRoom,
             
             this.scene.scene2D.addChild(fade);
         }
-    },
-    
-    touchstart: function (e)
-    {
-        objRoom.prototype.touchstart.call(this);
-        
-        // if (this.pad.isTouched)
-        // {
-            // return;
-        // }
-    }
-    
-    
+    }    
 });

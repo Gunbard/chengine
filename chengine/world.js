@@ -27,13 +27,6 @@ var objScene = Class.create(PhyScene3D,
         game.rootScene = this.scene2D;
         
         chengine.input.setKeybindings();
-        
-        // Default background color
-        this.backgroundColor = '#000000';    
-        
-        // Default fog settings
-        this.setFog(0.0);
-        this.setFogColor(0.0, 0.0, 0.0, 1.0);
     
         /**
          A hash table mapping rigidBodies to their owners. Since Ammo.js is a C++ port of Bullet,
@@ -140,7 +133,25 @@ var objScene = Class.create(PhyScene3D,
     
     prepare: function ()
     {
-
+        // Default background color
+        this.backgroundColor = '#000000';    
+        
+        // Default fog settings
+        this.setFog(0.0);
+        this.setFogColor(0.0, 0.0, 0.0, 1.0);
+        
+        // Default gravity
+        var gravVector = new Ammo.btVector3(0, -980, 0);
+        this.world._dynamicsWorld.setGravity(gravVector);
+        Ammo.destroy(gravVector);
+        
+        // Default light
+        var light = new DirectionalLight();
+        light.color = [1.0, 1.0, 1.0];
+        light.directionX = 1;
+        light.directionY = 1;
+        light.directionZ = -1;
+        this.setDirectionalLight(light);
     }
 });
 

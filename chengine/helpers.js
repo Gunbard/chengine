@@ -429,6 +429,10 @@ chengine.tileMesh = function (mesh, repeat)
 };
 
 /**
+ Immediately changes the current room after cleaning out the scene 
+ and previous room
+ @param currentRoom {objRoom} The current room (or the room that needs to be cleaned)
+ @param newRoom {objRoom} The room to go to
  */
 chengine.changeRoom = function (currentRoom, newRoom)
 {
@@ -440,10 +444,13 @@ chengine.changeRoom = function (currentRoom, newRoom)
         currentRoom.clean();
     }
     
-    // Create a new scene to go to
+    // Prepare the scene3D for a new room
+    scene.prepare();
+    
+    // Create a new room to go to
     var nextRoom = new newRoom(scene);
     nextRoom.prepare();
- 
+       
     enchant.Core.instance.GL.currentRoom = nextRoom;
     
     scene.scene2D.addEventListener('enterframe', function (e) 
