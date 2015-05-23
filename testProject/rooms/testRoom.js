@@ -14,9 +14,9 @@ var testRoom = Class.create(objRoom,
         //chengine.input.enableGamepads();
         
         // Make a pad
-        pad = new APad();
-        pad.x = 20;
-        pad.y = 220;
+        this.pad = new APad();
+        this.pad.x = 20;
+        this.pad.y = 220;
         
         scene.setFog(1.0);
         scene.setFogColor(1.0, 0.0, 0.0, 1.0);
@@ -58,7 +58,7 @@ var testRoom = Class.create(objRoom,
         reiPhy.z = -100;
         
         //chengine.component.add(mikuPhy, new chengine.component.controlWalk(mikuPhy, 1));
-        chengine.component.add(mikuPhy, new chengine.component.controlCameraMovable(1, game.input, pad));
+        chengine.component.add(mikuPhy, new chengine.component.controlCameraMovable(1, game.input, this.pad));
         
         var jumpComponent = new chengine.component.jumpable();
         jumpComponent.onJump = function ()
@@ -146,7 +146,7 @@ var testRoom = Class.create(objRoom,
         {
             // Ignore touch if touching the virtual dpad
             //if (pad.isActive())
-            if (pad.isTouched)
+            if (this.pad.isTouched)
             {
                 return;
             }
@@ -275,7 +275,7 @@ var testRoom = Class.create(objRoom,
             cross.y = mouseY - 128;
         });
         
-        this.scene.scene2D.addChild(pad);    
+        this.scene.scene2D.addChild(this.pad);    
         
         /*var button = new Button("PHYS", "light");
         button.moveTo(540, 10);
@@ -371,8 +371,7 @@ var testRoom = Class.create(objRoom,
         //camera.y = 40;
         //camera.setFixed(null, {x: 0, y: 0, z: 0});
         
-        var vec = this.scene.getCamera()._getForwardVec();
-        this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, {x: vec[0], y: vec[1], z: vec[2]});
+
         
         
         //miku.x = mikuPhy.x;
@@ -387,7 +386,7 @@ var testRoom = Class.create(objRoom,
         if (!mikuPhy.isJumping)
         {
             if (!game.input.up && !game.input.down && !game.input.left && !game.input.right && 
-                !pad.isTouched && !chengine.input.gamepadIsUsed(0))
+                !this.pad.isTouched && !chengine.input.gamepadIsUsed(0))
             {
                 mikuPhy.model.stopAnimating(mikuPhy.model.currentFrame);
             }
@@ -472,6 +471,18 @@ var testRoom = Class.create(objRoom,
         {   
             var fade = new objCrossfade(this.scene.scene2D, FADE_TYPES.FADE_OUT, null, null, null);
             this.scene.scene2D.insertBefore(fade, this.scene.scene2D.firstChild);
+        }
+        
+        if (chengine.input.keyPressed('one'))
+        {
+            if (camera.target == mikuPhy.model)
+            {
+                this.scene.getCamera().setFree();
+            }
+            else
+            {
+                this.scene.getCamera().setChase(mikuPhy.model, -100, 50, {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
+            }
         }
         
     }

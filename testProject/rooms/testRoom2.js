@@ -4,7 +4,6 @@ var testRoom2 = Class.create(objRoom,
     {
         objRoom.call(this, parentScene);
         this.name = "testScene2";
-        //alert("scene2 " + this.scene.childNodes.length);   
     }, 
     
     prepare: function ()
@@ -47,15 +46,13 @@ var testRoom2 = Class.create(objRoom,
         this.scene.addChild(skybox);
         this.scene.addChild(floor);
         
-        var ball = new objTestBall(5);
-        ball.z = 70;
-        ball.y = 40;
-        this.scene.addChild(ball);
+        this.ball = new objTestBall(5);
+        this.ball.z = 70;
+        this.ball.y = 40;
+        this.scene.addChild(this.ball);
         
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
-        
-        //chengine.component.add(scene.getCamera(), new chengine.component.controlCameraMovable(1, game.input, this.pad));
     },
     
     enterframe: function (e) 
@@ -65,9 +62,6 @@ var testRoom2 = Class.create(objRoom,
         
         chengine.debugCamera(this.scene, this.scene.getCamera());
         
-        var vec = this.scene.getCamera()._getForwardVec();
-        this.scene.getCamera().setFixed({x:this.scene.getCamera().x + vec[0], y:this.scene.getCamera().y + vec[1], z:this.scene.getCamera().z + vec[2]}, {x: vec[0], y: vec[1], z: vec[2]});
-        
         if (chengine.input.keyPressed('i'))
         {   
             var fade = new objFade(FADE_TYPES.FADE_IN, null, null, function ()
@@ -76,6 +70,18 @@ var testRoom2 = Class.create(objRoom,
             });
             
             this.scene.scene2D.addChild(fade);
+        }
+        
+        if (chengine.input.keyPressed('y'))
+        {
+            if (this.scene.getCamera().target == this.ball)
+            {
+                this.scene.getCamera().setFree();
+            }
+            else
+            {
+                this.scene.getCamera().setChase(this.ball, -100, 50, {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
+            }
         }
     }    
 });

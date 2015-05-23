@@ -80,25 +80,11 @@ var objScene = Class.create(PhyScene3D,
     enterframe: function (e)
     {   
         this.fpsCounter++;
-        this.getCamera().enterframe();
+        this.getCamera().enterframe(e);
     },
     
     tearDown: function ()
     {
-        // Let's try destroying all meshes while cleaning Sprite3Ds
-        
-        /*for (var i = 0; i < this.scene2D.childNodes.length; i++)
-        {
-            this.scene2D.removeChild(this.scene2D.childNodes[i]);
-        }
-        
-        this.scene2D.childNodes = [];*/
-        
-        /*for (var i = 0; i < this.childNodes.length; i++)
-        {
-            this.removeChild(this.childNodes[i]);
-        }*/
-        
         var i = this.scene2D.childNodes.length;
         while (i--)
         {
@@ -126,9 +112,14 @@ var objScene = Class.create(PhyScene3D,
         this.scene2D.clearEventListener('touchend');
         this.scene2D.clearEventListener('touchmove');
         
+        // Reset physics
         this.world = new enchant.gl.physics.World();
         this.stop();
         this.isPlaying = false;
+        
+        // Reset camera
+        camera = new objCamera();
+        this.setCamera(camera);
     },
     
     prepare: function ()
@@ -171,10 +162,6 @@ var objRoom = Class.create(
     {
         debugger;
         this.scene.tearDown();
-        
-        // Reset camera
-        camera = new objCamera();
-        this.scene.setCamera(camera);
     },
     
     enterframe: function (e)
@@ -237,11 +224,12 @@ var objCamera = Class.create(Camera3D,
         this.modes = 
         {
             CHASE: 0,
-            FIXED: 1
+            FIXED: 1,
+            FREE: 2
         };
         
         // Current camera mode
-        this.mode = this.modes.CHASE;
+        this.mode = this.modes.FREE;
     },
     
     enterframe: function ()
@@ -261,6 +249,9 @@ var objCamera = Class.create(Camera3D,
                 break;
             case this.modes.FIXED:
                 this.fixed();
+                break;
+            case this.modes.FREE:
+                this.free();
                 break;
         }
     },
@@ -327,6 +318,17 @@ var objCamera = Class.create(Camera3D,
         this._changedCenter = true;    
     },
     
+    free: function ()
+    {
+        this.target = null;
+        
+        var vec = this._getForwardVec();
+        this._centerX = this.x + vec[0];
+        this._centerY = this.y + vec[1];
+        this._centerZ = this.z + vec[2];
+        this._changedCenter = true;    
+    },
+    
     /**
      Puts camera into fixed mode
      Passing in an object would allow tracking of that object, while passing in
@@ -347,25 +349,9 @@ var objCamera = Class.create(Camera3D,
         this.mode = this.modes.FIXED;
     },
     
-    setPitch: function (rad)
+    setFree: function ()
     {
-        var u = this._getUpVec();
-        var f = this._getForwardVec();
-        var s = this._getSideVec();
-        var sx = s[0];
-        var sy = s[1];
-        var sz = s[2];
-        var quat = new enchant.gl.Quat(sx, sy, sz, -rad);
-        var vec = quat.multiplyVec3(f);
-        this._centerX = vec[0];
-        this._centerY = vec[1];
-        this._centerZ = vec[2];
-        vec = vec3.normalize(quat.multiplyVec3(u));
-        this._upVectorX = vec[0];
-        this._upVectorY = vec[1];
-        this._upVectorZ = vec[2];
-        this._changedCenter = true;
-        this._changedUpVector = true;
+        this.mode = this.modes.FREE;
     },
     
     rotationSet: function(quat) 
@@ -379,7 +365,7 @@ var objCamera = Class.create(Camera3D,
         quat.toMat4(this.tmpMat);
         mat4.multiply(this._projMat, this.tmpMat);
         this._changedRotation = true;
-    },
+    }
     
     
 });
