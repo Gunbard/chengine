@@ -9,12 +9,45 @@
 /**
  Distance until sound volume dissapates
  */
-SOUND_MAX_DISTANCE = 1000;
+chengine.SOUND_MAX_DISTANCE = 1000;
+
+// Logging levels
+chengine.LOG_LEVEL =
+{
+    DEBUG: 0, // Expected
+    WARN: 1, // Possibly expected
+    ERROR: 2 // Unexpected
+};
 
 /**
  Whether or not a transition is in progress
  */
 chengine.isTransitioning = false;
+ 
+/**
+ Logs a chengine-specific message
+ @param message {string} Message to output
+ @param level {string} Optional log level
+ */
+chengine.log = function (message, level)
+{
+    level = level || chengine.LOG_LEVEL.DEBUG;
+    var messageLevel = '';
+    switch (level)
+    {
+        case chengine.LOG_LEVEL.DEBUG:
+            messageLevel = 'DEBUG';
+            break;
+        case chengine.LOG_LEVEL.WARN:
+            messageLevel = 'WARN';
+            break;
+        case chengine.LOG_LEVEL.ERROR:
+            messageLevel = 'ERROR';
+            break;
+    }
+    
+    console.log('[chengine] ' + messageLevel + ': ' + message);
+};
  
 /**
  Creates an instance of an object at the provided coordinates
@@ -406,7 +439,7 @@ chengine.soundPlay = function (asset, point)
     var distance = distanceToPoint(camera, point);
     
     // Volume/gain appears broken on some machines...
-    if ((SOUND_MAX_DISTANCE - distance) > 0)
+    if ((chengine.SOUND_MAX_DISTANCE - distance) > 0)
     {
         //sound.volume = (SOUND_MAX_DISTANCE - distance) / SOUND_MAX_DISTANCE;
     }
@@ -482,25 +515,25 @@ chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, c
 {
     if (chengine.isTransitioning)
     {
-        console.log("Cannot transition while one is still in progress!");
+        chengine.log("Cannot transition while one is still in progress!");
         return;
     }
     
     chengine.isTransitioning = true;
     
-    transitionType = transitionType || TRANSITION_TYPES.FADE;
-    transitionSpeed = transitionSpeed || TRANSITION_SPEEDS.FAST;
+    transitionType = transitionType || chengine.TRANSITION_TYPE.FADE;
+    transitionSpeed = transitionSpeed || chengine.TRANSITION_SPEED.FAST;
     
     var scene = enchant.Core.instance.GL.currentScene3D;
     switch (transitionType)
     {
-        case TRANSITION_TYPES.FADE:
+        case chengine.TRANSITION_TYPE.FADE:
         {
-            var fadeIn = new objFade(TRANSITION_TYPES.FADE_IN, transitionSpeed, '#000000', function ()
+            var fadeIn = new objFade(chengine.TRANSITION_TYPE.FADE_IN, transitionSpeed, '#000000', function ()
             {
                 scene.scene2D.removeChild(fadeIn);
                 chengine.changeRoom(nextRoom);
-                var fadeOut = new objFade(TRANSITION_TYPES.FADE_OUT, transitionSpeed, '#000000', function ()
+                var fadeOut = new objFade(chengine.TRANSITION_TYPE.FADE_OUT, transitionSpeed, '#000000', function ()
                 {
                     scene.scene2D.removeChild(fadeOut);
                     chengine.isTransitioning = false;
@@ -514,6 +547,5 @@ chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, c
             scene.scene2D.addChild(fadeIn);
             break;
         }
-    }
-    
-}
+    }  
+};

@@ -452,7 +452,7 @@ var testRoom = Class.create(objRoom,
         
         if (chengine.input.keyPressed('i'))
         {   
-            chengine.transitionRoom(testRoom2, TRANSITION_TYPES.FADE);
+            chengine.transitionRoom(testRoom2, chengine.TRANSITION_TYPE.FADE);
         }        
         
         if (chengine.input.keyPressed('o'))
