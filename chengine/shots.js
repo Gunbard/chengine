@@ -251,8 +251,10 @@ var objHomingShot = Class.create(Sphere,
         this.homingDelay = 10;
 
         this.targetGraphic = new objTarget(10, target);
+        
+        var scene = enchant.Core.instance.GL.currentScene3D;
         scene.addChild(this.targetGraphic);
-	},
+    },
 	
     onenterframe: function ()
     {

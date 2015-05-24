@@ -437,7 +437,18 @@ var testRoom = Class.create(objRoom,
         {
             var rigid = mikuPhy.rigid.rigidBody;
             console.log(rigid.getLinearVelocity().y());
-            //alert('asdf');
+        }
+        
+        if (chengine.input.keyPressed('y'))
+        {
+            if (this.scene.getCamera().target == mikuPhy.model)
+            {
+                this.scene.getCamera().setFree();
+            }
+            else
+            {
+                this.scene.getCamera().setChase(mikuPhy.model, -100, 50, {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
+            }
         }
         
         if (game.input.v)
@@ -460,18 +471,5 @@ var testRoom = Class.create(objRoom,
             var fade = new objCrossfade(this.scene.scene2D, TRANSITION_TYPES.FADE_OUT, null, null, null);
             this.scene.scene2D.insertBefore(fade, this.scene.scene2D.firstChild);
         }
-        
-        if (chengine.input.keyPressed('one'))
-        {
-            if (camera.target == mikuPhy.model)
-            {
-                this.scene.getCamera().setFree();
-            }
-            else
-            {
-                this.scene.getCamera().setChase(mikuPhy.model, -100, 50, {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
-            }
-        }
-        
     }
 });

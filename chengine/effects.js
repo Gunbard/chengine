@@ -371,7 +371,7 @@ var objTarget = Class.create(Plane,
     initialize: function (scale, target)
     {
         Plane.call(this, scale);
-        this.mesh.texture = new Texture(game.assets['crosshairs.png']);
+        this.mesh.texture = new Texture(game.assets['images/crosshairs.png']);
         
         chengine.unsetLighting(this.mesh);
         
