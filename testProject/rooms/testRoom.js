@@ -115,13 +115,6 @@ var testRoom = Class.create(objRoom,
         this.scene.addChild(this.target);
         this.scene.addChild(this.targetPost);
         
-        var fade = new objFade(FADE_TYPES.FADE_OUT, null, null, function ()
-        {
-            that.scene.removeChild(this);
-        });
-        
-        this.scene.scene2D.addChild(fade);
-        
         var cross = new Sprite(256, 256);
         cross.image = game.assets['images/crosshairs.png'].clone();
         this.scene.scene2D.addChild(cross);
@@ -459,17 +452,12 @@ var testRoom = Class.create(objRoom,
         
         if (chengine.input.keyPressed('i'))
         {   
-            var fade = new objFade(FADE_TYPES.FADE_IN, null, null, function ()
-            {
-                chengine.changeRoom(that, testRoom2);
-            });
-            
-            this.scene.scene2D.addChild(fade);
+            chengine.transitionRoom(testRoom2, TRANSITION_TYPES.FADE);
         }        
         
         if (chengine.input.keyPressed('o'))
         {   
-            var fade = new objCrossfade(this.scene.scene2D, FADE_TYPES.FADE_OUT, null, null, null);
+            var fade = new objCrossfade(this.scene.scene2D, TRANSITION_TYPES.FADE_OUT, null, null, null);
             this.scene.scene2D.insertBefore(fade, this.scene.scene2D.firstChild);
         }
         

@@ -10,6 +10,11 @@
  Distance until sound volume dissapates
  */
 SOUND_MAX_DISTANCE = 1000;
+
+/**
+ Whether or not a transition is in progress
+ */
+chengine.isTransitioning = false;
  
 /**
  Creates an instance of an object at the provided coordinates
@@ -434,14 +439,12 @@ chengine.tileMesh = function (mesh, repeat)
  @param currentRoom {objRoom} The current room (or the room that needs to be cleaned)
  @param newRoom {objRoom} The room to go to
  */
-chengine.changeRoom = function (currentRoom, newRoom)
+chengine.changeRoom = function (newRoom)
 {
-    var scene = enchant.Core.instance.GL.currentScene3D;
-    
     // Clean out current room
-    if (currentRoom)
+    if (chengine.currentRoom)
     {
-        currentRoom.clean();
+        chengine.currentRoom.clean();
     }
     
     // Prepare the scene3D for a new room
@@ -451,7 +454,7 @@ chengine.changeRoom = function (currentRoom, newRoom)
     var nextRoom = new newRoom(scene);
     nextRoom.prepare();
        
-    enchant.Core.instance.GL.currentRoom = nextRoom;
+    chengine.currentRoom = nextRoom;
     
     scene.scene2D.addEventListener('enterframe', function (e) 
     {
@@ -474,3 +477,43 @@ chengine.changeRoom = function (currentRoom, newRoom)
         nextRoom.touchmove(e);
     });
 };
+
+chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, callback)
+{
+    if (chengine.isTransitioning)
+    {
+        console.log("Cannot transition while one is still in progress!");
+        return;
+    }
+    
+    chengine.isTransitioning = true;
+    
+    transitionType = transitionType || TRANSITION_TYPES.FADE;
+    transitionSpeed = transitionSpeed || TRANSITION_SPEEDS.FAST;
+    
+    var scene = enchant.Core.instance.GL.currentScene3D;
+    switch (transitionType)
+    {
+        case TRANSITION_TYPES.FADE:
+        {
+            var fadeIn = new objFade(TRANSITION_TYPES.FADE_IN, transitionSpeed, '#000000', function ()
+            {
+                scene.scene2D.removeChild(fadeIn);
+                chengine.changeRoom(nextRoom);
+                var fadeOut = new objFade(TRANSITION_TYPES.FADE_OUT, transitionSpeed, '#000000', function ()
+                {
+                    scene.scene2D.removeChild(fadeOut);
+                    chengine.isTransitioning = false;
+                    if (callback)
+                    {
+                        callback();
+                    }
+                });
+                scene.scene2D.addChild(fadeOut);
+            })
+            scene.scene2D.addChild(fadeIn);
+            break;
+        }
+    }
+    
+}

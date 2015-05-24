@@ -17,13 +17,6 @@ var testRoom2 = Class.create(objRoom,
         this.pad.x = 20;
         this.pad.y = 220;
         
-        var fade = new objFade(FADE_TYPES.FADE_OUT, null, null, function ()
-        {
-            that.scene.removeChild(this);
-        });
-        
-        this.scene.scene2D.addChild(fade);
-        
         var skybox = new Sphere(2000);
         skybox.mesh.reverse();
         skybox.mesh.texture = new Texture(game.assets[TEXTURE_SKYDOME]);
@@ -67,12 +60,7 @@ var testRoom2 = Class.create(objRoom,
         
         if (chengine.input.keyPressed('i'))
         {   
-            var fade = new objFade(FADE_TYPES.FADE_IN, null, null, function ()
-            {
-                chengine.changeRoom(that, testRoom);
-            });
-            
-            this.scene.scene2D.addChild(fade);
+            chengine.transitionRoom(testRoom, TRANSITION_TYPES.FADE);
         }
         
         if (chengine.input.keyPressed('y'))

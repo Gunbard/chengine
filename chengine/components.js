@@ -190,7 +190,7 @@ chengine.component.controlCameraMovable = Class.create
         {
             if (this.pad.isTouched)
             {    
-                this.obj.forward(this.speed * -this.pad.vy);
+                this.obj.forward(this.speed * -this.pad.vy * 4);
                 this.obj.rotateYaw(degToRad(this.speed * this.pad.vx));
             }
             return;

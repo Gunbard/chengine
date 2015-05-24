@@ -6,11 +6,20 @@
 /****************
  CONSTANTS/ENUMS
  ****************/
- var FADE_TYPES = 
+ 
+ var TRANSITION_TYPES =
  {
-     FADE_IN: 1,
-     FADE_OUT: 2
- };
+    FADE_IN: 1,
+    FADE_OUT: 2,
+    FADE: 3
+ }
+ 
+ var TRANSITION_SPEEDS =
+ {
+    SLOW: 0.01,
+    NORMAL: 0.05,
+    FAST: 0.1
+ }
  
 /**************
  # Explosions #
@@ -463,7 +472,7 @@ var objFade = Class.create(Sprite,
             this.color = '#000000';
         }
         
-        if (fadeType == FADE_TYPES.FADE_IN)
+        if (fadeType == TRANSITION_TYPES.FADE_IN)
         {
             this.opacity = 0.0;
         }
@@ -517,10 +526,10 @@ var objFade = Class.create(Sprite,
         
         switch (this.fadeType)
         {
-            case FADE_TYPES.FADE_IN:
+            case TRANSITION_TYPES.FADE_IN:
                 fadeIn();
                 break;
-            case FADE_TYPES.FADE_OUT:
+            case TRANSITION_TYPES.FADE_OUT:
                 fadeOut();
                 break;
         }
@@ -535,11 +544,11 @@ var objCrossfade = Class.create(Sprite,
     {   
         Sprite.call(this, GAME_WIDTH, GAME_HEIGHT);
         
-        this.fadeType = fadeType || FADE_TYPES.FADE_OUT;
+        this.fadeType = fadeType || TRANSITION_TYPES.FADE_OUT;
         this.speed = speed || 0.01;
         this.color = color || '#000000';
         
-        if (fadeType == FADE_TYPES.FADE_IN)
+        if (fadeType == TRANSITION_TYPES.FADE_IN)
         {
             this.opacity = 0.0;
         }
@@ -579,7 +588,7 @@ var objCrossfade = Class.create(Sprite,
     
     onenterframe: function ()
     {          
-        if (this.fadeType == FADE_TYPES.FADE_IN)
+        if (this.fadeType == TRANSITION_TYPES.FADE_IN)
         {
             if (this.opacity < 1.0)
             {

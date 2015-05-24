@@ -90,5 +90,5 @@ chengine.gameInit = function (firstRoom)
     scene = mainScene3D;
     chengine.scene = mainScene3D;
     
-    chengine.changeRoom(null, firstRoom);
+    chengine.changeRoom(firstRoom);
 };
