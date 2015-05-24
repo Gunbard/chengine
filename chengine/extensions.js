@@ -278,7 +278,16 @@ enchant.gl.physics.World.prototype.contactPairTest = function (rigid1, rigid2)
  */
 enchant.gl.Scene3D.prototype.setFog = function (boolFloat)
 {
+    enchant.Core.instance.GL.currentScene3D.fogEnabled = boolFloat;
     enchant.Core.instance.GL.defaultProgram.setUniforms({uUseFog: boolFloat});
+};
+
+/**
+ @returns {boolFloat} 0.0 for off, 1.0 for on
+ */
+enchant.gl.Scene3D.prototype.getFog = function ()
+{
+    return enchant.Core.instance.GL.currentScene3D.fogEnabled;
 };
 
 /**
@@ -290,7 +299,17 @@ enchant.gl.Scene3D.prototype.setFog = function (boolFloat)
  */
 enchant.gl.Scene3D.prototype.setFogColor = function (r, g, b, a)
 {
-    enchant.Core.instance.GL.defaultProgram.setUniforms({uFogColor: [r, g, b, a]});
+    var colorValue = [r, g, b, a];
+    enchant.Core.instance.GL.currentScene3D.fogColor = colorValue;
+    enchant.Core.instance.GL.defaultProgram.setUniforms({uFogColor: colorValue});
+};
+
+/**
+ @returns {[r, g, b, a]} Fog color of current scene
+ */
+enchant.gl.Scene3D.prototype.getFogColor = function ()
+{
+    return enchant.Core.instance.GL.currentScene3D.fogColor;
 };
 
 /****

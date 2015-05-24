@@ -74,5 +74,17 @@ var testRoom2 = Class.create(objRoom,
                 this.scene.getCamera().setChase(this.ball, -100, 50, {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
             }
         }
+        
+        if (chengine.input.keyPressed('f'))
+        {
+            if (this.scene.getFog() == 0.0)
+            {
+                this.scene.setFog(1.0);
+            }
+            else
+            {
+                this.scene.setFog(0.0);
+            }
+        }
     }    
 });
