@@ -409,6 +409,12 @@ chengine.attach = function (objToAttach, objReceiver, offset)
     objToAttach.z = objReceiver.z + offset.z;
 }
 
+/**
+ Shoots a ray to test for a collision
+ @param startPoint {x, y, z} Beginning point of the ray
+ @param endPoint {x, y, z} End point of the ray
+ @returns {bool} Whether or not the ray hit something
+ */
 chengine.rayTest = function (startPoint, endPoint)
 {
     var scene = enchant.Core.instance.GL.currentScene3D;
@@ -469,7 +475,6 @@ chengine.tileMesh = function (mesh, repeat)
 /**
  Immediately changes the current room after cleaning out the scene 
  and previous room
- @param currentRoom {objRoom} The current room (or the room that needs to be cleaned)
  @param newRoom {objRoom} The room to go to
  */
 chengine.changeRoom = function (newRoom)
@@ -511,6 +516,13 @@ chengine.changeRoom = function (newRoom)
     });
 };
 
+/**
+ Performs a transition to change to a different room
+ @param mextRoom {objRoom} The next room to go to
+ @param transitionType {chengine.TRANSITION_TYPE} Type of transition to display
+ @param transitionSpeed {chengine.TRANSITION_SPEED} Uniform execution speed of the transition
+ @param callback {function} Callback called (usually) after the transition
+ */
 chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, callback)
 {
     if (chengine.isTransitioning)

@@ -3,7 +3,6 @@
  Classes related to world space
  ***************************************/
  
- 
 /**
  Scene that supports 3D and physics. Manages cameras, lighting, objects, etc.
  This is a singleton.
@@ -146,6 +145,12 @@ var objScene = Class.create(PhyScene3D,
     }
 });
 
+/**
+ Since a Scene3D is essentially a singleton, objRooms serve as separate 
+ "sub-scenes" to go between. When the system goes to a different room,
+ the current scene is cleaned out before it is populated by stuff in the
+ incoming room.
+ */
 var objRoom = Class.create(
 {
     initialize: function (parentScene)
@@ -187,7 +192,7 @@ var objRoom = Class.create(
 
 
 /**
- Camera
+ Camera with several different modes
  */
 var objCamera = Class.create(Camera3D,
 {
@@ -303,7 +308,7 @@ var objCamera = Class.create(Camera3D,
     },
     
     /**
-      Camera sits and looks at a vector
+     Camera sits and looks at a vector
      */
     fixed: function ()
     {
@@ -318,6 +323,9 @@ var objCamera = Class.create(Camera3D,
         this._changedCenter = true;    
     },
     
+    /**
+     Camera can be moved freely (e.g. using debug controls)
+     */
     free: function ()
     {
         this.target = null;
@@ -366,8 +374,6 @@ var objCamera = Class.create(Camera3D,
         mat4.multiply(this._projMat, this.tmpMat);
         this._changedRotation = true;
     }
-    
-    
 });
 
 
