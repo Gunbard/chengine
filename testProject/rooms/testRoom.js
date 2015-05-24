@@ -146,7 +146,7 @@ var testRoom = Class.create(objRoom,
         {
             // Ignore touch if touching the virtual dpad
             //if (pad.isActive())
-            if (this.pad.isTouched)
+            if (that.pad.isTouched)
             {
                 return;
             }
@@ -183,7 +183,7 @@ var testRoom = Class.create(objRoom,
             // game.rootScene.addChild(crossfade);
             
             
-            var bullet = new objShot(this.scene);
+            var bullet = new objShot(that.scene);
             bullet.x = mikuPhy.x;
             bullet.y = mikuPhy.y + 8;
             bullet.z = mikuPhy.z;
@@ -194,7 +194,7 @@ var testRoom = Class.create(objRoom,
             bullet.sidestep(-2);
             that.scene.addChild(bullet);        
             
-            var bullet = new objShot(this.scene);
+            var bullet = new objShot(that.scene);
             bullet.x = mikuPhy.x;
             bullet.y = mikuPhy.y + 8;
             bullet.z = mikuPhy.z;
