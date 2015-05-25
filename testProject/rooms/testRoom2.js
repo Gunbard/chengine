@@ -17,15 +17,8 @@ var testRoom2 = Class.create(objRoom,
         this.pad.x = 20;
         this.pad.y = 220;
         
-        var skybox = new Sphere(2000);
-        skybox.mesh.reverse();
-        skybox.mesh.texture = new Texture(game.assets[TEXTURE_SKYDOME]);
-        skybox.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
-        skybox.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
-        skybox.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
-        skybox.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
-        skybox.mesh.texture.shininess = 0;
-        skybox.rotatePitch(degToRad(180));
+        this.createSkybox(TEXTURE_SKYDOME);
+        this.scene.setFogDistance(200.0, 5000.0);
         
         var floor = new PhyBox(400, 1, 400, 0);
         floor.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
@@ -36,7 +29,6 @@ var testRoom2 = Class.create(objRoom,
         floor.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         floor.mesh.texture.shininess = 0;
         
-        this.scene.addChild(skybox);
         this.scene.addChild(floor);
         
         this.ball = new objTestBall(5);

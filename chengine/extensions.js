@@ -291,6 +291,28 @@ enchant.gl.Scene3D.prototype.getFog = function ()
 };
 
 /**
+ Sets the fog distance settings
+ @param minDist {float} The minimum fog drawing distance
+ @param maxDist {float} The maximum fog drawing distance
+ */
+enchant.gl.Scene3D.prototype.setFogDistance = function (minDist, maxDist)
+{
+    enchant.Core.instance.GL.currentScene3D.fogMinDistance = minDist;
+    enchant.Core.instance.GL.currentScene3D.fogMaxDistance = maxDist;
+    enchant.Core.instance.GL.defaultProgram.setUniforms({uFogDistance: [minDist, maxDist]});
+};
+
+/**
+ @return [float, float] [Minimum distance, maximum distance]
+ */
+enchant.gl.Scene3D.prototype.getFogDistance = function ()
+{
+    var minDist = enchant.Core.instance.GL.currentScene3D.fogMinDistance;
+    var maxDist = enchant.Core.instance.GL.currentScene3D.fogMaxDistance;
+    return [minDist, maxDist];
+};
+
+/**
  Sets the fog color, if enabled
  @param r {float} red value
  @param g {float} green value

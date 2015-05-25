@@ -129,6 +129,7 @@ var objScene = Class.create(PhyScene3D,
         // Default fog settings
         this.setFog(0.0);
         this.setFogColor(0.0, 0.0, 0.0, 1.0);
+        this.setFogDistance(200.0, 5000.0);
         
         // Default gravity
         var gravVector = new Ammo.btVector3(0, -980, 0);
@@ -171,7 +172,10 @@ var objRoom = Class.create(
     
     enterframe: function (e)
     {
-    
+        if (this.skybox)
+        {
+            chengine.attach(this.skybox, this.scene.getCamera());
+        }
     },
     
     touchstart: function (e)
@@ -187,6 +191,20 @@ var objRoom = Class.create(
     touchmove: function (e)
     {
     
+    },
+    
+    createSkybox: function (texture)
+    {
+        this.skybox = new Sphere(4000);
+        this.skybox.mesh.reverse();
+        this.skybox.mesh.texture = new Texture(game.assets[texture]);
+        this.skybox.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
+        this.skybox.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
+        this.skybox.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
+        this.skybox.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
+        this.skybox.mesh.texture.shininess = 0;
+        this.skybox.rotatePitch(degToRad(180));
+        this.scene.addChild(this.skybox);
     }
 });
 
@@ -375,7 +393,6 @@ var objCamera = Class.create(Camera3D,
         this._changedRotation = true;
     }
 });
-
 
 /**
  It's a soccer ball
