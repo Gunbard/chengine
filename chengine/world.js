@@ -111,8 +111,6 @@ var objScene = Class.create(PhyScene3D,
         this.scene2D.clearEventListener('touchend');
         this.scene2D.clearEventListener('touchmove');
         
-        // Reset physics
-        this.world = new enchant.gl.physics.World();
         this.stop();
         this.isPlaying = false;
         
