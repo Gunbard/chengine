@@ -559,5 +559,17 @@ chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, c
             scene.scene2D.addChild(fadeIn);
             break;
         }
+        case chengine.TRANSITION_TYPE.CROSSFADE:
+        {
+            var crossfade = new objCrossfade(scene, null, transitionSpeed, null, function () 
+            {
+                chengine.isTransitioning = false;
+                scene.scene2D.removeChild(crossfade);
+            });
+
+            chengine.changeRoom(nextRoom);
+            scene.scene2D.addChild(crossfade);
+            break;
+        }
     }  
 };

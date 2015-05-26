@@ -52,7 +52,7 @@ var testRoom2 = Class.create(objRoom,
         
         if (chengine.input.keyPressed('i'))
         {   
-            chengine.transitionRoom(testRoom, chengine.TRANSITION_TYPE.FADE);
+            chengine.transitionRoom(testRoom, chengine.TRANSITION_TYPE.CROSSFADE);
         }
         
         if (chengine.input.keyPressed('y'))

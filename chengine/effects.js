@@ -12,7 +12,8 @@ chengine.TRANSITION_TYPE =
 {
     FADE_IN: 1,
     FADE_OUT: 2,
-    FADE: 3
+    FADE: 3,
+    CROSSFADE: 4
 }
  
 // Speed of transitions
