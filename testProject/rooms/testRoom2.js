@@ -40,6 +40,15 @@ var testRoom2 = Class.create(objRoom,
         this.scene.scene2D.addChild(this.pad);
         
         chengine.component.add(scene.getCamera(), new chengine.component.controlCameraMovable(1, game.input, this.pad));
+        
+        this.chen = new objCharacter(MODEL_CHEN);
+        this.chen.y = 100;
+        this.chen.z = 200;
+        this.chen.addToScene(this.scene);
+        
+        chengine.component.add(this.chen, new chengine.component.controlCameraMovable(1, game.input, this.pad));
+        this.chen.model.animationSpeed = 1;
+        this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
 
     },
     

@@ -23,7 +23,7 @@ var objCharacter = Class.create(PhyCapsule,
         PhyCapsule.call(this, radius, height, mass);
         
         // The model will have the same orientation and position as the collsion capsule
-        this.model = model.clone();
+        this.model = game.assets[model].clone();
         
         // Change the alpha to see the physics object
         this.mesh.setBaseColor('rgba(0, 255, 0, 0.0)');

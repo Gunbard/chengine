@@ -47,8 +47,8 @@ var testRoom = Class.create(objRoom,
         floor.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         floor.mesh.texture.shininess = 0;
              
-        mikuPhy = new objCharacter(game.assets[MODEL_PATH]);
-        reiPhy = new objCharacter(game.assets[MODEL_REI_PATH]);
+        mikuPhy = new objCharacter(MODEL_PATH);
+        reiPhy = new objCharacter(MODEL_REI_PATH);
         reiPhy.hold(true);
         
         //mikuPhy.rigid.rigidBody.getCollisionShape().setMargin(32);
