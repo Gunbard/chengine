@@ -64,7 +64,7 @@ var testRoom2 = Class.create(objRoom,
         }
         else
         {
-            this.chen.model.startAnimating(this.chen.model.currentFrame, game.assets[MOTION_PATH])
+            this.chen.model.startAnimating(this.chen.model.currentFrame, MOTION_PATH);
         }
         
         if (chengine.input.keyPressed('i'))

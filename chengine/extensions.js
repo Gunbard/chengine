@@ -231,7 +231,8 @@ enchant.gl.mmd.MSprite3D.prototype.startAnimating = function (startFrame, animat
 {
     if (this.animation.length == 0)
     {
-        this.animation.push({frame: startFrame, animation: animation});
+        var motion = game.assets[animation];
+        this.animation.push({frame: startFrame, animation: motion});
     }
 };
 
@@ -239,6 +240,11 @@ enchant.gl.mmd.MSprite3D.prototype.startAnimating = function (startFrame, animat
  */
 enchant.gl.mmd.MSprite3D.prototype.stopAnimating = function (endFrame)
 {
+    if (this.animation.length == 0)
+    {
+        return;
+    }
+    
     if (endFrame)
     {
         this.setFrame(endFrame);
