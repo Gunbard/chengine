@@ -162,7 +162,7 @@ enchant.gl.mmd.MSprite3D.prototype.initialize = function (path, callback, onerro
         //this.clearAnimation();
     };
     
-    this.addEventListener('enterframe', function() 
+    this.addEventListener('enterframe', function () 
     {
         var first;
         var skeleton = this.skeleton;

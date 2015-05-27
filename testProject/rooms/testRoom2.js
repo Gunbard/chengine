@@ -46,10 +46,8 @@ var testRoom2 = Class.create(objRoom,
         this.chen.z = 200;
         this.chen.addToScene(this.scene);
         
-        chengine.component.add(this.chen, new chengine.component.controlCameraMovable(1, game.input, this.pad));
-        this.chen.model.animationSpeed = 1;
+        chengine.component.add(this.chen, new chengine.component.controlCameraMovable(0.25, game.input, this.pad));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
-
     },
     
     enterframe: function (e) 
@@ -59,6 +57,16 @@ var testRoom2 = Class.create(objRoom,
         
         chengine.debugCamera(this.scene, this.scene.getCamera());
         
+        if (!game.input.up && !game.input.down && !game.input.left && !game.input.right && 
+                !this.pad.isTouched && !chengine.input.gamepadIsUsed(0))
+        {
+            this.chen.model.stopAnimating(this.chen.model.currentFrame);
+        }
+        else
+        {
+            this.chen.model.startAnimating(this.chen.model.currentFrame, game.assets[MOTION_PATH])
+        }
+        
         if (chengine.input.keyPressed('i'))
         {   
             chengine.transitionRoom(testRoom, chengine.TRANSITION_TYPE.CROSSFADE);
@@ -66,13 +74,14 @@ var testRoom2 = Class.create(objRoom,
         
         if (chengine.input.keyPressed('y'))
         {
-            if (this.scene.getCamera().target == this.ball)
+            if (this.scene.getCamera().target == this.chen.model)
             {
                 this.scene.getCamera().setFree();
             }
             else
             {
-                this.scene.getCamera().setChase(this.ball, -100, 50, {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
+                this.scene.getCamera().setChase(this.chen.model, -100, 50, 
+                                                {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
             }
         }
         
