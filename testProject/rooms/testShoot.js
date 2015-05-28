@@ -34,6 +34,16 @@ var testShoot = Class.create(objRoom,
         
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
+        
+        var shootOpts = 
+        {
+            inputKey: 'g',
+            bullet: objShot,
+            scene: this.scene,
+            cooldown: 5,
+            forwardOffset: -30
+        }
+        chengine.component.add(this.chen, new chengine.component.shoot(shootOpts));
     },
     
     enterframe: function (e) 
@@ -82,18 +92,6 @@ var testShoot = Class.create(objRoom,
             {
                 this.scene.setFog(0.0);
             }
-        }
-        
-        if (chengine.input.keyPressed('g'))
-        {
-            var bullet = new objShot();
-            bullet.x = this.chen.x;
-            bullet.y = this.chen.y;
-            bullet.z = this.chen.z;
-            bullet.rotation = chengine.copyRotation(this.chen.model.rotation, true);
-            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
-            bullet.forward(-30);
-            that.scene.addChild(bullet);        
         }
     }    
 });

@@ -368,6 +368,71 @@ chengine.component.controlBehindMovable = Class.create
 });
 
 /**
+ Generates bullets relative to the object
+ @param options 
+ {
+    inputKey {string} Key to trigger the shot
+    bullet {obj} An object that will serve as a bullet
+    scene {objScene} Scene to add stuff to
+    offset {x, y, z} Offset where the bullet will be created
+    forwardOffset {int} Relative position forward where the bullet will be created
+    cooldown {int} Time before another bullet can be fired, set to null to fire 
+                   only when pressed
+ }
+ */
+chengine.component.shoot = Class.create
+({    
+    initialize: function (options)
+    {
+        this.options = options || {};
+        this.options.bullet = this.options.bullet || objShot;
+        this.options.forwardOffset = this.options.forwardOffset || 0;
+        this.options.offset = this.options.offset || {x: 0, y: 0, z: 0};
+        this.cooldownMax = options.cooldown;
+        this.cooldown = options.cooldown;
+    },
+    
+    enterframe: function ()
+    {      
+        var that = this;
+        var fireAction = function ()
+        {
+            var bullet = new that.options.bullet();
+            bullet.x = that.obj.x + that.options.offset.x;
+            bullet.y = that.obj.y + that.options.offset.y;
+            bullet.z = that.obj.z + that.options.offset.z;
+            bullet.rotation = chengine.copyRotation(that.obj.model.rotation, true);
+            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
+            bullet.forward(that.options.forwardOffset);
+            that.options.scene.addChild(bullet);     
+        }
+
+        if (this.cooldownMax)
+        {
+            if (game.input[this.options.inputKey])
+            {
+                if (this.cooldown > 0)
+                {
+                    this.cooldown -= 1;
+                }
+                else
+                {
+                    fireAction();
+                    this.cooldown = this.cooldownMax;
+                }
+            }
+        }
+        else
+        {
+            if (chengine.input.keyPressed(this.options.inputKey))
+            {
+                fireAction();
+            }
+        }
+    }
+});
+
+/**
  */
 chengine.component.jumpable = Class.create
 ({
