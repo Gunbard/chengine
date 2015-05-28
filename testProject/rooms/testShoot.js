@@ -56,9 +56,9 @@ var testShoot = Class.create(objRoom,
         var cam = this.scene.getCamera();
         var camFront = 
         {
-            x: cam._centerX,
-            y: cam._centerY - 10,
-            z: cam._centerZ + 200
+            x: cam._x,
+            y: cam._y - 10,
+            z: cam._z + 400
         }
 
         this.chen.model.rotation = 
