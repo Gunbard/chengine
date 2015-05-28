@@ -69,7 +69,7 @@ var objCharacter = Class.create(PhyCapsule,
     /**
      Holds an object in place (turn it into a solid, immobile block) but will still be
      affected by gravity
-     @Param shouldHold {bool} Whether or not to hold it
+     @param shouldHold {bool} Whether or not to hold it
      */
     hold: function (shouldHold)
     {

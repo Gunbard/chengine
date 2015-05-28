@@ -334,6 +334,39 @@ chengine.component.controlCameraMovable = Class.create
     }
 });
 
+chengine.component.controlBehindMovable = Class.create
+({    
+    initialize: function (speed, input, pad, animationOpts)
+    {
+        this.speed = speed || 4;
+        this.input = input;
+        this.pad = pad;
+    },
+    
+    enterframe: function ()
+    {      
+        if (this.input.up)
+        {
+            this.obj.altitude(this.speed);
+        }
+        
+        if (this.input.down)
+        {
+            this.obj.altitude(-this.speed);
+        }
+        
+        if (this.input.left)
+        {
+            this.obj.sidestep(this.speed);
+        }
+        
+        if (this.input.right)
+        {
+            this.obj.sidestep(-this.speed);
+        }
+    }
+});
+
 /**
  */
 chengine.component.jumpable = Class.create

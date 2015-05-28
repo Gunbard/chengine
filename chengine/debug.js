@@ -213,13 +213,13 @@ chengine.debugCamera = function (scene, cam)
         camera.rotateYaw(degToRad(camMoveSpeed/2));
     }
 
-    // Pan up
+    // Pan down
     if (game.input.z)
     {
         cam.altitude(-camMoveSpeed);
     }
     
-    // Pan down
+    // Pan up
     if (game.input.x)
     {
         cam.altitude(camMoveSpeed);

@@ -53,7 +53,7 @@ window.onload = function ()
     
     game.onload = function ()
     {
-        chengine.gameInit(testRoom2);
+        chengine.gameInit(testShoot);
     }
     
     game.start();

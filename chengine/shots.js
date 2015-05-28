@@ -24,8 +24,8 @@ var objShot = Class.create(Cylinder,
         this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.shininess = 0;
      
-        var snd = game.assets['sounds/tielaser.wav'].clone();
-        snd.play();
+        //var snd = game.assets['sounds/tielaser.wav'].clone();
+        //snd.play();
 	},
 	
     onenterframe: function ()

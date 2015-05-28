@@ -190,6 +190,21 @@ chengine.getCameraRotation = function ()
 };
 
 /**
+ */
+chengine.copyRotation = function (rotation, flip)
+{
+    var copyMat = mat4.create();
+    mat4.set(rotation, copyMat);
+    
+    if (flip)
+    {
+        mat4.inverse(copyMat);
+    }
+    
+    return copyMat;    
+};
+
+/**
  Generates a rotation matrix based on the camera's current rotation (ignoring tilt)
  @returns {mat4} Camera's rotation matrix
  */
@@ -210,9 +225,10 @@ chengine.getCameraLockedRotation = function ()
  Generates a rotaton matrix based on one object looking at another
  @param objFrom {x, y, z} Origin object or vector
  @param objTo {x, y, z} Target object or vector
+ @param flip {bool} Whether or not to invert the resulting rotation
  @returns {mat4} A rotation matrix
  */
-chengine.rotationTowards = function (objFrom, objTo)
+chengine.rotationTowards = function (objFrom, objTo, flip)
 {
     var copyMat = mat4.create();
     
@@ -226,7 +242,11 @@ chengine.rotationTowards = function (objFrom, objTo)
         copyMat
     );
     
-    mat4.inverse(copyMat);
+    if (!flip)
+    {
+        mat4.inverse(copyMat);
+    }
+    
     return copyMat;
 };
 
