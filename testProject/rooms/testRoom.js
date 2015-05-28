@@ -63,26 +63,22 @@ var testRoom = Class.create(objRoom,
         var jumpComponent = new chengine.component.jumpable();
         jumpComponent.onJump = function ()
         {
-            this.obj.model.animationSpeed = 1;
             this.obj.model.loop = false;
             this.obj.model.clearAnimation();
-            this.obj.model.startAnimating(0, game.assets[MOTION_JUMP_PATH]);
+            this.obj.model.startAnimating(0, MOTION_JUMP_PATH);
         };    
         
         jumpComponent.onLand = function ()
         {
-            this.obj.model.animationSpeed = 1;
             this.obj.model.stopAnimating(0);
-            this.obj.model.startAnimating(0, game.assets[MOTION_PATH]);
+            this.obj.model.startAnimating(0, MOTION_PATH);
             //alert('land');
         };
         
         chengine.component.add(mikuPhy, jumpComponent);
         
-        mikuPhy.model.animationSpeed = 1;
         mikuPhy.model.pushAnimation(game.assets[MOTION_PATH]);
         
-        reiPhy.model.animationSpeed = 1;
         //reiPhy.model.pushAnimation(game.assets[MOTION_TEST]);
         
         //thing = game.assets[TEST_AREA].clone();
@@ -385,7 +381,7 @@ var testRoom = Class.create(objRoom,
             }
             else
             {
-                mikuPhy.model.startAnimating(mikuPhy.model.currentFrame, game.assets[MOTION_PATH])
+                mikuPhy.model.startAnimating(mikuPhy.model.currentFrame, MOTION_PATH);
             }
         }
         

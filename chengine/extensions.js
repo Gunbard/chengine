@@ -226,6 +226,9 @@ enchant.gl.mmd.MSprite3D.prototype.setFrame = function (frameNumber)
 };
 
 /**
+ Begins animating MMD model
+ @param startFrame {int} The frame number to start the animation from
+ @param animation {string} The motion asset to load
  */
 enchant.gl.mmd.MSprite3D.prototype.startAnimating = function (startFrame, animation)
 {
@@ -237,6 +240,8 @@ enchant.gl.mmd.MSprite3D.prototype.startAnimating = function (startFrame, animat
 };
 
 /**
+ Stops animating MMD model
+ @param endFrame {int} The frame number to stop on
  */
 enchant.gl.mmd.MSprite3D.prototype.stopAnimating = function (endFrame)
 {
@@ -251,13 +256,6 @@ enchant.gl.mmd.MSprite3D.prototype.stopAnimating = function (endFrame)
     }
 
     this.clearAnimation();
-};
-
-/**
- */
-enchant.gl.mmd.MSprite3D.prototype.destroy = function ()
-{
-    
 };
 
 /******
