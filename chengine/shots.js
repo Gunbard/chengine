@@ -36,7 +36,7 @@ var objShot = Class.create(Cylinder,
             this.glow = new Cylinder(0.5, 28, 10);
             mat4.rotateX(this.glow.matrix, degToRad(90));
             this.glow.mesh.setBaseColor('rgba(0, 255, 0, 0.2)');
-            this.scene.addChild(this.glow);
+            //this.scene.addChild(this.glow);
         }
     
         this.glow.rotation = this.rotation;
@@ -51,7 +51,7 @@ var objShot = Class.create(Cylinder,
         
         if (this.timer <= 0)
         {
-            scene.removeChild(this.glow);
+            //scene.removeChild(this.glow);
             scene.removeChild(this);
         }
         
