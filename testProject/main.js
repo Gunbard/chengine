@@ -15,6 +15,7 @@ MOTION_JUMP_PATH = 'motion/jumpfix2.vmd';
 MOTION_TEST = 'motion/everybody.vmd';
 TEXTURE_SKYDOME = 'images/skydome.jpg';
 MODEL_CHEN = 'model/chen/chenfix.pmd';
+TEX_CROSSHAIRS = 'images/crosshairs.png'
 
 // Globalize these for testing purposes 
 var game;
@@ -44,11 +45,8 @@ window.onload = function ()
         'sounds/tielaser.wav', 
         'sounds/explode.wav', 
         'images/cockpit.png',
-        'images/crosshairs.png',
-        //MOTION_TEST,
+        TEX_CROSSHAIRS,
         TEXTURE_SKYDOME
-        //TEST_AREA,
-        //COLLADA_TEST
     );
     
     game.onload = function ()

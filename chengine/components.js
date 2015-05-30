@@ -334,13 +334,31 @@ chengine.component.controlCameraMovable = Class.create
     }
 });
 
+/**
+ Control an object as if the camera is behind the object
+ @param speed {float} Movement speed
+ @param input {game.input} Game input to use (optional)
+ @param pad {APad} Virutal analog pad to use (optional)
+ @param options {object} Extra parameters
+ 
+ options 
+ {
+    upIsForward {bool} Whether or not the up direction means to 
+        move forward. TODO: Use an up vector and forward vector
+ }
+ */
 chengine.component.controlBehindMovable = Class.create
 ({    
-    initialize: function (speed, input, pad, animationOpts)
+    initialize: function (speed, input, pad, options)
     {
         this.speed = speed || 4;
         this.input = input;
         this.pad = pad;
+        
+        if (options)
+        {
+            this.upIsForward = options.upIsForward;
+        }
     },
     
     enterframe: function ()
@@ -363,6 +381,23 @@ chengine.component.controlBehindMovable = Class.create
         if (this.input.right)
         {
             this.obj.sidestep(-this.speed);
+        }
+        
+        if (this.pad && this.pad.isTouched)
+        {    
+            var vSpeed = this.speed * -this.pad.vy;
+            var hSpeed = this.speed * -this.pad.vx;
+            
+            if (this.upIsForward)
+            {
+                this.obj.forward(vSpeed);
+            }
+            else
+            {
+                this.obj.altitude(vSpeed);
+            }
+            
+            this.obj.sidestep(hSpeed);
         }
     }
 });

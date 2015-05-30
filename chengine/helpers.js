@@ -419,11 +419,11 @@ chengine.flash = function (obj)
  */
 chengine.attach = function (objToAttach, objReceiver, offset)
 {
-    if (!offset)
-    {
-        offset = {x: 0, y: 0, z: 0};
-    }
-
+    offset = offset || {x: 0, y: 0, z: 0};
+    offset.x = offset.x || 0;
+    offset.y = offset.y || 0;
+    offset.z = offset.z || 0;
+    
     objToAttach.x = objReceiver.x + offset.x;
     objToAttach.y = objReceiver.y + offset.y;
     objToAttach.z = objReceiver.z + offset.z;

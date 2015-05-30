@@ -29,8 +29,14 @@ var testShoot = Class.create(objRoom,
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.addToScene(this.scene);
 
-        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.5, game.input, this.pad));
+        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.5, game.input, this.pad, {upIsForward: false}));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
+        
+        // Make some crosshairs
+        this.target = new Plane(10);
+        this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
+        chengine.unsetLighting(this.target.mesh);
+        this.scene.addChild(this.target);
         
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
@@ -61,6 +67,9 @@ var testShoot = Class.create(objRoom,
             z: cam._z + 400
         }
 
+        chengine.attach(this.target, this.chen.model, {y: 10, z: -200});
+        this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);
+        
         this.chen.model.rotation = 
             chengine.rotationTowards(this.chen.model, camFront, true);
         
