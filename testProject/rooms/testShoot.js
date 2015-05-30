@@ -22,6 +22,22 @@ var testShoot = Class.create(objRoom,
         this.createSkybox(TEXTURE_SKYDOME);
         this.scene.setFogDistance(200.0, 5000.0);
 
+        // Add some obstacle test thing
+        this.box = new PhyBox(10, 10, 10, 0);
+        this.box.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
+        this.box.mesh.texture = new Texture(game.assets['images/tex.jpg']);
+        this.box.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
+        this.box.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
+        this.box.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
+        this.box.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
+        this.box.mesh.texture.shininess = 0;
+        this.box.x = -50;
+        this.box.y = 50;
+        this.box.z = -500;
+        chengine.component.add(this.box, new chengine.component.life(10));   
+        this.scene.addChild(this.box);
+        
+        // Make CHEN! HONK HONK
         this.chen = new objCharacter(MODEL_CHEN);
         chengine.attach(this.chen, this.scene.getCamera());
         this.chen.forward(-120);
@@ -66,6 +82,9 @@ var testShoot = Class.create(objRoom,
             y: cam._y - 10,
             z: cam._z + 400
         }
+        
+        this.box.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
+        this.box.rigid.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
 
         chengine.attach(this.target, this.chen.model, {y: 10, z: -200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);

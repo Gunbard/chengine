@@ -595,7 +595,14 @@ chengine.component.life = Class.create
         
         if (this.HP <= 0)
         {
-            this.ondeath();
+            if (this.ondeath)
+            {
+                this.ondeath();
+            }
+            else
+            {
+                scene.removeChild(this.obj);
+            }
         }
     }
 }); 

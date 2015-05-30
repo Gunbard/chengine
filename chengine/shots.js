@@ -67,18 +67,18 @@ var objShot = Class.create(Cylinder,
 
         if (rayCallback.hasHit())
         {
-            var exp = new objExp(5);
+            /*var exp = new objExp(5);
             exp.x = this.x;
             exp.y = this.y;
             exp.z = this.z;
-            scene.addChild(exp);
+            scene.addChild(exp);*/
             
             var hitpoint = rayCallback.get_m_hitPointWorld();
             var collisionObj = rayCallback.get_m_collisionObject();
             var body = Ammo.btRigidBody.prototype.upcast(collisionObj);
             var owner = scene.rigidOwner(body);
             
-            if (owner instanceof objTestBall)
+            if (owner instanceof objTestBall || owner instanceof PhyBox)
             {                                
                 var exp = new objExp(10);
                 exp.x = hitpoint.x();
@@ -95,7 +95,7 @@ var objShot = Class.create(Cylinder,
                 }
             }
             
-            scene.removeChild(this.glow);
+            //scene.removeChild(this.glow);
             scene.removeChild(this);
         }
         
