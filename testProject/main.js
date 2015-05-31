@@ -15,7 +15,8 @@ MOTION_JUMP_PATH = 'motion/jumpfix2.vmd';
 MOTION_TEST = 'motion/everybody.vmd';
 TEXTURE_SKYDOME = 'images/skydome.jpg';
 MODEL_CHEN = 'model/chen/chenfix.pmd';
-TEX_CROSSHAIRS = 'images/crosshairs.png'
+TEX_CROSSHAIRS = 'images/crosshairs.png';
+TEX_GRASS = 'images/grass.jpg';
 
 // Globalize these for testing purposes 
 var game;
@@ -39,7 +40,7 @@ window.onload = function ()
         MOTION_PATH, 
         MOTION_JUMP_PATH,
         'images/tex.jpg',  
-        'images/grass.gif', 
+        TEX_GRASS, 
         'images/tex.png',
         'images/soccerball.png', 
         'sounds/tielaser.wav', 

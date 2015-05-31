@@ -155,6 +155,7 @@ var objRoom = Class.create(
     initialize: function (parentScene)
     {
         this.scene = parentScene;
+        this.step = 0;
     },
     
     prepare: function ()
@@ -170,6 +171,8 @@ var objRoom = Class.create(
     
     enterframe: function (e)
     {
+        this.step++;
+        
         if (this.skybox)
         {
             chengine.attach(this.skybox, this.scene.getCamera());
@@ -421,6 +424,76 @@ var objTestBall = Class.create(PhySphere,
     {
         if (this.x > 1000 || this.y > 1000 || this.z > 1000 || 
             this.x < -1000 || this.y < -1000 || this.z < -1000)
+        {
+            scene.removeChild(this);
+        }
+    }
+});
+
+var objTestEnemy = Class.create(PhyBox,
+{
+    initialize: function ()
+    {
+        PhyBox.call(this, 10, 10, 10, 0);
+        this.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
+        this.mesh.texture = new Texture(game.assets['images/tex.jpg']);
+        this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
+        this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.shininess = 0;
+        
+        var that = this;
+        var newLife = new chengine.component.life(5);
+        newLife.ondeath = function ()
+        {
+            var bigExp = new objExp(40);
+            bigExp.x = that.x;
+            bigExp.y = that.y;
+            bigExp.z = that.z;
+            scene.addChild(bigExp);
+            scene.removeChild(that);
+        };
+        newLife.ondeath = newLife.ondeath.bind(this);
+        chengine.component.add(this, newLife); 
+        this.deathTimer = 4000;
+    },
+    
+    onenterframe: function ()
+    {
+        this.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
+        this.rigid.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
+        
+        this.deathTimer--;
+        
+        if (this.deathTimer <= 0)
+        {
+            scene.removeChild(this);
+        }
+    }
+});
+
+var objScrollingFloor = Class.create(PhyBox,
+{
+    initialize: function ()
+    {
+        PhyBox.call(this, 1000, 1, 1000, 0);
+        this.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
+        this.mesh.texture = new Texture(game.assets[TEX_GRASS]);
+        this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
+        this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.shininess = 0;
+
+        this.deathTimer = 4000;
+    },
+    
+    onenterframe: function ()
+    {
+        this.deathTimer--;
+        
+        if (this.deathTimer <= 0)
         {
             scene.removeChild(this);
         }

@@ -317,7 +317,7 @@ enchant.gl.Scene3D.prototype.getFogDistance = function ()
 };
 
 /**
- Sets the fog color, if enabled
+ Sets the fog color, if enabled. Values are between 0 and 1
  @param r {float} red value
  @param g {float} green value
  @param b {float} blue value

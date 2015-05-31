@@ -4,6 +4,7 @@ var testShoot = Class.create(objRoom,
     {
         objRoom.call(this, parentScene);
         this.name = "testShoot";
+        this.railMovementSpeed = 2;
     }, 
     
     prepare: function ()
@@ -20,22 +21,8 @@ var testShoot = Class.create(objRoom,
         this.pad.y = 220;
         
         this.createSkybox(TEXTURE_SKYDOME);
-        this.scene.setFogDistance(200.0, 5000.0);
-
-        // Add some obstacle test thing
-        this.box = new PhyBox(10, 10, 10, 0);
-        this.box.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
-        this.box.mesh.texture = new Texture(game.assets['images/tex.jpg']);
-        this.box.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
-        this.box.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
-        this.box.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
-        this.box.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
-        this.box.mesh.texture.shininess = 0;
-        this.box.x = -50;
-        this.box.y = 50;
-        this.box.z = -500;
-        chengine.component.add(this.box, new chengine.component.life(10));   
-        this.scene.addChild(this.box);
+        this.scene.setFogColor(0.1, 0.3, 0.5, 1.0);
+        this.scene.setFogDistance(1000.0, 5000.0);
         
         // Make CHEN! HONK HONK
         this.chen = new objCharacter(MODEL_CHEN);
@@ -53,6 +40,15 @@ var testShoot = Class.create(objRoom,
         this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
         chengine.unsetLighting(this.target.mesh);
         this.scene.addChild(this.target);
+        
+        // Get some scrolling ground going
+        var floor = new objScrollingFloor();
+        floor.z = this.chen.z - 1000;
+        this.scene.addChild(floor);        
+        
+        var floor2 = new objScrollingFloor();
+        floor2.z = this.chen.z - 3000;
+        this.scene.addChild(floor2);
         
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
@@ -82,15 +78,35 @@ var testShoot = Class.create(objRoom,
             y: cam._y - 10,
             z: cam._z + 400
         }
-        
-        this.box.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
-        this.box.rigid.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
 
         chengine.attach(this.target, this.chen.model, {y: 10, z: -200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);
         
         this.chen.model.rotation = 
             chengine.rotationTowards(this.chen.model, camFront, true);
+
+        this.chen.forward(this.railMovementSpeed);
+        this.scene.getCamera().forward(this.railMovementSpeed);
+
+        if (this.step % 100 == 0)
+        {
+            var newBox = new objTestEnemy();
+            newBox.x = this.chen.x + Math.floor(Math.random() * 400) - 200;
+            newBox.y = this.chen.y + Math.floor(Math.random() * 400) - 200;
+            newBox.z = this.chen.z - 3000;
+            scene.addChild(newBox);
+        }
+        
+        if (this.step % 1000 == 0)
+        {
+            var floor = new objScrollingFloor();
+            floor.z = this.chen.z - 1000;
+            this.scene.addChild(floor);        
+            
+            var floor2 = new objScrollingFloor();
+            floor2.z = this.chen.z - 3000;
+            this.scene.addChild(floor2);
+        }
         
         if (chengine.input.keyPressed('i'))
         {   
