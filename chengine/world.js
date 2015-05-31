@@ -194,9 +194,10 @@ var objRoom = Class.create(
     
     },
     
-    createSkybox: function (texture)
+    createSkybox: function (texture, radius)
     {
-        this.skybox = new Sphere(4000);
+        radius = radius || 1500;
+        this.skybox = new Sphere(radius);
         this.skybox.mesh.reverse();
         this.skybox.mesh.texture = new Texture(game.assets[texture]);
         this.skybox.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
@@ -220,7 +221,7 @@ var objCamera = Class.create(Camera3D,
         Camera3D.call(this);
         
         // Increase draw distance
-        mat4.perspective(20, enchant.Core.instance.width / enchant.Core.instance.height, 1.0, 5000.0, this._projMat);
+        mat4.perspective(20, enchant.Core.instance.width / enchant.Core.instance.height, 1.0, 2000.0, this._projMat);
          
         //this.phyObj = new PhyCube(1);
         //chengine.attach(this.phyObj, this);
@@ -486,7 +487,7 @@ var objScrollingFloor = Class.create(PhyBox,
         this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.shininess = 0;
 
-        this.deathTimer = 4000;
+        this.deathTimer = 2000;
     },
     
     onenterframe: function ()

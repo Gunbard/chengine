@@ -425,6 +425,7 @@ chengine.component.shoot = Class.create
         this.options.offset = this.options.offset || {x: 0, y: 0, z: 0};
         this.cooldownMax = options.cooldown;
         this.cooldown = options.cooldown;
+        this.bulletSpeed = this.options.bulletSpeed || 25;
     },
     
     enterframe: function ()
@@ -433,6 +434,7 @@ chengine.component.shoot = Class.create
         var fireAction = function ()
         {
             var bullet = new that.options.bullet();
+            bullet.speed = that.bulletSpeed;
             bullet.x = that.obj.x + that.options.offset.x;
             bullet.y = that.obj.y + that.options.offset.y;
             bullet.z = that.obj.z + that.options.offset.z;

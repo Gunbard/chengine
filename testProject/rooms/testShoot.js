@@ -20,9 +20,9 @@ var testShoot = Class.create(objRoom,
         this.pad.x = 20;
         this.pad.y = 220;
         
-        this.createSkybox(TEXTURE_SKYDOME);
+        this.createSkybox(TEXTURE_SKYDOME, 1500);
         this.scene.setFogColor(0.1, 0.3, 0.5, 1.0);
-        this.scene.setFogDistance(1000.0, 5000.0);
+        this.scene.setFogDistance(1000.0, 2000.0);
         
         // Make CHEN! HONK HONK
         this.chen = new objCharacter(MODEL_CHEN);
@@ -59,7 +59,8 @@ var testShoot = Class.create(objRoom,
             bullet: objShot,
             scene: this.scene,
             cooldown: 5,
-            forwardOffset: -30
+            forwardOffset: -30,
+            bulletSpeed: 50
         }
         chengine.component.add(this.chen, new chengine.component.shoot(shootOpts));
     },
@@ -76,7 +77,7 @@ var testShoot = Class.create(objRoom,
         {
             x: cam._x,
             y: cam._y - 10,
-            z: cam._z + 400
+            z: cam._z + 500
         }
 
         chengine.attach(this.target, this.chen.model, {y: 10, z: -200});
@@ -93,7 +94,7 @@ var testShoot = Class.create(objRoom,
             var newBox = new objTestEnemy();
             newBox.x = this.chen.x + Math.floor(Math.random() * 400) - 200;
             newBox.y = this.chen.y + Math.floor(Math.random() * 400) - 200;
-            newBox.z = this.chen.z - 3000;
+            newBox.z = this.chen.z - 1500;
             scene.addChild(newBox);
         }
         
