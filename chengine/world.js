@@ -250,7 +250,8 @@ var objCamera = Class.create(Camera3D,
         {
             CHASE: 0,
             FIXED: 1,
-            FREE: 2
+            FREE: 2,
+            IN_VIEW: 3,
         };
         
         // Current camera mode
