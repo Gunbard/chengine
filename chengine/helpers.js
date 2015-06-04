@@ -431,25 +431,10 @@ chengine.attach = function (objToAttach, objReceiver, offset)
     objToAttach.y = objReceiver.y;
     objToAttach.z = objReceiver.z;
 
-    if (!offset)
+    if (offset)
     {
-        return;
-    }
-    
-    if (offset.x)
-    {
-        objToAttach.setSidestep(offset.x, objReceiver);
-    }
-    
-    if (offset.y)
-    {
-        objToAttach.setAltitude(offset.y, objReceiver);
-    }
-    
-    if (offset.z)
-    {
-        objToAttach.setForward(offset.z, objReceiver);
-    }
+        objToAttach.setOffset(offset, objReceiver);
+    } 
 }
 
 /**

@@ -81,7 +81,7 @@ var testShoot = Class.create(objRoom,
             z: cam._z + 500
         }
 
-        chengine.attach(this.target, this.chen.model, {z:-200});
+        chengine.attach(this.target, this.chen.model, {y: -10, z: -200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);
         
         //this.chen.model.rotation = 

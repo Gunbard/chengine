@@ -65,7 +65,7 @@ var objCharacter = Class.create(PhyCapsule,
     
     onenterframe: function ()
     {
-        chengine.attach(this.model, this);
+        chengine.attach(this.model, this, this.modelOffset);
     },
     
     /**
