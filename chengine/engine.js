@@ -6,10 +6,17 @@
 
 chengine = {};
 
-// CONSTANTS  
+/**
+ CONSTANTS  
+ */
+ 
+// Game settings. These cannot be changed once the game starts.
 GAME_WIDTH = 640;
 GAME_HEIGHT = 360;
 GAME_FPS = 60;
+
+// Camera's default drawing distance in...pixels?
+DEFAULT_DRAW_DISTANCE = 2000.0;
 
 // Fonts
 DEFAULT_MSGTEXT_SIZE = 14;
@@ -25,6 +32,11 @@ DIRECTION_WEST = 90;
 // Mouse coordinates adjusted for canvas position in the page
 mouseX = 0;
 mouseY = 0;
+
+/**
+ Modifiable settings
+ */
+chengine.draw_distance = DEFAULT_DRAW_DISTANCE;
 
 /**
  Resizes the game to fit the window while keeping the correct aspect ratio

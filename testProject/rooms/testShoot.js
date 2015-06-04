@@ -21,8 +21,9 @@ var testShoot = Class.create(objRoom,
         this.pad.y = 220;
         
         this.createSkybox(TEXTURE_SKYDOME, 1500);
+        this.scene.setFog(1.0);
         this.scene.setFogColor(0.1, 0.3, 0.5, 1.0);
-        this.scene.setFogDistance(1000.0, 2000.0);
+        this.scene.setFogDistance(1200.0, 1550.0);
         
         // Make CHEN! HONK HONK
         this.chen = new objCharacter(MODEL_CHEN);
@@ -80,11 +81,11 @@ var testShoot = Class.create(objRoom,
             z: cam._z + 500
         }
 
-        chengine.attach(this.target, this.chen.model, {y: 10, z: -200});
+        chengine.attach(this.target, this.chen.model, {z:-200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);
         
-        this.chen.model.rotation = 
-            chengine.rotationTowards(this.chen.model, camFront, true);
+        //this.chen.model.rotation = 
+            //chengine.rotationTowards(this.chen.model, camFront, true);
 
         this.chen.forward(this.railMovementSpeed);
         this.scene.getCamera().forward(this.railMovementSpeed);

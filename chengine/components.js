@@ -359,6 +359,10 @@ chengine.component.controlBehindMovable = Class.create
         {
             this.upIsForward = options.upIsForward;
         }
+        
+        this.turningScaleMax = 1.0;
+        this.turningScale = 0;
+        this.turningSpeed = 0.1;
     },
     
     enterframe: function ()
@@ -381,6 +385,13 @@ chengine.component.controlBehindMovable = Class.create
         if (this.input.right)
         {
             this.obj.sidestep(-this.speed);
+            
+            if (this.obj.model && this.turningScale < this.turningScaleMax)
+            {
+                this.turningScale += this.turningSpeed;
+                console.log("Turn: " + this.turningScale);
+                this.obj.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-this.turningScale*2)));
+            }
         }
         
         if (this.pad && this.pad.isTouched)
@@ -398,6 +409,15 @@ chengine.component.controlBehindMovable = Class.create
             }
             
             this.obj.sidestep(hSpeed);
+        }
+        
+        if (!this.input.up && !this.input.down && !this.input.left && !this.input.right && 
+            (this.pad && !this.pad.isTouched))
+        {
+            if (this.turningScale > 0)
+            {
+                this.turningScale -= this.turningSpeed;
+            }
         }
     }
 });
@@ -438,7 +458,7 @@ chengine.component.shoot = Class.create
             bullet.x = that.obj.x + that.options.offset.x;
             bullet.y = that.obj.y + that.options.offset.y;
             bullet.z = that.obj.z + that.options.offset.z;
-            bullet.rotation = chengine.copyRotation(that.obj.model.rotation, true);
+            bullet.rotation = chengine.copyRotation(that.obj.model.rotation, false);
             bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
             bullet.forward(that.options.forwardOffset);
             that.options.scene.addChild(bullet);     

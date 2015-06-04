@@ -221,7 +221,7 @@ var objCamera = Class.create(Camera3D,
         Camera3D.call(this);
         
         // Increase draw distance
-        mat4.perspective(20, enchant.Core.instance.width / enchant.Core.instance.height, 1.0, 2000.0, this._projMat);
+        mat4.perspective(20, enchant.Core.instance.width / enchant.Core.instance.height, 1.0, chengine.draw_distance, this._projMat);
          
         //this.phyObj = new PhyCube(1);
         //chengine.attach(this.phyObj, this);

@@ -135,6 +135,40 @@ enchant.gl.Sprite3D.prototype.updateRigid = function (mass, scale, vertices)
     this.rigid = new enchant.gl.physics.Rigid(shape, mass);
 };
 
+enchant.gl.Sprite3D.prototype.setTranslation = function (x, y, z)
+{
+    this._x = x;
+    this._y = y;
+    this._z = z;
+    this._changedTranslation = true;
+};
+
+enchant.gl.Sprite3D.prototype.setForward = function (distance, ref)
+{
+    var x = ref.x - ref._rotation[8] * distance;
+    var y = ref.y - ref._rotation[9] * distance;
+    var z = ref.z - ref._rotation[10] * distance;
+    this.setTranslation(x, y, z);
+};
+
+enchant.gl.Sprite3D.prototype.setSidestep = function (distance, ref)
+{   
+    var x = ref.x - ref._rotation[0] * distance;
+    var y = ref.y - ref._rotation[1] * distance;
+    var z = ref.z - ref._rotation[2] * distance;
+    this.setTranslation(x, y, z);
+};
+
+enchant.gl.Sprite3D.prototype.setAltitude = function (distance, ref)
+{
+    var x = ref.x - ref._rotation[4] * distance;
+    var y = ref.y - ref._rotation[5] * distance;
+    var z = ref.z - ref._rotation[6] * distance;
+    this.setTranslation(x, y, z);
+};
+
+
+
 /**********
  MSprite3D
  **********/

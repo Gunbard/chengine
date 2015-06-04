@@ -24,6 +24,8 @@ var objCharacter = Class.create(PhyCapsule,
         
         // The model will have the same orientation and position as the collsion capsule
         this.model = game.assets[model].clone();
+        this.modelOffset = {x: 0, y: 10, z: 0};
+        this.modelRotationOffset = {x: 0, y: 0, z: 0};
         
         // Change the alpha to see the physics object
         this.mesh.setBaseColor('rgba(0, 255, 0, 0.0)');
@@ -63,7 +65,7 @@ var objCharacter = Class.create(PhyCapsule,
     
     onenterframe: function ()
     {
-        chengine.attach(this.model, this, {x: 0, y: -10, z: 0});
+        chengine.attach(this.model, this);
     },
     
     /**

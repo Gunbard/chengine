@@ -28,15 +28,7 @@ var testRoom = Class.create(objRoom,
         ball.z = 70;
         ball.y = 30;
         
-        var skybox = new Sphere(2000);
-        skybox.mesh.reverse();
-        skybox.mesh.texture = new Texture(game.assets[TEXTURE_SKYDOME]);
-        skybox.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
-        skybox.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
-        skybox.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
-        skybox.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
-        skybox.mesh.texture.shininess = 0;
-        skybox.rotatePitch(degToRad(180));
+        this.createSkybox(TEXTURE_SKYDOME, 1500);
                     
         var floor = new PhyBox(400, 1, 400, 0);
         floor.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
@@ -98,7 +90,6 @@ var testRoom = Class.create(objRoom,
         this.targetPost.mesh.setBaseColor('rgba(0, 255, 0, 0.2)');
         chengine.unsetLighting(this.targetPost.mesh);
         
-        this.scene.addChild(skybox);
         this.scene.addChild(thing);
         //this.scene.addChild(floor);
         this.scene.addChild(ball);

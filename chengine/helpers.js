@@ -230,6 +230,14 @@ chengine.getCameraLockedRotation = function ()
  */
 chengine.rotationTowards = function (objFrom, objTo, flip)
 {
+    objFrom.x = objFrom.x || 0;
+    objFrom.y = objFrom.y || 0;
+    objFrom.z = objFrom.z || 0;
+    
+    objTo.x = objTo.x || 0;
+    objTo.y = objTo.y || 0;
+    objTo.z = objTo.z || 0;
+    
     var copyMat = mat4.create();
     
     mat4.lookAt
@@ -419,14 +427,29 @@ chengine.flash = function (obj)
  */
 chengine.attach = function (objToAttach, objReceiver, offset)
 {
-    offset = offset || {x: 0, y: 0, z: 0};
-    offset.x = offset.x || 0;
-    offset.y = offset.y || 0;
-    offset.z = offset.z || 0;
+    objToAttach.x = objReceiver.x;
+    objToAttach.y = objReceiver.y;
+    objToAttach.z = objReceiver.z;
+
+    if (!offset)
+    {
+        return;
+    }
     
-    objToAttach.x = objReceiver.x + offset.x;
-    objToAttach.y = objReceiver.y + offset.y;
-    objToAttach.z = objReceiver.z + offset.z;
+    if (offset.x)
+    {
+        objToAttach.setSidestep(offset.x, objReceiver);
+    }
+    
+    if (offset.y)
+    {
+        objToAttach.setAltitude(offset.y, objReceiver);
+    }
+    
+    if (offset.z)
+    {
+        objToAttach.setForward(offset.z, objReceiver);
+    }
 }
 
 /**
