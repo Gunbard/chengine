@@ -72,20 +72,9 @@ var testShoot = Class.create(objRoom,
         objRoom.prototype.enterframe.call(this);
         
         chengine.debugCamera(this.scene, this.scene.getCamera());
-        
-        var cam = this.scene.getCamera();
-        var camFront = 
-        {
-            x: cam._x,
-            y: cam._y - 10,
-            z: cam._z + 500
-        }
 
         chengine.attach(this.target, this.chen.model, {y: -10, z: -200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);
-        
-        //this.chen.model.rotation = 
-            //chengine.rotationTowards(this.chen.model, camFront, true);
 
         this.chen.forward(this.railMovementSpeed);
         this.scene.getCamera().forward(this.railMovementSpeed);

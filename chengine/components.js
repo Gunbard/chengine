@@ -405,10 +405,10 @@ chengine.component.controlBehindMovable = Class.create
         
         // Pseudo-slerp model. Don't want to actually rotate the collision object, though.
         this.dummyOrienter.rotation = chengine.copyRotation(this.obj.model.rotation, false);
-        var speed = this.rotSpeed;
+        var rotationSpeed = this.rotSpeed;
         
         var directionX = DIRECTION_NORTH;
-        var directionY = DIRECTION_SOUTH;
+        var directionY = DIRECTION_SOUTH + 1;
         
         if (this.input.left)
         {
@@ -422,13 +422,15 @@ chengine.component.controlBehindMovable = Class.create
         
         if (this.input.up)
         {
-            directionY -= 10;
+            directionY -= 20;
         }
         
         if (this.input.down)
         {
-            directionY += 10;
+            directionY += 20;
         }
+        
+
         
         if (this.input.up || this.input.down || this.input.left || this.input.right)
         {
@@ -439,14 +441,12 @@ chengine.component.controlBehindMovable = Class.create
         else
         {
             directionX = DIRECTION_NORTH;
-            directionY = DIRECTION_SOUTH;
+            directionY = DIRECTION_SOUTH + 1;
             this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
             this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));
             this.heading = this.dummyOrienter.rotation;        
-            speed = this.rotSpeed / 2;
+            rotationSpeed = this.rotSpeed;
         }
-        
-        console.log(directionX);
         
         if (this.heading)
         {   
@@ -458,7 +458,9 @@ chengine.component.controlBehindMovable = Class.create
             var rot = getRot(this.obj.model.rotation);
             var yRotation = Math.round(rot.y);
             var xRotation = Math.round(rot.x);
-
+            
+            console.log(xRotation + ' / ' + targetRotX);
+            
             var dirY = -1;
             var dirX = -1;
 
@@ -506,10 +508,22 @@ chengine.component.controlBehindMovable = Class.create
             
             if (this.heading)
             {
-                var amtY = (Math.abs(targetRotY - yRotation) / speed);
-                var amtX = (Math.abs(targetRotX - xRotation) / speed);
-                this.obj.model.rotateYaw(degToRad(Math.min(amtY, speed) * dirY));
-                this.obj.model.rotatePitch(degToRad(Math.min(amtX, speed) * dirX));
+                if (yRotation == 0)
+                {
+                    yRotation = 0.001;
+                }
+                
+                if (xRotation == 0)
+                {
+                    xRotation = 0.001;
+                }
+                
+                //var vx = this.target.x + this.offset.x + (this.target.rotation[8] * this.distance);
+                //this._x += (vx - this._x) / this.speed;
+                var amtY = Math.abs(targetRotY - yRotation) / (yRotation * rotationSpeed);
+                var amtX = Math.abs(targetRotX - xRotation) / (xRotation * rotationSpeed);
+                this.obj.model.rotateYaw(degToRad(amtY * dirY));
+                this.obj.model.rotatePitch(degToRad(amtX * dirX));
             }
             else
             {
