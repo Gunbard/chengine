@@ -404,7 +404,7 @@ chengine.component.controlBehindMovable = Class.create
         }
         
         // Pseudo-slerp model. Don't want to actually rotate the collision object, though.
-        this.dummyOrienter.rotation = this.obj.model.rotation.slice(0);
+        this.dummyOrienter.rotation = chengine.copyRotation(this.obj.model.rotation, false);
         var speed = this.rotSpeed;
         
         var directionX = DIRECTION_NORTH;
