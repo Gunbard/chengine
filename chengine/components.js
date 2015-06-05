@@ -360,9 +360,8 @@ chengine.component.controlBehindMovable = Class.create
             this.upIsForward = options.upIsForward;
         }
         
-        this.turningScaleMax = 1.0;
-        this.turningScale = 0;
-        this.turningSpeed = 0.1;
+        this.dummyOrienter = new Sprite3D();
+        this.rotSpeed = 0.25;
     },
     
     enterframe: function ()
@@ -385,13 +384,6 @@ chengine.component.controlBehindMovable = Class.create
         if (this.input.right)
         {
             this.obj.sidestep(-this.speed);
-            
-            if (this.obj.model && this.turningScale < this.turningScaleMax)
-            {
-                this.turningScale += this.turningSpeed;
-                console.log("Turn: " + this.turningScale);
-                this.obj.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-this.turningScale*2)));
-            }
         }
         
         if (this.pad && this.pad.isTouched)
@@ -411,12 +403,117 @@ chengine.component.controlBehindMovable = Class.create
             this.obj.sidestep(hSpeed);
         }
         
-        if (!this.input.up && !this.input.down && !this.input.left && !this.input.right && 
-            (this.pad && !this.pad.isTouched))
+        // Pseudo-slerp model. Don't want to actually rotate the collision object, though.
+        this.dummyOrienter.rotation = this.obj.model.rotation.slice(0);
+        var speed = this.rotSpeed;
+        
+        var directionX = DIRECTION_NORTH;
+        var directionY = DIRECTION_SOUTH;
+        
+        if (this.input.left)
         {
-            if (this.turningScale > 0)
+            directionX += 20;
+        }
+        
+        if (this.input.right)
+        {
+            directionX -= 20;
+        }
+        
+        if (this.input.up)
+        {
+            directionY -= 10;
+        }
+        
+        if (this.input.down)
+        {
+            directionY += 10;
+        }
+        
+        if (this.input.up || this.input.down || this.input.left || this.input.right)
+        {
+            this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
+            this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));
+            this.heading = this.dummyOrienter.rotation;
+        }
+        else
+        {
+            directionX = DIRECTION_NORTH;
+            directionY = DIRECTION_SOUTH;
+            this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
+            this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));
+            this.heading = this.dummyOrienter.rotation;        
+            speed = this.rotSpeed / 2;
+        }
+        
+        console.log(directionX);
+        
+        if (this.heading)
+        {   
+            var finishedY = false;
+            var finishedX = false;
+            var targetRotation = getRot(this.heading);
+            var targetRotY = Math.round(targetRotation.y);
+            var targetRotX = Math.round(targetRotation.x);
+            var rot = getRot(this.obj.model.rotation);
+            var yRotation = Math.round(rot.y);
+            var xRotation = Math.round(rot.x);
+
+            var dirY = -1;
+            var dirX = -1;
+
+            if (yRotation > targetRotY)
             {
-                this.turningScale -= this.turningSpeed;
+                dirY = 1;
+            }
+            else if (yRotation < targetRotY)
+            {
+                dirY = -1;
+            } 
+            else
+            {
+                finishedY = true;
+            }
+            
+            if (xRotation > targetRotX)
+            {
+                dirX = 1;
+            }
+            else if (xRotation < targetRotX)
+            {
+                dirX = -1;
+            }
+            else
+            {
+                finishedX = true;
+            }
+            
+            if (finishedX && finishedY)
+            {
+                this.heading = null;
+            }
+            
+            // Flip if other direction is actually shorter
+            if (Math.abs(yRotation - targetRotY) > 180)
+            {
+                dirY *= -1;
+            }
+            
+            if (Math.abs(xRotation - targetRotX) > 180)
+            {
+                dirX *= -1;
+            }
+            
+            if (this.heading)
+            {
+                var amtY = (Math.abs(targetRotY - yRotation) / speed);
+                var amtX = (Math.abs(targetRotX - xRotation) / speed);
+                this.obj.model.rotateYaw(degToRad(Math.min(amtY, speed) * dirY));
+                this.obj.model.rotatePitch(degToRad(Math.min(amtX, speed) * dirX));
+            }
+            else
+            {
+                this.obj.model.rotation = this.dummyOrienter.rotation;
             }
         }
     }

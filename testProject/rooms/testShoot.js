@@ -33,7 +33,7 @@ var testShoot = Class.create(objRoom,
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.addToScene(this.scene);
 
-        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.5, game.input, this.pad, {upIsForward: false}));
+        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.3, game.input, this.pad, {upIsForward: false}));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
         
         // Make some crosshairs
