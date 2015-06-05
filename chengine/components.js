@@ -430,8 +430,6 @@ chengine.component.controlBehindMovable = Class.create
             directionY += 20;
         }
         
-
-        
         if (this.input.up || this.input.down || this.input.left || this.input.right)
         {
             this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
@@ -459,7 +457,18 @@ chengine.component.controlBehindMovable = Class.create
             var yRotation = Math.round(rot.y);
             var xRotation = Math.round(rot.x);
             
-            console.log(xRotation + ' / ' + targetRotX);
+            if (game.input.down)
+            {
+            debugger;
+            }
+            if (xRotation >= 360)
+            {
+                xRotation -= 360;
+            }
+            else if (xRotation < 0)
+            {
+                xRotation += 360;
+            }
             
             var dirY = -1;
             var dirX = -1;
@@ -518,10 +527,15 @@ chengine.component.controlBehindMovable = Class.create
                     xRotation = 0.001;
                 }
                 
-                //var vx = this.target.x + this.offset.x + (this.target.rotation[8] * this.distance);
-                //this._x += (vx - this._x) / this.speed;
+                // Temp. compensate for flip
+                var rotAmtX = Math.abs(targetRotX - xRotation);
+                if (rotAmtX >= 180)
+                {
+                    rotAmtX = Math.abs(360 - targetRotX - xRotation);
+                }
+                
                 var amtY = Math.abs(targetRotY - yRotation) / (yRotation * rotationSpeed);
-                var amtX = Math.abs(targetRotX - xRotation) / (xRotation * rotationSpeed);
+                var amtX = rotAmtX / (1 / (rotationSpeed / 8));
                 this.obj.model.rotateYaw(degToRad(amtY * dirY));
                 this.obj.model.rotatePitch(degToRad(amtX * dirX));
             }
