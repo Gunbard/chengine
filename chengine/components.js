@@ -430,7 +430,16 @@ chengine.component.controlBehindMovable = Class.create
             directionY += 20;
         }
         
-        if (this.input.up || this.input.down || this.input.left || this.input.right)
+        if (this.pad && this.pad.isTouched)
+        {
+            var vSpeed = 20 * -this.pad.vy;
+            var hSpeed = 20 * -this.pad.vx;
+            directionX += hSpeed;
+            directionY -= vSpeed;
+        }
+        
+        if (this.input.up || this.input.down || this.input.left || this.input.right ||
+            (this.pad && this.pad.isTouched))
         {
             this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
             this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));

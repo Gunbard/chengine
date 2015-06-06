@@ -28,12 +28,12 @@ var testShoot = Class.create(objRoom,
         // Make CHEN! HONK HONK
         this.chen = new objCharacter(MODEL_CHEN);
         chengine.attach(this.chen, this.scene.getCamera());
-        this.chen.forward(-120);
+        this.chen.forward(-100);
         this.chen.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.addToScene(this.scene);
 
-        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.3, game.input, this.pad, {upIsForward: false}));
+        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.25, game.input, this.pad, {upIsForward: false}));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
         
         // Make some crosshairs
@@ -41,6 +41,11 @@ var testShoot = Class.create(objRoom,
         this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
         chengine.unsetLighting(this.target.mesh);
         this.scene.addChild(this.target);
+        
+        this.targetFar = new Plane(10);
+        this.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
+        chengine.unsetLighting(this.targetFar.mesh);
+        this.scene.addChild(this.targetFar);
         
         // Get some scrolling ground going
         var floor = new objScrollingFloor();
@@ -74,7 +79,10 @@ var testShoot = Class.create(objRoom,
         chengine.debugCamera(this.scene, this.scene.getCamera());
 
         chengine.attach(this.target, this.chen.model, {y: -10, z: -200});
-        this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);
+        this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);        
+        
+        chengine.attach(this.targetFar, this.chen.model, {y: -10, z: -500});
+        this.targetFar.rotation = chengine.rotationTowards(this.targetFar, this.chen.model);
 
         this.chen.forward(this.railMovementSpeed);
         this.scene.getCamera().forward(this.railMovementSpeed);
@@ -82,8 +90,8 @@ var testShoot = Class.create(objRoom,
         if (this.step % 100 == 0)
         {
             var newBox = new objTestEnemy();
-            newBox.x = this.chen.x + Math.floor(Math.random() * 400) - 200;
-            newBox.y = this.chen.y + Math.floor(Math.random() * 400) - 200;
+            newBox.x = this.chen.x + Math.floor(Math.random() * 200) - 100;
+            newBox.y = this.chen.y + Math.floor(Math.random() * 200) - 100;
             newBox.z = this.chen.z - 1500;
             scene.addChild(newBox);
         }

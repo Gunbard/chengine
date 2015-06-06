@@ -11,7 +11,7 @@ var objShot = Class.create(Cylinder,
 	initialize: function () 
     {
         //Sphere.call(this);
-        Cylinder.call(this, 0.25, 12, 10);
+        Cylinder.call(this, 2, 30, 8);
         mat4.rotateX(this.matrix, degToRad(90));
         //this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.mesh.setBaseColor('rgba(255, 200, 15, 0.6)');
