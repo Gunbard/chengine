@@ -10,7 +10,8 @@ var testShoot = Class.create(objRoom,
     prepare: function ()
     {
         objRoom.prototype.prepare.call(this);
-        
+        chengine.input.enableGamepads();
+
         var that = this;
         
         this.scene.getCamera().altitude(50);

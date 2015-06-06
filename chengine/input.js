@@ -112,8 +112,18 @@ chengine.input.enableGamepads = function ()
 
 /**
  */
+chengine.input.disableGamepads = function ()
+{
+    window.removeEventListener("gamepadconnected");
+    window.reniveEventListener("gamepaddisconnected");    
+};
+
+/**
+ */
 chengine.input.gamepadAdd = function (e) 
 {
+    console.log(e);
+    console.log('[Chengine] Gamepad added: ' + e.gamepad.id);
     chengine.input.gamepads.push(e.gamepad);
 };
 
@@ -121,7 +131,8 @@ chengine.input.gamepadAdd = function (e)
  */
 chengine.input.gamepadRemove = function (e) 
 {
-    gamepads.splice(chengine.input.gamepads.indexOf(e.gamepad), 1);
+    console.log('[Chengine] Gamepad removed: ' + e.gamepad.id);
+    chengine.input.gamepads.splice(chengine.input.gamepads.indexOf(e.gamepad), 1);
 };
 
 /**
@@ -160,7 +171,7 @@ chengine.input.getGamepadPolar = function (gamepadIndex)
     var inputRad = polar.rad;
     var inputDist = polar.dist * 2; // Normalize me
     
-    if (Math.floor((inputDist.toFixed(2) * 100)) > 0)
+    if (Math.floor((inputDist.toFixed(2) * 100)) !== 0)
     {
         gamepad.inUse = true;
     }
@@ -170,6 +181,30 @@ chengine.input.getGamepadPolar = function (gamepadIndex)
     }    
     
     return {rad: inputRad, dist: inputDist};
+};
+
+/**
+ */
+chengine.input.getGamepadAxesState = function (gamepadIndex)
+{
+    if (chengine.input.getGamepadsConnected() == 0)
+    {
+        return;
+    }
+    
+    var gamepad = chengine.input.gamepads[gamepadIndex];
+    
+    if (Math.abs((gamepad.axes[0].toFixed(2)) * 100) > 0 ||
+        Math.abs((gamepad.axes[1].toFixed(2)) * 100) > 0)
+    {
+        gamepad.inUse = true;
+    }
+    else
+    {
+        gamepad.inUse = false;
+    }
+    
+    return {vx: gamepad.axes[0].toFixed(2), vy: gamepad.axes[1].toFixed(2)};
 };
 
 /**
@@ -190,6 +225,12 @@ chengine.input.gamepadIsUsed = function (gamepadIndex)
  */
 chengine.input.buttonPressed = function (gamepadIndex, buttonIndex)
 {   
+    if (chengine.input.gamepads.length == 0 || 
+        gamepadIndex > chengine.input.gamepads.length || gamepadIndex < 0)
+    {
+        return false;
+    }
+
     var gamepad = chengine.input.gamepads[gamepadIndex];
     
     if (gamepad)
@@ -200,7 +241,7 @@ chengine.input.buttonPressed = function (gamepadIndex, buttonIndex)
         }
         
         var buttonState = gamepad.buttons[buttonIndex].pressed;
-        var buttonIsPressed = (gamepad.input.buttonsPressed.indexOf(buttonIndex) > -1);
+        var buttonIsPressed = (gamepad.buttonsPressed.indexOf(buttonIndex) > -1);
         
         if (buttonState && !buttonIsPressed)
         {
@@ -209,8 +250,29 @@ chengine.input.buttonPressed = function (gamepadIndex, buttonIndex)
         }
         else if (!buttonState && buttonIsPressed)
         {
-            gamepad.buttonsPressed.splice(gamepad.buttonPressed.indexOf(buttonIndex), 1);
+            gamepad.buttonsPressed.splice(gamepad.buttonsPressed.indexOf(buttonIndex), 1);
             return false;
         }
     }
 };
+
+chengine.input.buttonHeld = function (gamepadIndex, buttonIndex)
+{
+    if (chengine.input.gamepads.length == 0 || 
+        gamepadIndex > chengine.input.gamepads.length || gamepadIndex < 0)
+    {
+        return false;
+    }
+
+    var gamepad = chengine.input.gamepads[gamepadIndex];
+    
+    if (gamepad)
+    {
+        return gamepad.buttons[buttonIndex].pressed;
+    }
+    else
+    {
+        return false;
+    }
+};
+

@@ -403,6 +403,28 @@ chengine.component.controlBehindMovable = Class.create
             this.obj.sidestep(hSpeed);
         }
         
+        if (chengine.input.getGamepadsConnected() > 0)
+        {
+            var inputData = chengine.input.getGamepadAxesState(0);
+            if (chengine.input.gamepadIsUsed(0))
+            {    
+                var vSpeed = this.speed * -inputData.vy;
+                var hSpeed = this.speed * -inputData.vx;
+                
+                if (this.upIsForward)
+                {
+                    this.obj.forward(vSpeed);
+                }
+                else
+                {
+                    this.obj.altitude(-vSpeed);
+                }
+                
+                this.obj.sidestep(hSpeed);
+            }
+        }
+        
+        
         // Pseudo-slerp model. Don't want to actually rotate the collision object, though.
         this.dummyOrienter.rotation = chengine.copyRotation(this.obj.model.rotation, false);
         var rotationSpeed = this.rotSpeed;
@@ -438,8 +460,21 @@ chengine.component.controlBehindMovable = Class.create
             directionY -= vSpeed;
         }
         
+        if (chengine.input.getGamepadsConnected() > 0)
+        {
+            var inputData = chengine.input.getGamepadAxesState(0);
+            if (chengine.input.gamepadIsUsed(0))
+            {
+                var vSpeed = 40 * -inputData.vy;
+                var hSpeed = 40 * -inputData.vx;
+                directionX += hSpeed;
+                directionY += vSpeed;
+            }
+        }
+        
         if (this.input.up || this.input.down || this.input.left || this.input.right ||
-            (this.pad && this.pad.isTouched))
+            (this.pad && this.pad.isTouched) || 
+            chengine.input.gamepadIsUsed(0))
         {
             this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
             this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));
@@ -600,7 +635,8 @@ chengine.component.shoot = Class.create
 
         if (this.cooldownMax)
         {
-            if (game.input[this.options.inputKey])
+            if (game.input[this.options.inputKey] || 
+               (chengine.input.getGamepadsConnected() > 0 && chengine.input.buttonHeld(0, 1)))
             {
                 if (this.cooldown > 0)
                 {
@@ -615,7 +651,8 @@ chengine.component.shoot = Class.create
         }
         else
         {
-            if (chengine.input.keyPressed(this.options.inputKey))
+            if (chengine.input.keyPressed(this.options.inputKey) ||
+               (chengine.input.getGamepadsConnected() > 0 && chengine.input.buttonPressed(0, 1)))
             {
                 fireAction();
             }
