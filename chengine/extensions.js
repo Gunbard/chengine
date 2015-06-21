@@ -217,6 +217,7 @@ enchant.gl.mmd.MSprite3D.prototype.initialize = function (path, callback, onerro
     this.currentFrame = 0;
     this.animationSpeed = 1;
     this.loop = true;
+    this.ticks = 0;
     
     /**
      Event when animation finishes
@@ -228,6 +229,7 @@ enchant.gl.mmd.MSprite3D.prototype.initialize = function (path, callback, onerro
     
     this.addEventListener('enterframe', function () 
     {
+        this.ticks++;
         var first;
         var skeleton = this.skeleton;
         var morph = this.morph;
@@ -237,8 +239,15 @@ enchant.gl.mmd.MSprite3D.prototype.initialize = function (path, callback, onerro
             first = this.animation[0];
             var data = first.animation._tick(first.frame);
             first.frame += this.animationSpeed;
-            this._skinning(data.poses);
-            this._morphing(data.morphs);
+            
+            // Improve performance by only applying new skeletion every nth frame.
+            // It'll appear choppier, but the framerate won't drop as low.
+            if (this.ticks % 4 == 0)
+            {
+                this._skinning(data.poses);
+                this._morphing(data.morphs);
+            }
+            
             if (first.frame > first.animation.length) 
             {
                 first = this.animation.shift();
