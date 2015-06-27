@@ -240,9 +240,9 @@ enchant.gl.mmd.MSprite3D.prototype.initialize = function (path, callback, onerro
             var data = first.animation._tick(first.frame);
             first.frame += this.animationSpeed;
             
-            // Improve performance by only applying new skeletion every nth frame.
+            // Improve performance by only applying new skeletion every other frame.
             // It'll appear choppier, but the framerate won't drop as low.
-            if (this.ticks % 4 == 0)
+            if (this.ticks % 2 == 0)
             {
                 this._skinning(data.poses);
                 this._morphing(data.morphs);
