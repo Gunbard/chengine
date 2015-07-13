@@ -360,12 +360,23 @@ chengine.component.controlBehindMovable = Class.create
             this.upIsForward = options.upIsForward;
         }
         
+        this.boundMaxX = 30;
+        this.boundMaxY = 50 + 15;
+        this.boundMinX = -30;
+        this.boundMinY = 50 - 10;
+        
+        this.prevX = null;
+        this.prevY = null; 
+        
         this.dummyOrienter = new Sprite3D();
         this.rotSpeed = 0.25;
     },
     
     enterframe: function ()
-    {      
+    {    
+        this.prevX = this.obj.x;
+        this.prevY = this.obj.y;
+    
         if (this.input.up)
         {
             this.obj.altitude(this.speed);
@@ -475,7 +486,17 @@ chengine.component.controlBehindMovable = Class.create
         if (this.input.up || this.input.down || this.input.left || this.input.right ||
             (this.pad && this.pad.isTouched) || 
             chengine.input.gamepadIsUsed(0))
-        {
+        {            
+            if (this.prevX && this.obj.x <= this.boundMinX || this.obj.x >= this.boundMaxX)
+            {
+                this.obj.x = this.prevX;
+            }
+            
+            if (this.prevY && this.obj.y <= this.boundMinY || this.obj.y >= this.boundMaxY)
+            {
+                this.obj.y = this.prevY;
+            }
+            
             this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
             this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));
             this.heading = this.dummyOrienter.rotation;
@@ -484,6 +505,7 @@ chengine.component.controlBehindMovable = Class.create
         {
             directionX = DIRECTION_NORTH;
             directionY = DIRECTION_SOUTH + 1;
+            
             this.dummyOrienter.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(directionX)));
             this.dummyOrienter.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(directionY)));
             this.heading = this.dummyOrienter.rotation;        
@@ -503,8 +525,9 @@ chengine.component.controlBehindMovable = Class.create
             
             if (game.input.down)
             {
-            debugger;
+                debugger;
             }
+            
             if (xRotation >= 360)
             {
                 xRotation -= 360;
@@ -580,8 +603,15 @@ chengine.component.controlBehindMovable = Class.create
                 
                 var amtY = Math.abs(targetRotY - yRotation) / (yRotation * rotationSpeed);
                 var amtX = rotAmtX / (1 / (rotationSpeed / 8));
-                this.obj.model.rotateYaw(degToRad(amtY * dirY));
-                this.obj.model.rotatePitch(degToRad(amtX * dirX));
+                amtY *= dirY;
+                amtX *= dirX;
+                
+                this.obj.model.rotateYaw(degToRad(amtY));
+                this.obj.model.rotatePitch(degToRad(amtX));
+                
+                // Correct for roll drift
+                var drift = getRot(this.obj.model.rotation);
+                this.obj.model.rotateRoll(degToRad(180-drift.z));
             }
             else
             {

@@ -16,7 +16,7 @@ var objShot = Class.create(Cylinder,
         //this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.mesh.setBaseColor('rgba(255, 200, 15, 0.6)');
         this.speed = 25;
-        this.timer = 100;
+        this.timer = 50;
         this.bounding.threshold = 100;
         this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
         this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
