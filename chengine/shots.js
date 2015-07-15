@@ -6,12 +6,12 @@
 /**
  A basic bullet
  */
-var objShot = Class.create(Cylinder, 
+var objShot = Class.create(PhyCylinder, 
 {
 	initialize: function () 
     {
         //Sphere.call(this);
-        Cylinder.call(this, 2, 30, 8);
+        PhyCylinder.call(this, 2, 30, 8);
         mat4.rotateX(this.matrix, degToRad(90));
         //this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.mesh.setBaseColor('rgba(255, 200, 15, 0.6)');
@@ -67,12 +67,6 @@ var objShot = Class.create(Cylinder,
 
         if (rayCallback.hasHit())
         {
-            /*var exp = new objExp(5);
-            exp.x = this.x;
-            exp.y = this.y;
-            exp.z = this.z;
-            scene.addChild(exp);*/
-            
             var hitpoint = rayCallback.get_m_hitPointWorld();
             var collisionObj = rayCallback.get_m_collisionObject();
             var body = Ammo.btRigidBody.prototype.upcast(collisionObj);

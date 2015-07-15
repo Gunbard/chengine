@@ -337,16 +337,36 @@ enchant.gl.mmd.MSprite3D.prototype.stopAnimating = function (endFrame)
 
 /**
  Override to fix deprecated customizeVTable method
- TODO: Make this actually work again
  */
 enchant.gl.physics.World.prototype.contactPairTest = function (rigid1, rigid2)
 {
-    /*var callback = new Ammo.ConcreteContactResultCallback();
-    this._dynamicsWorld.contactPairTest(rigid1.rigidBody, rigid2.rigidBody, callback);
-    var hit = callback.hasHit;
+    var callback = new Ammo.ConcreteContactResultCallback();
+    var result = false;
+    
+    callback.addSingleResult = function(cp, colObj0, partid0, index0, colObj1, partid1, index1) 
+    {
+        result = true;
+    };
+    
+    this._dynamicsWorld.contactTest(rigid1.rigidBody, rigid2.rigidBody, callback);
     Ammo.destroy(callback);
-    return hit;*/
-    return false;
+    return result;
+};
+
+
+enchant.gl.physics.World.prototype.contactTest = function (rigid) 
+{
+    var callback = new Ammo.ConcreteContactResultCallback();
+    var result = false;
+    
+    callback.addSingleResult = function(cp, colObj0, partid0, index0, colObj1, partid1, index1) 
+    {
+        result = true;
+    };
+    
+    this._dynamicsWorld.contactTest(rigid.rigidBody, callback);
+    Ammo.destroy(callback);
+    return result;
 };
 
 /**
