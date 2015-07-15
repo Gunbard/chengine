@@ -55,7 +55,9 @@ var objShot = Class.create(PhyCylinder,
             scene.removeChild(this);
         }
         
-        var rx = this.rotation[8] * 30;
+        scene.world.contactTest(this.rigid);
+        
+        /*var rx = this.rotation[8] * 30;
         var ry = this.rotation[9] * 30;
         var rz = this.rotation[10] * 30;
         
@@ -95,7 +97,7 @@ var objShot = Class.create(PhyCylinder,
         
         Ammo.destroy(ray1);
         Ammo.destroy(ray2);
-        Ammo.destroy(rayCallback);
+        Ammo.destroy(rayCallback);*/
 	}
 });
 
