@@ -365,7 +365,6 @@ enchant.gl.physics.World.prototype.contactTest = function (rigid)
         var body = Ammo.btRigidBody.prototype.upcast(collisionObj.getCollisionObject());
         var owner = scene.rigidOwner(body);
         console.log(owner);
-        alert('asdf');
         result = true;
     };
     

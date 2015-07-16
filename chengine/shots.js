@@ -24,6 +24,7 @@ var objShot = Class.create(PhyCylinder,
         this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.shininess = 0;
      
+        this.rigid.rotationSet(new enchant.gl.Quat(1, 0, 0, degToRad(90)));
         //var snd = game.assets['sounds/tielaser.wav'].clone();
         //snd.play();
 	},
@@ -55,7 +56,15 @@ var objShot = Class.create(PhyCylinder,
             scene.removeChild(this);
         }
         
-        scene.world.contactTest(this.rigid);
+        if (scene.world.contactTest(this.rigid))
+        {
+            var exp = new objExp(10);
+            exp.x = this.x;
+            exp.y = this.y;
+            exp.z = this.z;
+            scene.addChild(exp);
+            scene.removeChild(this);
+        }
         
         /*var rx = this.rotation[8] * 30;
         var ry = this.rotation[9] * 30;
