@@ -29,6 +29,10 @@ var testRoom = Class.create(objRoom,
         ball.y = 30;
         
         this.createSkybox(TEXTURE_SKYDOME, 1500);
+        
+        this.area = game.assets[WORLD_BATTLEFIELD].colladaClone();
+        this.area.updateRigid(0, 1, this.area.getVertices());
+        scene.addChild(this.area);
                     
         var floor = new PhyBox(400, 1, 400, 0);
         floor.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
@@ -90,7 +94,7 @@ var testRoom = Class.create(objRoom,
         this.targetPost.mesh.setBaseColor('rgba(0, 255, 0, 0.2)');
         chengine.unsetLighting(this.targetPost.mesh);
         
-        this.scene.addChild(thing);
+        //this.scene.addChild(thing);
         //this.scene.addChild(floor);
         this.scene.addChild(ball);
         //this.scene.addChild(colladatest);

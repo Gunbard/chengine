@@ -114,8 +114,7 @@ enchant.gl.Sprite3D.prototype.updateRigid = function (mass, scale, vertices)
             var v2 = new Ammo.btVector3(vertices[i + 3] * scale, vertices[i + 4] * scale, vertices[i + 5] * scale);
             var v3 = new Ammo.btVector3(vertices[i + 6] * scale, vertices[i + 7] * scale, vertices[i + 8] * scale);
             
-            // Negate Z and flip YZ for Blender's coordinate system
-            triMesh.addTriangle(v1, -v3, v2, true);
+            triMesh.addTriangle(v1, v2, v3, true);
             
             // var ball1 = new Sphere(1);
             // ball1.x = v1.x();

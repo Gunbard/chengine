@@ -8,6 +8,7 @@ enchant();
 
 // CONSTANTS
 // Assets
+WORLD_BATTLEFIELD = 'model/battlefield/battlefield.dae'
 MODEL_PATH = 'model/asuka/Asuka.pmd';
 MODEL_REI_PATH = 'model/rei/Rei.pmd';
 MOTION_PATH = 'motion/walk.vmd';
@@ -49,7 +50,8 @@ window.onload = function ()
         'sounds/explode.wav', 
         'images/cockpit.png',
         TEX_CROSSHAIRS,
-        TEXTURE_SKYDOME
+        TEXTURE_SKYDOME,
+        WORLD_BATTLEFIELD
     );
     
     game.onload = function ()
