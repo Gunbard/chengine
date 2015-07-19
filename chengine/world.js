@@ -464,7 +464,6 @@ var objTestEnemy = Class.create(PhyBox,
     onenterframe: function ()
     {
         this.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
-        this.rigid.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(5)));
         
         this.deathTimer--;
         

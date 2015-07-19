@@ -665,7 +665,7 @@ chengine.component.shoot = Class.create
 
         if (this.cooldownMax)
         {
-            if (game.input[this.options.inputKey] || 
+            if (game.input[this.options.inputKey] || this.options.inputButton.pressed ||
                (chengine.input.getGamepadsConnected() > 0 && chengine.input.buttonHeld(0, 1)))
             {
                 if (this.cooldown > 0)

@@ -11,8 +11,6 @@ var testShoot = Class.create(objRoom,
     {
         objRoom.prototype.prepare.call(this);
         chengine.input.enableGamepads();
-
-        var that = this;
         
         this.scene.getCamera().altitude(50);
         
@@ -60,11 +58,18 @@ var testShoot = Class.create(objRoom,
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
         
+        this.button = new Button("", "light");
+        this.button.moveTo(560, 280);
+        this.button.opacity = 0.6;
+        scene.scene2D.addChild(this.button);
+        
+        var that = this;
         var shootOpts = 
         {
             inputKey: 'g',
+            inputButton: that.button, 
             bullet: objShot,
-            scene: this.scene,
+            scene: that.scene,
             cooldown: 5,
             forwardOffset: -30,
             bulletSpeed: 50
@@ -76,7 +81,6 @@ var testShoot = Class.create(objRoom,
     {
         var that = this;
         objRoom.prototype.enterframe.call(this);
-        
         chengine.debugCamera(this.scene, this.scene.getCamera());
 
         chengine.attach(this.target, this.chen.model, {y: -10, z: -200});

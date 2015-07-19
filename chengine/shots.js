@@ -56,57 +56,25 @@ var objShot = Class.create(PhyCylinder,
             scene.removeChild(this);
         }
         
-        if (scene.world.contactTest(this.rigid))
+        var hitObj = scene.world.contactTest(this.rigid);
+        if (hitObj)
         {
-            var exp = new objExp(10);
-            exp.x = this.x;
-            exp.y = this.y;
-            exp.z = this.z;
-            scene.addChild(exp);
-            scene.removeChild(this);
-        }
-        
-        /*var rx = this.rotation[8] * 30;
-        var ry = this.rotation[9] * 30;
-        var rz = this.rotation[10] * 30;
-        
-        var ray1 = new Ammo.btVector3(this.x, this.y, this.z);
-        var ray2 = new Ammo.btVector3(this.x - rx, this.y - ry, this.z - rz);
-        
-        var rayCallback = new Ammo.ClosestRayResultCallback(ray1, ray2);
-        scene.world._dynamicsWorld.rayTest(ray1, ray2, rayCallback); 
-
-        if (rayCallback.hasHit())
-        {
-            var hitpoint = rayCallback.get_m_hitPointWorld();
-            var collisionObj = rayCallback.get_m_collisionObject();
-            var body = Ammo.btRigidBody.prototype.upcast(collisionObj);
-            var owner = scene.rigidOwner(body);
-            
-            if (owner instanceof objTestBall || owner instanceof PhyBox)
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox)
             {                                
                 var exp = new objExp(10);
-                exp.x = hitpoint.x();
-                exp.y = hitpoint.y();
-                exp.z = hitpoint.z();
+                exp.x = this.x;
+                exp.y = this.y;
+                exp.z = this.z;
                 scene.addChild(exp);
+                scene.removeChild(this);
                 
-                chengine.pushForward(this, body, 20);
-                
-                var lifeComp = chengine.component.get(owner, chengine.component.life);
+                var lifeComp = chengine.component.get(hitObj, chengine.component.life);
                 if (lifeComp)
                 {
                     lifeComp.damage(1);
                 }
             }
-            
-            //scene.removeChild(this.glow);
-            scene.removeChild(this);
         }
-        
-        Ammo.destroy(ray1);
-        Ammo.destroy(ray2);
-        Ammo.destroy(rayCallback);*/
 	}
 });
 

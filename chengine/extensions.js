@@ -356,20 +356,19 @@ enchant.gl.physics.World.prototype.contactPairTest = function (rigid1, rigid2)
 enchant.gl.physics.World.prototype.contactTest = function (rigid) 
 {
     var callback = new Ammo.ConcreteContactResultCallback();
-    var result = false;
+    var hitObject;
     
     callback.addSingleResult = function(cp, colObj0, partid0, index0, colObj1, partid1, index1) 
     {
         var collisionObj = Ammo.wrapPointer(colObj1, Ammo.btCollisionObjectWrapper);
         var body = Ammo.btRigidBody.prototype.upcast(collisionObj.getCollisionObject());
         var owner = scene.rigidOwner(body);
-        console.log(owner);
-        result = true;
+        hitObject = owner;
     };
     
     this._dynamicsWorld.contactTest(rigid.rigidBody, callback);
     Ammo.destroy(callback);
-    return result;
+    return hitObject;
 };
 
 /**
