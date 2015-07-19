@@ -39,6 +39,26 @@ mouseY = 0;
 chengine.draw_distance = DEFAULT_DRAW_DISTANCE;
 
 /**
+ Enters fullscreen mode
+ */
+function goFullscreen()
+{
+    var element = game._element;
+    if (element.requestFullscreen) 
+    {
+      element.requestFullscreen();
+    } 
+    else if (element.mozRequestFullScreen) 
+    {
+      element.mozRequestFullScreen();
+    } 
+    else if (element.webkitRequestFullscreen) 
+    {
+      element.webkitRequestFullscreen();
+    }
+}
+
+/**
  Resizes the game to fit the window while keeping the correct aspect ratio
  */
 function resizeGame() 
