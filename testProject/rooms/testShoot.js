@@ -59,7 +59,9 @@ var testShoot = Class.create(objRoom,
         this.scene.scene2D.addChild(this.pad);
         
         this.button = new Button("", "light");
-        this.button.moveTo(560, 280);
+        this.button.width = 50;
+        this.button.height = 50;
+        this.button.moveTo(560, 260);
         this.button.opacity = 0.6;
         scene.scene2D.addChild(this.button);
         

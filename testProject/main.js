@@ -10,6 +10,7 @@ enchant();
 // Assets
 WORLD_BATTLEFIELD = 'model/battlefield/battlefield.dae';
 WORLD_CASTLE = 'model/castle/castle.dae';
+WORLD_HFIELD = 'model/hfield/hfield.dae';
 MODEL_PATH = 'model/asuka/Asuka.pmd';
 MODEL_REI_PATH = 'model/rei/Rei.pmd';
 MOTION_PATH = 'motion/walk.vmd';
@@ -53,7 +54,7 @@ window.onload = function ()
         TEX_CROSSHAIRS,
         TEXTURE_SKYDOME,
         WORLD_BATTLEFIELD,
-        WORLD_CASTLE
+        WORLD_HFIELD
     );
     
     game.onload = function ()

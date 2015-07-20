@@ -18,22 +18,11 @@ var testRoom2 = Class.create(objRoom,
         this.pad.y = 220;
         
         this.createSkybox(TEXTURE_SKYDOME);
-        this.scene.setFogDistance(200.0, 5000.0);
+        this.scene.setFogDistance(200.0, 1550.0);
         
-        this.area = game.assets[WORLD_CASTLE].colladaClone();
+        this.area = game.assets[WORLD_HFIELD].colladaClone();
         this.area.updateRigid(0, 1, this.area.getVertices());
         scene.addChild(this.area);
-        
-        var floor = new PhyBox(400, 1, 400, 0);
-        floor.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
-        floor.mesh.texture = new Texture(game.assets['images/tex.jpg']);
-        floor.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
-        floor.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
-        floor.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
-        floor.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
-        floor.mesh.texture.shininess = 0;
-        
-        //this.scene.addChild(floor);
         
         this.ball = new objTestBall(5);
         this.ball.z = 70;
