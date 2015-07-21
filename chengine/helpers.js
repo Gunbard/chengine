@@ -601,3 +601,20 @@ chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, c
         }
     }  
 };
+
+/**
+ Smoothly interpolates a value
+ @param currentValue The value to smooth out
+ @param finalValue Target value
+ @param speed Smoothing speed. Larger values increase smoothing.
+ @returns An interpolated value
+ */
+chengine.smoothValue = function (currentValue, finalValue, speed)
+{
+    if (!speed || speed == 0)
+    {
+        speed = 8;
+    }
+    
+    return ((finalValue - currentValue) / speed);
+};

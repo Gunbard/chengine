@@ -338,9 +338,11 @@ var objCamera = Class.create(Camera3D,
             return;
         }
         
-        this._centerX = this.target.x + this.targetOffset.x;
-        this._centerY = this.target.y + this.targetOffset.y;
-        this._centerZ = this.target.z + this.targetOffset.z;
+        this.speed = this.speed || 8;
+        
+        this._centerX += chengine.smoothValue(this._centerX, this.target.x + this.targetOffset.x, this.speed);
+        this._centerY += chengine.smoothValue(this._centerY, this.target.y + this.targetOffset.y, this.speed);
+        this._centerZ += chengine.smoothValue(this._centerZ, this.target.z + this.targetOffset.z, this.speed);
         this._changedCenter = true;    
     },
     
