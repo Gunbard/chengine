@@ -81,6 +81,22 @@ var testShoot = Class.create(objRoom,
     
     enterframe: function (e) 
     {
+        // Fake "elastic" character tracking
+        var camX = this.scene.getCamera().x;
+        var camY = this.scene.getCamera().y;
+        var camCenterX = this.scene.getCamera()._centerX;
+        var camCenterY = this.scene.getCamera()._centerY;
+        
+        this.scene.getCamera().x += chengine.smoothValue(camX, this.chen.x, 50);
+        this.scene.getCamera().y += chengine.smoothValue(camY, this.chen.y, 50);
+        this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, this.chen.x, 50);
+        this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, this.chen.y, 50);
+
+        this.scene.getCamera().x += chengine.smoothValue(camX, 0, 50);
+        this.scene.getCamera().y += chengine.smoothValue(camY, 50, 50);
+        this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, 0, 50);
+        this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, 50, 50);
+       
         var that = this;
         objRoom.prototype.enterframe.call(this);
         chengine.debugCamera(this.scene, this.scene.getCamera());
