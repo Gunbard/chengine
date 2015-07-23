@@ -74,29 +74,22 @@ var testShoot = Class.create(objRoom,
             scene: that.scene,
             cooldown: 5,
             forwardOffset: -30,
-            bulletSpeed: 50
+            bulletSpeed: 50,
+            sound: SOUND_LASER
         }
         chengine.component.add(this.chen, new chengine.component.shoot(shootOpts));
+        //this.scene.getCamera().rotateYaw(degToRad(10));
+        this.scene.getCamera().forward(500);
+        this.scene.getCamera().sidestep(100);
+        this.scene.getCamera().altitude(100);
+
+        this.scene.getCamera().setFixed(this.chen.model, {x: 0, y: 20, z: 0});
+        
+        game.assets[MUSIC_CORNERIA].clone().play();
     },
     
     enterframe: function (e) 
-    {
-        // Fake "elastic" character tracking
-        var camX = this.scene.getCamera().x;
-        var camY = this.scene.getCamera().y;
-        var camCenterX = this.scene.getCamera()._centerX;
-        var camCenterY = this.scene.getCamera()._centerY;
-        
-        this.scene.getCamera().x += chengine.smoothValue(camX, this.chen.x, 50);
-        this.scene.getCamera().y += chengine.smoothValue(camY, this.chen.y, 50);
-        this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, this.chen.x, 50);
-        this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, this.chen.y, 50);
-
-        this.scene.getCamera().x += chengine.smoothValue(camX, 0, 50);
-        this.scene.getCamera().y += chengine.smoothValue(camY, 50, 50);
-        this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, 0, 50);
-        this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, 50, 50);
-       
+    {  
         var that = this;
         objRoom.prototype.enterframe.call(this);
         chengine.debugCamera(this.scene, this.scene.getCamera());
@@ -108,7 +101,6 @@ var testShoot = Class.create(objRoom,
         this.targetFar.rotation = chengine.rotationTowards(this.targetFar, this.chen.model);
 
         this.chen.forward(this.railMovementSpeed);
-        this.scene.getCamera().forward(this.railMovementSpeed);
 
         if (this.step % 100 == 0)
         {
@@ -128,6 +120,37 @@ var testShoot = Class.create(objRoom,
             var floor2 = new objScrollingFloor();
             floor2.z = this.chen.z - 3000;
             this.scene.addChild(floor2);
+        }
+        
+        if (this.step == 500)
+        {
+            this.scene.getCamera().setInView(this.chen.model, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 0});
+        }
+        else if (this.step > 600)
+        {
+            this.scene.getCamera().setFree();
+            
+            // Fake "elastic" character tracking
+            var camX = this.scene.getCamera().x;
+            var camY = this.scene.getCamera().y;
+            var camZ = this.scene.getCamera().z;
+            var camCenterX = this.scene.getCamera()._centerX;
+            var camCenterY = this.scene.getCamera()._centerY;
+            var camCenterZ = this.scene.getCamera()._centerZ;
+            
+            this.scene.getCamera().x += chengine.smoothValue(camX, this.chen.x, 60);
+            this.scene.getCamera().y += chengine.smoothValue(camY, this.chen.y, 50);
+            this.scene.getCamera().z += chengine.smoothValue(camZ, this.chen.z, 50);
+            this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, this.chen.x, 60);
+            this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, this.chen.y, 50);
+            this.scene.getCamera()._centerZ += chengine.smoothValue(camCenterZ, this.chen.z, 50);
+
+            this.scene.getCamera().x += chengine.smoothValue(camX, 0, 80);
+            this.scene.getCamera().y += chengine.smoothValue(camY, 50, 50);
+            this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, 0, 80);
+            this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, 50, 50);
+            
+            
         }
         
         if (chengine.input.keyPressed('i'))

@@ -139,6 +139,15 @@ chengine.component.controlWalk = Class.create
     
     enterframe: function ()
     {
+        if (game.input.k)
+        {
+            this.speed = 50;
+        }
+        else
+        {
+            this.speed = 1;
+        }   
+        
         if (game.input.up)
         {
             chengine.component.charWalk(this.obj, this.speed, DIRECTION_NORTH);
@@ -186,6 +195,15 @@ chengine.component.controlCameraMovable = Class.create
     
     enterframe: function ()
     {      
+        if (game.input.k)
+        {
+            this.speed = 50;
+        }
+        else
+        {
+            this.speed = 1;
+        }
+    
         if (this.obj instanceof objCamera)
         {
             if (this.pad.isTouched)
@@ -360,9 +378,9 @@ chengine.component.controlBehindMovable = Class.create
             this.upIsForward = options.upIsForward;
         }
         
-        this.boundMaxX = 30;
-        this.boundMaxY = 50 + 15;
-        this.boundMinX = -30;
+        this.boundMaxX = 50;
+        this.boundMaxY = 50 + 20;
+        this.boundMinX = -50;
         this.boundMinY = 50 - 10;
         
         this.prevX = null;
@@ -661,6 +679,11 @@ chengine.component.shoot = Class.create
             bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
             bullet.forward(that.options.forwardOffset);
             that.options.scene.addChild(bullet);     
+            
+            if (that.options.sound)
+            {
+                chengine.soundPlay(that.options.sound);
+            }
         }
 
         if (this.cooldownMax)

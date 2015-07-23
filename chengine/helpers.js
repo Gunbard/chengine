@@ -469,8 +469,9 @@ chengine.rayTest = function (startPoint, endPoint)
  */
 chengine.soundPlay = function (asset, point)
 {
-    var sound = asset.clone();
-    var distance = distanceToPoint(camera, point);
+    // TODO: Stop cloning every time!!!
+    game.assets[asset].clone().play();
+    /*var distance = distanceToPoint(camera, point);
     
     // Volume/gain appears broken on some machines...
     if ((chengine.SOUND_MAX_DISTANCE - distance) > 0)
@@ -482,7 +483,7 @@ chengine.soundPlay = function (asset, point)
         //sound.volume = 0.01;
     }
     
-    sound.play();
+    sound.play();*/
 };
 
 /**

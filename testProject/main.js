@@ -21,6 +21,10 @@ MODEL_CHEN = 'model/chen/chenfix.pmd';
 MODEL_HOLO = 'model/holo/holofix.pmd';
 TEX_CROSSHAIRS = 'images/crosshairs.png';
 TEX_GRASS = 'images/grass.jpg';
+MUSIC_CORNERIA = 'sounds/corneria.mp3';
+SOUND_LASER = 'sounds/laser_single.mp3';
+SOUND_EXPLODE = 'sounds/exp.mp3';
+SOUND_HIT = 'sounds/expSm.wav';
 
 // Globalize these for testing purposes 
 var game;
@@ -54,7 +58,12 @@ window.onload = function ()
         TEX_CROSSHAIRS,
         TEXTURE_SKYDOME,
         WORLD_BATTLEFIELD,
-        WORLD_HFIELD
+        WORLD_HFIELD,
+        WORLD_CASTLE,
+        MUSIC_CORNERIA,
+        SOUND_LASER,
+        SOUND_EXPLODE,
+        SOUND_HIT
     );
     
     game.onload = function ()

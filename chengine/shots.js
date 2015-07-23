@@ -25,8 +25,6 @@ var objShot = Class.create(PhyCylinder,
         this.mesh.texture.shininess = 0;
      
         this.rigid.rotationSet(new enchant.gl.Quat(1, 0, 0, degToRad(90)));
-        //var snd = game.assets['sounds/tielaser.wav'].clone();
-        //snd.play();
 	},
 	
     onenterframe: function ()
@@ -67,6 +65,8 @@ var objShot = Class.create(PhyCylinder,
                 exp.z = this.z;
                 scene.addChild(exp);
                 scene.removeChild(this);
+                
+                chengine.soundPlay(SOUND_HIT);
                 
                 var lifeComp = chengine.component.get(hitObj, chengine.component.life);
                 if (lifeComp)

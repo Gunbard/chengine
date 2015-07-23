@@ -43,8 +43,6 @@ var objExp = Class.create(Sphere,
         this.growthRate = 1;
         
         this.mesh.texture.shininess = 0;
-        
-        //chengine.soundPlay(game.assets['sounds/explode.wav'], this);
 	},
 	
     onenterframe: function ()

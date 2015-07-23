@@ -251,7 +251,7 @@ var objCamera = Class.create(Camera3D,
             CHASE: 0,
             FIXED: 1,
             FREE: 2,
-            IN_VIEW: 3,
+            IN_VIEW: 3
         };
         
         // Current camera mode
@@ -278,6 +278,9 @@ var objCamera = Class.create(Camera3D,
                 break;
             case this.modes.FREE:
                 this.free();
+                break;
+            case this.modes.IN_VIEW:
+                this.inView();
                 break;
         }
     },
@@ -361,6 +364,29 @@ var objCamera = Class.create(Camera3D,
     },
     
     /**
+     Camera attempts to keep a target in view without rotating
+     */
+    inView: function ()
+    {
+        this.speed = 100;
+        this.distance = -20;
+        
+        var vx = this.target.x + this.offset.x ;
+        var vy = this.target.y + this.offset.y;
+        var vz = this.target.z + this.offset.z;
+        this._x += (vx - this._x) * 2 / this.speed;
+        this._y += (vy - this._y) * 2 / this.speed;
+        this._z += (vz - this._z) * 2 / this.speed;
+        this._changedPosition = true;
+        
+        // LookAt
+        this._centerX = this.target.x + this.targetOffset.x;
+        this._centerY = this.target.y + this.targetOffset.y;
+        this._centerZ = this.target.z + this.targetOffset.z;
+        this._changedCenter = true;
+    },
+    
+    /**
      Puts camera into fixed mode
      Passing in an object would allow tracking of that object, while passing in
      a vector would make the camera constantly look at that point
@@ -383,6 +409,14 @@ var objCamera = Class.create(Camera3D,
     setFree: function ()
     {
         this.mode = this.modes.FREE;
+    },
+    
+    setInView: function (target, targetOffset, offset)
+    {
+        this.offset = offset;
+        this.target = target;
+        this.targetOffset = targetOffset;
+        this.mode = this.modes.IN_VIEW;
     },
     
     rotationSet: function(quat) 
@@ -457,6 +491,7 @@ var objTestEnemy = Class.create(PhyBox,
             bigExp.z = that.z;
             scene.addChild(bigExp);
             scene.removeChild(that);
+            chengine.soundPlay(SOUND_EXPLODE);
         };
         newLife.ondeath = newLife.ondeath.bind(this);
         chengine.component.add(this, newLife); 
