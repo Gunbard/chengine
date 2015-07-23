@@ -462,6 +462,7 @@ chengine.rayTest = function (startPoint, endPoint)
 }
 
 /**
+ TODO: Move to new file
  Plays a sound with its volume based on its distance
  to the camera
  @param asset {game.asset} An enchant.js sound asset
@@ -469,8 +470,40 @@ chengine.rayTest = function (startPoint, endPoint)
  */
 chengine.soundPlay = function (asset, point)
 {
-    // TODO: Stop cloning every time!!!
-    game.assets[asset].clone().play();
+    // Override framework sound for now
+    if (enchant.Sound !== enchant.WebAudioSound)
+    {
+        enchant.Sound == enchant.WebAudioSound;
+    }
+    
+    // Init cache
+    if (!chengine.soundMan.loadedSounds)
+    {
+        chengine.soundMan.loadedSounds = [];
+    }
+    
+    var cachedSound;
+    for (var i = 0; i < chengine.soundMan.loadedSounds.length; i++)
+    {
+        var sound = chengine.soundMan.loadedSounds[i];
+        if (sound == game.assets[asset])
+        {
+            cachedSound = sound;
+        }
+    }
+    
+    if (cachedSound)
+    {
+        cachedSound.stop();
+        cachedSound.play();
+    }
+    else
+    {
+        var newSound = game.assets[asset].clone();
+        chengine.soundMan.loadedSounds.push(newSound);
+        newSound.play();
+    }
+    
     /*var distance = distanceToPoint(camera, point);
     
     // Volume/gain appears broken on some machines...

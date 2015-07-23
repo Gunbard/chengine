@@ -33,6 +33,8 @@ DIRECTION_WEST = 90;
 mouseX = 0;
 mouseY = 0;
 
+chengine.soundMan = {};
+
 /**
  Modifiable settings
  */
