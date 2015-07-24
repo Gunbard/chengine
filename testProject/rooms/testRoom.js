@@ -83,11 +83,11 @@ var testRoom = Class.create(objRoom,
         //thing.updateRigid(0, thing.getVertices());
         
         this.target = new Plane(10);
-        this.target.mesh.texture = new Texture(game.assets['images/crosshairs.png']);
+        this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
         chengine.unsetLighting(this.target.mesh);
         
         this.target2 = new Plane(10);
-        this.target2.mesh.texture = new Texture(game.assets['images/crosshairs.png']);
+        this.target2.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
         chengine.unsetLighting(this.target2.mesh);
         
         this.targetPost = new Cylinder(1, 100);
@@ -107,7 +107,7 @@ var testRoom = Class.create(objRoom,
         this.scene.addChild(this.targetPost);
         
         var cross = new Sprite(256, 256);
-        cross.image = game.assets['images/crosshairs.png'].clone();
+        cross.image = game.assets[TEX_CROSSHAIRS].clone();
         this.scene.scene2D.addChild(cross);
         
         var cockpit = new Sprite(640, 480);

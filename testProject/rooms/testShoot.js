@@ -74,17 +74,17 @@ var testShoot = Class.create(objRoom,
 
         this.scene.getCamera().setFixed(this.chen.model, {x: 0, y: 20, z: 0});
         
-        game.assets[MUSIC_CORNERIA].clone().play();
+        chengine.sound.loop(MUSIC_CORNERIA);
         
         // Make some crosshairs
         this.target = new Plane(10);
-        this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
+        this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS2]);
         this.target.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
         chengine.unsetLighting(this.target.mesh);
         this.scene.addChild(this.target);
         
         this.targetFar = new Plane(10);
-        this.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
+        this.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS2]);
         this.targetFar.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
         chengine.unsetLighting(this.targetFar.mesh);
         this.scene.addChild(this.targetFar);
