@@ -57,6 +57,7 @@ window.onload = function ()
         'sounds/explode.wav', 
         'images/cockpit.png',
         TEX_CROSSHAIRS,
+        TEX_CROSSHAIRS2,
         TEXTURE_SKYDOME,
         WORLD_BATTLEFIELD,
         WORLD_HFIELD,
