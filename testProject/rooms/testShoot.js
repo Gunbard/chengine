@@ -127,7 +127,7 @@ var testShoot = Class.create(objRoom,
         if (this.step == 200)
         {
             this.scene.getCamera().x += 200;
-            this.scene.getCamera().z -= 500;
+            this.scene.getCamera().z -= 400;
             this.scene.getCamera().y -= 150;
         }
         else if (this.step == 500)

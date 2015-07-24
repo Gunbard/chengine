@@ -16,7 +16,7 @@ var objShot = Class.create(PhyCylinder,
         //this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.mesh.setBaseColor('rgba(255, 200, 15, 0.6)');
         this.speed = 25;
-        this.timer = 50;
+        this.timer = 30;
         this.bounding.threshold = 100;
         this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
         this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
@@ -66,7 +66,7 @@ var objShot = Class.create(PhyCylinder,
                 scene.addChild(exp);
                 scene.removeChild(this);
                 
-                chengine.soundPlay(SOUND_HIT);
+                chengine.sound.play(SOUND_HIT);
                 
                 var lifeComp = chengine.component.get(hitObj, chengine.component.life);
                 if (lifeComp)

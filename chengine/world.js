@@ -78,6 +78,7 @@ var objScene = Class.create(PhyScene3D,
     
     enterframe: function (e)
     {   
+        chengine.sound._monitorLoop();
         this.fpsCounter++;
         this.getCamera().enterframe(e);
     },
@@ -130,7 +131,7 @@ var objScene = Class.create(PhyScene3D,
         this.setFogDistance(200.0, 5000.0);
         
         // Default gravity
-        var gravVector = new Ammo.btVector3(0, -980, 0);
+        var gravVector = new Ammo.btVector3(0, -98, 0);
         this.world._dynamicsWorld.setGravity(gravVector);
         Ammo.destroy(gravVector);
         
@@ -491,7 +492,7 @@ var objTestEnemy = Class.create(PhyBox,
             bigExp.z = that.z;
             scene.addChild(bigExp);
             scene.removeChild(that);
-            chengine.soundPlay(SOUND_EXPLODE);
+            chengine.sound.play(SOUND_EXPLODE);
         };
         newLife.ondeath = newLife.ondeath.bind(this);
         chengine.component.add(this, newLife); 

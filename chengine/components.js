@@ -682,7 +682,7 @@ chengine.component.shoot = Class.create
             
             if (that.options.sound)
             {
-                chengine.soundPlay(that.options.sound);
+                chengine.sound.play(that.options.sound);
             }
         }
 
