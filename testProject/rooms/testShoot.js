@@ -32,19 +32,8 @@ var testShoot = Class.create(objRoom,
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.addToScene(this.scene);
 
-        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.25, game.input, this.pad, {upIsForward: false}));
+        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.4, game.input, this.pad, {upIsForward: false}));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
-        
-        // Make some crosshairs
-        this.target = new Plane(10);
-        this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
-        chengine.unsetLighting(this.target.mesh);
-        this.scene.addChild(this.target);
-        
-        this.targetFar = new Plane(10);
-        this.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
-        chengine.unsetLighting(this.targetFar.mesh);
-        this.scene.addChild(this.targetFar);
         
         // Get some scrolling ground going
         var floor = new objScrollingFloor();
@@ -86,6 +75,19 @@ var testShoot = Class.create(objRoom,
         this.scene.getCamera().setFixed(this.chen.model, {x: 0, y: 20, z: 0});
         
         game.assets[MUSIC_CORNERIA].clone().play();
+        
+        // Make some crosshairs
+        this.target = new Plane(10);
+        this.target.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
+        this.target.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
+        chengine.unsetLighting(this.target.mesh);
+        this.scene.addChild(this.target);
+        
+        this.targetFar = new Plane(10);
+        this.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS]);
+        this.targetFar.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
+        chengine.unsetLighting(this.targetFar.mesh);
+        this.scene.addChild(this.targetFar);
     },
     
     enterframe: function (e) 
@@ -122,7 +124,13 @@ var testShoot = Class.create(objRoom,
             this.scene.addChild(floor2);
         }
         
-        if (this.step == 500)
+        if (this.step == 200)
+        {
+            this.scene.getCamera().x += 200;
+            this.scene.getCamera().z -= 500;
+            this.scene.getCamera().y -= 150;
+        }
+        else if (this.step == 500)
         {
             this.scene.getCamera().setInView(this.chen.model, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 0});
         }
