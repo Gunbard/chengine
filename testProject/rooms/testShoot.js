@@ -88,6 +88,26 @@ var testShoot = Class.create(objRoom,
         this.targetFar.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
         chengine.unsetLighting(this.targetFar.mesh);
         this.scene.addChild(this.targetFar);
+        
+        var cam = this.scene.getCamera();
+        var chen = this.chen.model;
+        this.timeline.cue
+        ({
+            200: function () 
+            {
+                cam.x += 200;
+                cam.z -= 400;
+                cam.y -= 150;
+            },
+            500: function () 
+            {
+                cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
+            },
+            600: function ()
+            {
+                cam.setInView(chen);
+            }
+        });
     },
     
     enterframe: function (e) 
@@ -122,43 +142,6 @@ var testShoot = Class.create(objRoom,
             var floor2 = new objScrollingFloor();
             floor2.z = this.chen.z - 3000;
             this.scene.addChild(floor2);
-        }
-        
-        if (this.step == 200)
-        {
-            this.scene.getCamera().x += 200;
-            this.scene.getCamera().z -= 400;
-            this.scene.getCamera().y -= 150;
-        }
-        else if (this.step == 500)
-        {
-            this.scene.getCamera().setInView(this.chen.model, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 0});
-        }
-        else if (this.step > 600)
-        {
-            this.scene.getCamera().setFree();
-            
-            // Fake "elastic" character tracking
-            var camX = this.scene.getCamera().x;
-            var camY = this.scene.getCamera().y;
-            var camZ = this.scene.getCamera().z;
-            var camCenterX = this.scene.getCamera()._centerX;
-            var camCenterY = this.scene.getCamera()._centerY;
-            var camCenterZ = this.scene.getCamera()._centerZ;
-            
-            this.scene.getCamera().x += chengine.smoothValue(camX, this.chen.x, 60);
-            this.scene.getCamera().y += chengine.smoothValue(camY, this.chen.y, 50);
-            this.scene.getCamera().z += chengine.smoothValue(camZ, this.chen.z, 50);
-            this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, this.chen.x, 60);
-            this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, this.chen.y, 50);
-            this.scene.getCamera()._centerZ += chengine.smoothValue(camCenterZ, this.chen.z, 50);
-
-            this.scene.getCamera().x += chengine.smoothValue(camX, 0, 80);
-            this.scene.getCamera().y += chengine.smoothValue(camY, 50, 50);
-            this.scene.getCamera()._centerX += chengine.smoothValue(camCenterX, 0, 80);
-            this.scene.getCamera()._centerY += chengine.smoothValue(camCenterY, 50, 50);
-            
-            
         }
         
         if (chengine.input.keyPressed('i'))

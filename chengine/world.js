@@ -26,7 +26,7 @@ var objScene = Class.create(PhyScene3D,
         game.rootScene = this.scene2D;
         
         chengine.input.setKeybindings();
-    
+            
         /**
          A hash table mapping rigidBodies to their owners. Since Ammo.js is a C++ port of Bullet,
          there isn't an easy way to obtain the owner of a btRigidBody. Used during collision 
@@ -157,6 +157,10 @@ var objRoom = Class.create(
     {
         this.scene = parentScene;
         this.step = 0;
+        
+        this.timelineHolder = new Sprite();
+        this.timeline = this.timelineHolder.tl;
+        this.scene.scene2D.addChild(this.timelineHolder);
     },
     
     prepare: function ()
@@ -167,6 +171,7 @@ var objRoom = Class.create(
     clean: function ()
     {
         debugger;
+        this.scene.scene2D.removeChild(this.timelineHolder);
         this.scene.tearDown();
     },
     
@@ -369,22 +374,25 @@ var objCamera = Class.create(Camera3D,
      */
     inView: function ()
     {
-        this.speed = 100;
-        this.distance = -20;
+        this.speed = this.speed || 50;
         
-        var vx = this.target.x + this.offset.x ;
-        var vy = this.target.y + this.offset.y;
-        var vz = this.target.z + this.offset.z;
-        this._x += (vx - this._x) * 2 / this.speed;
-        this._y += (vy - this._y) * 2 / this.speed;
-        this._z += (vz - this._z) * 2 / this.speed;
-        this._changedPosition = true;
+        var vec = this._getForwardVec();
+        this._centerX = this.x + vec[0];
+        this._centerY = this.y + vec[1];
+        this._centerZ = this.z + vec[2];
+        this._changedCenter = true;    
         
-        // LookAt
-        this._centerX = this.target.x + this.targetOffset.x;
-        this._centerY = this.target.y + this.targetOffset.y;
-        this._centerZ = this.target.z + this.targetOffset.z;
-        this._changedCenter = true;
+        this.x += chengine.smoothValue(this.x, this.target.x, this.speed + 10);
+        this.y += chengine.smoothValue(this.y, this.target.y, this.speed);
+        this.z += chengine.smoothValue(this.z, this.target.z, this.speed);
+        this._centerX += chengine.smoothValue(this._centerX, this.target.x, this.speed + 10);
+        this._centerY += chengine.smoothValue(this._centerY, this.target.y, this.speed);
+        this._centerZ += chengine.smoothValue(this._centerZ, this.target.z, this.speed);
+
+        this.x += chengine.smoothValue(this.x, 0, this.speed + 30);
+        this.y += chengine.smoothValue(this.y, 50, this.speed);
+        this._centerX += chengine.smoothValue(this._centerX, 0, this.speed + 30);
+        this._centerY += chengine.smoothValue(this._centerY, 50, this.speed);
     },
     
     /**
@@ -412,11 +420,12 @@ var objCamera = Class.create(Camera3D,
         this.mode = this.modes.FREE;
     },
     
-    setInView: function (target, targetOffset, offset)
+    setInView: function (target, targetOffset, offset, speed)
     {
         this.offset = offset;
         this.target = target;
         this.targetOffset = targetOffset;
+        this.speed = speed;
         this.mode = this.modes.IN_VIEW;
     },
     
