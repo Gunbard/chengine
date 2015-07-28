@@ -26,6 +26,7 @@ MUSIC_CORNERIA = 'sounds/corneria.mp3';
 SOUND_LASER = 'sounds/laser_single.mp3';
 SOUND_EXPLODE = 'sounds/exp.mp3';
 SOUND_HIT = 'sounds/expSm.wav';
+MODEL_TEST = 'model/modeltest2.dae';
 
 // Globalize these for testing purposes 
 var game;
@@ -65,7 +66,8 @@ window.onload = function ()
         MUSIC_CORNERIA,
         SOUND_LASER,
         SOUND_EXPLODE,
-        SOUND_HIT
+        SOUND_HIT,
+        MODEL_TEST
     );
     
     game.onload = function ()

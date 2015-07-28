@@ -392,27 +392,15 @@ chengine.rigidStoppedFalling = function (rigidBody)
 };
 
 /**
- Trigger causing an object to flash temporarily. This currently
- will not work on complex meshes (e.g. MSprite3D and colladas).
- TODO: Make this work with MSprite3Ds and colladas
+ Trigger causing an object to flash temporarily
  @param obj {Sprite3D} The object to flash
  */
 chengine.flash = function (obj)
 {
     obj.flash = 1.0;
-    /*var savedColors = clone(obj.mesh.texture.ambient);
-    var savedEm = clone(obj.mesh.texture.emission);
-    var savedShiny = obj.mesh.texture.shininess;
-    
-    obj.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
-    obj.mesh.texture.emission = [1.0, 1.0, 1.0, 1.0];
-    obj.mesh.texture.shininess = 1000;
-    */
+
     var timeoutCallback = function ()
     {
-        /*obj.mesh.texture.ambient = savedColors;
-        obj.mesh.texture.emission = savedEm;
-        obj.mesh.texture.shininess = savedShiny;*/
         obj.flash = 0.0;
     };
     

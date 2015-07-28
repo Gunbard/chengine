@@ -127,7 +127,7 @@ var objBigExp = Class.create(Sprite3D,
         this.timer = 200;
         this.expTimer = 8;
         this.rayTimer = 30;
-        this.range = 5;
+        this.range = 40;
         this.rays = [];
         this.target = target;
         this.finishCallback = finishCallback;
@@ -152,6 +152,8 @@ var objBigExp = Class.create(Sprite3D,
                 exp.y = this.y - this.range + (Math.random() * (this.range * 2));
                 exp.z = this.z - this.range + (Math.random() * (this.range * 2));
                 scene.addChild(exp);
+                
+                chengine.sound.play(SOUND_EXPLODE);
                 
                 this.expTimer = 6;
             }

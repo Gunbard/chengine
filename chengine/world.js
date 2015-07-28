@@ -131,7 +131,7 @@ var objScene = Class.create(PhyScene3D,
         this.setFogDistance(200.0, 5000.0);
         
         // Default gravity
-        var gravVector = new Ammo.btVector3(0, -98, 0);
+        var gravVector = new Ammo.btVector3(0, -980, 0);
         this.world._dynamicsWorld.setGravity(gravVector);
         Ammo.destroy(gravVector);
         

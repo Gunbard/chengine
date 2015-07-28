@@ -25,8 +25,10 @@ chengine.sound.play = function (asset, point)
         enchant.Sound == enchant.WebAudioSound;
     }
     
-    var cachedSound = chengine.sound._getCachedSound(asset); 
-    cachedSound.play(true);
+    game.assets[asset].clone().play();
+    
+    //var cachedSound = chengine.sound._getCachedSound(asset); 
+    //cachedSound.play(true);
     
     /*var distance = distanceToPoint(camera, point);
     

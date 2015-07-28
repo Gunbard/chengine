@@ -44,6 +44,10 @@ var testShoot = Class.create(objRoom,
         floor2.z = this.chen.z - 3000;
         this.scene.addChild(floor2);
         
+        var floor3 = new objScrollingFloor();
+        floor3.z = this.chen.z + 1000;
+        this.scene.addChild(floor3);
+        
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
         
@@ -97,7 +101,7 @@ var testShoot = Class.create(objRoom,
             {
                 cam.x += 200;
                 cam.z -= 400;
-                cam.y -= 150;
+                cam.y -= 100;
             },
             500: function () 
             {
@@ -142,6 +146,27 @@ var testShoot = Class.create(objRoom,
             var floor2 = new objScrollingFloor();
             floor2.z = this.chen.z - 3000;
             this.scene.addChild(floor2);
+            
+            var testObj = game.assets[MODEL_TEST].colladaClone();
+            testObj.scale(0.25, 0.25, 0.25);
+            testObj.updateRigid(0, 0.25, testObj.getVertices());
+            
+            var newLife = new chengine.component.life(20);
+            newLife.ondeath = function ()
+            {
+                var bigExp = new objBigExp(this, null);
+                bigExp.x = this.x;
+                bigExp.y = this.y;
+                bigExp.z = this.z;
+                scene.addChild(bigExp);
+            };
+            newLife.ondeath = newLife.ondeath.bind(testObj);
+            chengine.component.add(testObj, newLife);   
+            
+            testObj.rotatePitch(degToRad(270));
+            testObj.x -= 50 + rand(0, 100);
+            testObj.z = this.chen.z - 2000;
+            this.scene.addChild(testObj);
         }
         
         if (chengine.input.keyPressed('i'))

@@ -381,7 +381,7 @@ chengine.component.controlBehindMovable = Class.create
         this.boundMaxX = 50;
         this.boundMaxY = 50 + 20;
         this.boundMinX = -50;
-        this.boundMinY = 50 - 10;
+        this.boundMinY = 50 - 20;
         
         this.prevX = null;
         this.prevY = null; 
