@@ -95,6 +95,8 @@ var testShoot = Class.create(objRoom,
             sound: SOUND_LASER
         }
         
+        chengine.component.add(this.chen, new chengine.component.shoot(shootOpts));
+
         var chargeOpts = 
         {
             inputKey: 'g',
@@ -105,17 +107,21 @@ var testShoot = Class.create(objRoom,
             forwardOffset: -30,
             bulletSpeed: 10,
             offset: {x: 0, y: -10, z: 0},
-            sound: SOUND_LASER
+            sound: SOUND_CHARGELASER
         }
         
         var chargeComp = new chengine.component.charge(chargeOpts);
         chargeComp.onCharged = function ()
         {
+            that.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS2RED]);
+            chengine.unsetLighting(that.targetFar.mesh);
             that.targetFar.scale(2.0, 2.0, 2.0);
         };
         
         chargeComp.onChargeLoss = function ()
         {
+            that.targetFar.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS2]);
+            chengine.unsetLighting(that.targetFar.mesh);
             that.targetFar.scale(0.5, 0.5, 0.5);
         };
         
@@ -192,7 +198,7 @@ var testShoot = Class.create(objRoom,
             chengine.component.add(testObj, newLife);   
             
             testObj.rotatePitch(degToRad(270));
-            testObj.x -= 50 + rand(0, 100);
+            testObj.x -= 50 + rand(0, 300);
             testObj.z = this.chen.z - 2000;
             this.scene.addChild(testObj);
         }

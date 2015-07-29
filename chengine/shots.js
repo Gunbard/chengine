@@ -268,7 +268,9 @@ var objHomingShot = Class.create(PhySphere,
         var hitObj = scene.world.contactTest(this.rigid);
         if (hitObj)
         {
-            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof Sprite3D && !(hitObj instanceof objCharacter)))
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || 
+            (hitObj instanceof Sprite3D && 
+            !(hitObj instanceof objCharacter) && !(hitObj instanceof objShot)))
             {                                
                 var exp = new objExp(20);
                 exp.x = this.x;
@@ -278,7 +280,7 @@ var objHomingShot = Class.create(PhySphere,
                 scene.removeChild(this.glow);
                 scene.removeChild(this);
                 
-                chengine.sound.play(SOUND_EXPLODE);
+                chengine.sound.play(SOUND_CHARGELASEREXPLODE);
                 
                 var lifeComp = chengine.component.get(hitObj, chengine.component.life);
                 if (lifeComp)

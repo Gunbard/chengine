@@ -660,8 +660,8 @@ chengine.component.shoot = Class.create
         this.options.bullet = this.options.bullet || objShot;
         this.options.forwardOffset = this.options.forwardOffset || 0;
         this.options.offset = this.options.offset || {x: 0, y: 0, z: 0};
-        this.cooldownMax = options.cooldown;
-        this.cooldown = options.cooldown;
+        this.cooldownMax = this.options.cooldown;
+        this.cooldown = this.options.cooldown;
         this.bulletSpeed = this.options.bulletSpeed || 25;
         var that = this;
         this.fireAction = function ()
@@ -685,6 +685,12 @@ chengine.component.shoot = Class.create
     
     enterframe: function ()
     {      
+        var chargeComp = chengine.component.get(this.obj, chengine.component.charge);
+        if (chargeComp && (chargeComp.charge > 20 || chargeComp.cooldown > -1))
+        {
+            return;
+        }
+        
         var that = this;
 
         if (this.cooldownMax)
@@ -739,6 +745,8 @@ chengine.component.charge = Class.create
         this.charge = 0;
         this.shootDelay = -1;
         this.shootDelayMax = 50;
+        this.cooldown = -1;
+        this.cooldownMax = this.options.cooldownMax || 20;
         this.target = null;
         this.bulletSpeed = this.options.bulletSpeed || 10;
         var that = this;
@@ -782,6 +790,12 @@ chengine.component.charge = Class.create
         var scene = enchant.Core.instance.GL.currentScene3D;
         var that = this;
         
+        if (this.cooldown > -1)
+        {
+            this.cooldown -= 1;
+            return;
+        }
+        
         if (game.input[this.options.inputKey] || this.options.inputButton.pressed ||
            (chengine.input.getGamepadsConnected() > 0 && chengine.input.buttonHeld(0, 1)))
         {
@@ -796,6 +810,7 @@ chengine.component.charge = Class.create
                 
                 if (this.shootDelay > 0)
                 {
+                    this.cooldown = this.cooldownMax;
                     this.shootDelay = -1;
                     this.onFire();
                     this.onChargeLoss();
@@ -813,6 +828,7 @@ chengine.component.charge = Class.create
                 {
                     this.shootDelay = this.shootDelayMax;
                     this.onCharged();
+                    chengine.sound.play(SOUND_TARGET);
                 }
                 else
                 {
@@ -837,6 +853,7 @@ chengine.component.charge = Class.create
                     {
                         if (!this.target)
                         {
+                            chengine.sound.play(SOUND_TARGETLOCK);
                             this.target = hitObj;
                             this.targetGraphic = new objTarget(30, hitObj);
                             

@@ -21,11 +21,16 @@ MODEL_CHEN = 'model/chen/chenfix.pmd';
 MODEL_HOLO = 'model/holo/holofix.pmd';
 TEX_CROSSHAIRS = 'images/crosshairs.png';
 TEX_CROSSHAIRS2 = 'images/crosshairs2.png';
+TEX_CROSSHAIRS2RED = 'images/crosshairs2red.png';
 TEX_GRASS = 'images/grass.jpg';
 MUSIC_CORNERIA = 'sounds/corneria.mp3';
 SOUND_LASER = 'sounds/laser_single.mp3';
 SOUND_EXPLODE = 'sounds/exp.mp3';
 SOUND_HIT = 'sounds/expSm.wav';
+SOUND_TARGET = 'sounds/target.mp3';
+SOUND_TARGETLOCK = 'sounds/targetLock.mp3';
+SOUND_CHARGELASER = 'sounds/chargeLaser.mp3';
+SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
 MODEL_TEST = 'model/modeltest2.dae';
 
 // Globalize these for testing purposes 
@@ -59,6 +64,7 @@ window.onload = function ()
         'images/cockpit.png',
         TEX_CROSSHAIRS,
         TEX_CROSSHAIRS2,
+        TEX_CROSSHAIRS2RED,
         TEXTURE_SKYDOME,
         WORLD_BATTLEFIELD,
         WORLD_HFIELD,
@@ -67,6 +73,10 @@ window.onload = function ()
         SOUND_LASER,
         SOUND_EXPLODE,
         SOUND_HIT,
+        SOUND_TARGET,
+        SOUND_TARGETLOCK,
+        SOUND_CHARGELASER,
+        SOUND_CHARGELASEREXPLODE,
         MODEL_TEST
     );
     
