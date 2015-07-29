@@ -12,6 +12,8 @@ var testShoot = Class.create(objRoom,
         objRoom.prototype.prepare.call(this);
         chengine.input.enableGamepads();
         
+        var that = this;
+        
         this.scene.getCamera().altitude(50);
         
         // Make a pad
@@ -58,19 +60,6 @@ var testShoot = Class.create(objRoom,
         this.button.opacity = 0.6;
         scene.scene2D.addChild(this.button);
         
-        var that = this;
-        var shootOpts = 
-        {
-            inputKey: 'g',
-            inputButton: that.button, 
-            bullet: objShot,
-            scene: that.scene,
-            cooldown: 5,
-            forwardOffset: -30,
-            bulletSpeed: 50,
-            sound: SOUND_LASER
-        }
-        chengine.component.add(this.chen, new chengine.component.shoot(shootOpts));
         //this.scene.getCamera().rotateYaw(degToRad(10));
         this.scene.getCamera().forward(500);
         this.scene.getCamera().sidestep(100);
@@ -92,6 +81,45 @@ var testShoot = Class.create(objRoom,
         this.targetFar.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
         chengine.unsetLighting(this.targetFar.mesh);
         this.scene.addChild(this.targetFar);
+        
+        
+        var shootOpts = 
+        {
+            inputKey: 'g',
+            inputButton: that.button, 
+            bullet: objShot,
+            scene: that.scene,
+            cooldown: 5,
+            forwardOffset: -30,
+            bulletSpeed: 50,
+            sound: SOUND_LASER
+        }
+        
+        var chargeOpts = 
+        {
+            inputKey: 'g',
+            inputButton: that.button, 
+            bullet: objHomingShot,
+            scene: that.scene,
+            cooldown: 5,
+            forwardOffset: -30,
+            bulletSpeed: 10,
+            offset: {x: 0, y: -10, z: 0},
+            sound: SOUND_LASER
+        }
+        
+        var chargeComp = new chengine.component.charge(chargeOpts);
+        chargeComp.onCharged = function ()
+        {
+            that.targetFar.scale(2.0, 2.0, 2.0);
+        };
+        
+        chargeComp.onChargeLoss = function ()
+        {
+            that.targetFar.scale(0.5, 0.5, 0.5);
+        };
+        
+        chengine.component.add(this.chen, chargeComp);
         
         var cam = this.scene.getCamera();
         var chen = this.chen.model;

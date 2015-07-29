@@ -663,12 +663,8 @@ chengine.component.shoot = Class.create
         this.cooldownMax = options.cooldown;
         this.cooldown = options.cooldown;
         this.bulletSpeed = this.options.bulletSpeed || 25;
-    },
-    
-    enterframe: function ()
-    {      
         var that = this;
-        var fireAction = function ()
+        this.fireAction = function ()
         {
             var bullet = new that.options.bullet();
             bullet.speed = that.bulletSpeed;
@@ -685,6 +681,11 @@ chengine.component.shoot = Class.create
                 chengine.sound.play(that.options.sound);
             }
         }
+    },
+    
+    enterframe: function ()
+    {      
+        var that = this;
 
         if (this.cooldownMax)
         {
@@ -697,7 +698,7 @@ chengine.component.shoot = Class.create
                 }
                 else
                 {
-                    fireAction();
+                    this.fireAction();
                     this.cooldown = this.cooldownMax;
                 }
             }
@@ -707,8 +708,157 @@ chengine.component.shoot = Class.create
             if (chengine.input.keyPressed(this.options.inputKey) ||
                (chengine.input.getGamepadsConnected() > 0 && chengine.input.buttonPressed(0, 1)))
             {
-                fireAction();
+                this.fireAction();
             }
+        }
+    }
+});
+
+/**
+ Generates bullets relative to the object
+ @param options 
+ {
+    inputKey {string} Key to trigger the shot
+    bullet {obj} An object that will serve as a bullet
+    scene {objScene} Scene to add stuff to
+    offset {x, y, z} Offset where the bullet will be created
+    forwardOffset {int} Relative position forward where the bullet will be created
+    cooldown {int} Time before another bullet can be fired, set to null to fire 
+                   only when pressed
+ }
+ */
+chengine.component.charge = Class.create
+({    
+    initialize: function (options)
+    {
+        this.options = options || {};
+        this.options.bullet = this.options.bullet || objShot;
+        this.options.forwardOffset = this.options.forwardOffset || 0;
+        this.options.offset = this.options.offset || {x: 0, y: 0, z: 0};
+        this.chargeDelay = 50;
+        this.charge = 0;
+        this.shootDelay = -1;
+        this.shootDelayMax = 50;
+        this.target = null;
+        this.bulletSpeed = this.options.bulletSpeed || 10;
+        var that = this;
+        this.fireAction = function ()
+        {
+            var bullet = new that.options.bullet(this.target);
+            bullet.speed = that.bulletSpeed;
+            bullet.x = that.obj.x;
+            bullet.y = that.obj.y;
+            bullet.z = that.obj.z;
+            bullet.rotation = chengine.copyRotation(that.obj.model.rotation, false);
+            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
+            bullet.forward(that.options.forwardOffset);
+            that.options.scene.addChild(bullet);     
+            
+            if (that.options.sound)
+            {
+                chengine.sound.play(that.options.sound);
+            }
+        }
+    },
+    
+    onChargeStart : function ()
+    {
+    },
+    
+    onChargeLoss: function ()
+    {
+    },
+    
+    onCharged: function ()
+    {
+    },        
+    
+    onFire: function ()
+    {
+    },
+    
+    enterframe: function ()
+    {      
+        var scene = enchant.Core.instance.GL.currentScene3D;
+        var that = this;
+        
+        if (game.input[this.options.inputKey] || this.options.inputButton.pressed ||
+           (chengine.input.getGamepadsConnected() > 0 && chengine.input.buttonHeld(0, 1)))
+        {
+            if (this.charge < this.chargeDelay)
+            {
+                if (this.charge == 0)
+                {
+                    this.onChargeStart();
+                }
+                
+                this.charge += 1;
+                
+                if (this.shootDelay > 0)
+                {
+                    this.shootDelay = -1;
+                    this.onFire();
+                    this.onChargeLoss();
+                    this.fireAction();
+                    if (this.targetGraphic)
+                    {
+                        scene.removeChild(this.targetGraphic);
+                    }
+                    this.target = null;
+                }
+            }
+            else
+            {
+                if (this.shootDelay < this.shootDelayMax)
+                {
+                    this.shootDelay = this.shootDelayMax;
+                    this.onCharged();
+                }
+                else
+                {
+                    // Create targeting ray
+                    var targetingRange = 1000;
+                    var startPos = 
+                    {
+                        x: that.obj.model.x + this.options.offset.x,
+                        y: that.obj.model.y + this.options.offset.y,
+                        z: that.obj.model.z + this.options.offset.z,
+                    }
+                    
+                    var endPos =
+                    {
+                        x: startPos.x + that.obj.model.rotation[8] * targetingRange,
+                        y: startPos.y + that.obj.model.rotation[9] * targetingRange,
+                        z: startPos.z + that.obj.model.rotation[10] * targetingRange
+                    }
+                    
+                    var hitObj = chengine.rayTestObj(startPos, endPos, objTestEnemy);
+                    if (hitObj)
+                    {
+                        if (!this.target)
+                        {
+                            this.target = hitObj;
+                            this.targetGraphic = new objTarget(30, hitObj);
+                            
+                            scene.addChild(this.targetGraphic);
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            if (this.shootDelay > 0)
+            {
+                this.shootDelay -= 1;
+            }
+            else if (this.shootDelay == 0)
+            {
+                this.onChargeLoss();
+                this.shootDelay = -1;
+            }
+            
+            this.charge = 0;
         }
     }
 });

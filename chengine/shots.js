@@ -207,11 +207,11 @@ var objBeam = Class.create(Beam,
 /**
  A homing bullet
  */
-var objHomingShot = Class.create(Sphere, 
+var objHomingShot = Class.create(PhySphere, 
 {
 	initialize: function (target) 
     {
-        Sphere.call(this, 2);
+        PhySphere.call(this, 2);
         this.mesh.setBaseColor('rgba(245, 240, 30, 1.0)');
         this.speed = 8;
         this.timer = 100;
@@ -223,10 +223,10 @@ var objHomingShot = Class.create(Sphere,
         this.target = target;
         this.homingDelay = 10;
 
-        this.targetGraphic = new objTarget(10, target);
+        this.targetGraphic = new objTarget(30, target);
         
         var scene = enchant.Core.instance.GL.currentScene3D;
-        scene.addChild(this.targetGraphic);
+        //scene.addChild(this.targetGraphic);
     },
 	
     onenterframe: function ()
@@ -265,7 +265,30 @@ var objHomingShot = Class.create(Sphere,
             scene.removeChild(this);
         }
         
-        var rx = this.rotation[8] * 10;
+        var hitObj = scene.world.contactTest(this.rigid);
+        if (hitObj)
+        {
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof Sprite3D && !(hitObj instanceof objCharacter)))
+            {                                
+                var exp = new objExp(20);
+                exp.x = this.x;
+                exp.y = this.y;
+                exp.z = this.z;
+                scene.addChild(exp);
+                scene.removeChild(this.glow);
+                scene.removeChild(this);
+                
+                chengine.sound.play(SOUND_EXPLODE);
+                
+                var lifeComp = chengine.component.get(hitObj, chengine.component.life);
+                if (lifeComp)
+                {
+                    lifeComp.damage(10);
+                }
+            }
+        }
+        
+        /*var rx = this.rotation[8] * 10;
         var ry = this.rotation[9] * 10;
         var rz = this.rotation[10] * 10;
         
@@ -300,6 +323,6 @@ var objHomingShot = Class.create(Sphere,
         
         Ammo.destroy(ray1);
         Ammo.destroy(ray2);
-        Ammo.destroy(rayCallback); 
+        Ammo.destroy(rayCallback); */
 	}
 });

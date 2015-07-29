@@ -449,6 +449,40 @@ chengine.rayTest = function (startPoint, endPoint)
     return hit;
 }
 
+
+chengine.rayTestObj = function (startPoint, endPoint, obj)
+{    
+    var ray1 = new Ammo.btVector3(startPoint.x, startPoint.y, startPoint.z);
+    var ray2 = new Ammo.btVector3(endPoint.x, endPoint.y, endPoint.z);
+    
+    var rayCallback = new Ammo.ClosestRayResultCallback(ray1, ray2);
+    var scene = enchant.Core.instance.GL.currentScene3D;
+    scene.world._dynamicsWorld.rayTest(ray1, ray2, rayCallback); 
+
+    if (rayCallback.hasHit())
+    {
+        var collisionObj = rayCallback.get_m_collisionObject();
+        var body = Ammo.btRigidBody.prototype.upcast(collisionObj);
+        var owner = scene.rigidOwner(body);
+        
+        if (owner instanceof obj)
+        {
+            Ammo.destroy(ray1);
+            Ammo.destroy(ray2);
+            Ammo.destroy(rayCallback);
+    
+            return owner;
+        }
+    }
+    
+    Ammo.destroy(ray1);
+    Ammo.destroy(ray2);
+    Ammo.destroy(rayCallback);
+    
+    return null;
+
+}
+
 /**
  Sets a uniform repeat for a mesh texture. The texture MUST BE a power
  of two in order to tile it, otherwise it will just clamp.
