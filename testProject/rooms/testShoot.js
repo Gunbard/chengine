@@ -82,6 +82,9 @@ var testShoot = Class.create(objRoom,
         chengine.unsetLighting(this.targetFar.mesh);
         this.scene.addChild(this.targetFar);
         
+        this.yukkuri = new objCharacter(MODEL_YUKKURI);
+        this.yukkuri.z -= 5000;
+        this.yukkuri.addToScene(this.scene);
         
         var shootOpts = 
         {

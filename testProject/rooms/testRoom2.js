@@ -39,6 +39,11 @@ var testRoom2 = Class.create(objRoom,
         this.chen.z = 200;
         this.chen.addToScene(this.scene);
         
+        this.yukkuri = new objCharacter(MODEL_YUKKURI);
+        this.yukkuri.y = 100;
+        this.yukkuri.z = 400;
+        this.yukkuri.addToScene(this.scene);
+        
         chengine.component.add(this.chen, new chengine.component.controlCameraMovable(0.25, game.input, this.pad));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
     },

@@ -32,6 +32,7 @@ SOUND_TARGETLOCK = 'sounds/targetLock.mp3';
 SOUND_CHARGELASER = 'sounds/chargeLaser.mp3';
 SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
 MODEL_TEST = 'model/modeltest2.dae';
+MODEL_YUKKURI = 'model/reimuyukkuri/reimuyukkuribig.pmd';
 
 // Globalize these for testing purposes 
 var game;
@@ -77,7 +78,8 @@ window.onload = function ()
         SOUND_TARGETLOCK,
         SOUND_CHARGELASER,
         SOUND_CHARGELASEREXPLODE,
-        MODEL_TEST
+        MODEL_TEST,
+        MODEL_YUKKURI
     );
     
     game.onload = function ()
