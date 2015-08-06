@@ -977,7 +977,14 @@ chengine.component.life = Class.create
      */
     ondamage: function ()
     {
-        chengine.flash(this.obj);
+        if (this.obj instanceof objCharacter)
+        {
+            chengine.flash(this.obj.model);
+        }
+        else
+        {
+            chengine.flash(this.obj);         
+        }
     },
     
     /**

@@ -57,7 +57,7 @@ var objShot = Class.create(PhyCylinder,
         var hitObj = scene.world.contactTest(this.rigid);
         if (hitObj)
         {
-            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof Sprite3D && !(hitObj instanceof objCharacter)))
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof Sprite3D))
             {                                
                 var exp = new objExp(10);
                 exp.x = this.x;

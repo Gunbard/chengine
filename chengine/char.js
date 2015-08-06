@@ -36,10 +36,10 @@ var objCharacter = Class.create(PhyCapsule,
         Ammo.destroy(ang);
         
         
-        var newLife = new chengine.component.life(3);
+        var newLife = new chengine.component.life(99999);
         newLife.ondeath = function ()
         {
-            alert('ded');
+            //alert('ded');
         };
         newLife.ondeath = newLife.ondeath.bind(this);
         chengine.component.add(this, newLife);   
