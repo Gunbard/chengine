@@ -453,7 +453,6 @@ chengine.component.controlBehindMovable = Class.create
             }
         }
         
-        
         // Pseudo-slerp model. Don't want to actually rotate the collision object, though.
         this.dummyOrienter.rotation = chengine.copyRotation(this.obj.model.rotation, false);
         var rotationSpeed = this.rotSpeed;
@@ -855,8 +854,13 @@ chengine.component.charge = Class.create
                         {
                             chengine.sound.play(SOUND_TARGETLOCK);
                             this.target = hitObj;
-                            this.targetGraphic = new objTarget(30, hitObj);
                             
+                            if (this.targetGraphic)
+                            {
+                                scene.removeChild(this.targetGraphic);
+                            }
+                            
+                            this.targetGraphic = new objTarget(30, hitObj);
                             scene.addChild(this.targetGraphic);
                         }
                     }
@@ -872,6 +876,11 @@ chengine.component.charge = Class.create
             else if (this.shootDelay == 0)
             {
                 this.onChargeLoss();
+                if (this.targetGraphic)
+                {
+                    scene.removeChild(this.targetGraphic);
+                    this.target = null;
+                }
                 this.shootDelay = -1;
             }
             

@@ -375,6 +375,7 @@ var objCamera = Class.create(Camera3D,
     inView: function ()
     {
         this.speed = this.speed || 50;
+        this.offset = this.offset || {x: 0, y: 0, z: 0};
         
         var vec = this._getForwardVec();
         this._centerX = this.x + vec[0];
@@ -382,15 +383,15 @@ var objCamera = Class.create(Camera3D,
         this._centerZ = this.z + vec[2];
         this._changedCenter = true;    
         
-        this.x += chengine.smoothValue(this.x, this.target.x, this.speed + 10);
-        this.y += chengine.smoothValue(this.y, this.target.y, this.speed);
-        this.z += chengine.smoothValue(this.z, this.target.z, this.speed);
+        this.x += chengine.smoothValue(this.x + this.offset.x, this.target.x, this.speed + 10);
+        this.y += chengine.smoothValue(this.y + this.offset.y, this.target.y, this.speed);
+        this.z += chengine.smoothValue(this.z + this.offset.z, this.target.z, this.speed);
         this._centerX += chengine.smoothValue(this._centerX, this.target.x, this.speed + 10);
         this._centerY += chengine.smoothValue(this._centerY, this.target.y, this.speed);
         this._centerZ += chengine.smoothValue(this._centerZ, this.target.z, this.speed);
 
-        this.x += chengine.smoothValue(this.x, 0, this.speed + 30);
-        this.y += chengine.smoothValue(this.y, 50, this.speed);
+        this.x += chengine.smoothValue(this.x + this.offset.x, 0, this.speed + 30);
+        this.y += chengine.smoothValue(this.y + this.offset.y, 50, this.speed);
         this._centerX += chengine.smoothValue(this._centerX, 0, this.speed + 30);
         this._centerY += chengine.smoothValue(this._centerY, 50, this.speed);
     },
@@ -534,7 +535,7 @@ var objScrollingFloor = Class.create(PhyBox,
         this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.shininess = 0;
 
-        this.deathTimer = 2000;
+        //this.deathTimer = 2000;
     },
     
     onenterframe: function ()
@@ -543,7 +544,7 @@ var objScrollingFloor = Class.create(PhyBox,
         
         if (this.deathTimer <= 0)
         {
-            scene.removeChild(this);
+            //scene.removeChild(this);
         }
     }
 });

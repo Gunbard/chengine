@@ -13,7 +13,7 @@ var testShoot = Class.create(objRoom,
         chengine.input.enableGamepads();
         
         var that = this;
-        
+        this.scrolling = true;
         this.scene.getCamera().altitude(50);
         
         // Make a pad
@@ -81,13 +81,7 @@ var testShoot = Class.create(objRoom,
         this.targetFar.mesh.setBaseColor('rgba(255, 255, 255, 0.3)');
         chengine.unsetLighting(this.targetFar.mesh);
         this.scene.addChild(this.targetFar);
-        
-        this.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
-        this.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
-        this.yukkuri.y += 30;
-        this.yukkuri.z -= 2000;
-        this.yukkuri.addToScene(this.scene);
-        
+                
         var shootOpts = 
         {
             inputKey: 'g',
@@ -149,6 +143,28 @@ var testShoot = Class.create(objRoom,
             600: function ()
             {
                 cam.setInView(chen);
+            },
+            700: function ()
+            {
+                that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
+                that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
+                that.yukkuri.y += 30;
+                that.yukkuri.z = that.chen.z - 2000;
+                that.yukkuri.addToScene(that.scene);
+            },
+            1000: function ()
+            {
+                cam.offset = {x: 0, y: 0, z: -100};
+                that.scrolling = false;
+                that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
+            },
+            1200: function ()
+            {
+                that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
+            },
+            1400: function ()
+            {
+                that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
             }
         });
     },
@@ -165,9 +181,12 @@ var testShoot = Class.create(objRoom,
         chengine.attach(this.targetFar, this.chen.model, {y: -10, z: -500});
         this.targetFar.rotation = chengine.rotationTowards(this.targetFar, this.chen.model);
 
-        this.chen.forward(this.railMovementSpeed);
-
-        if (this.step % 100 == 0)
+        if (this.scrolling)
+        {
+            this.chen.forward(this.railMovementSpeed);
+        }
+        
+        if (this.step % 100 == 0 && this.scrolling)
         {
             var newBox = new objTestEnemy();
             newBox.x = this.chen.x + Math.floor(Math.random() * 200) - 100;
@@ -176,14 +195,14 @@ var testShoot = Class.create(objRoom,
             scene.addChild(newBox);
         }
         
-        if (this.step % 1000 == 0)
+        if (this.step % 1000 == 0 && this.scrolling)
         {
             var floor = new objScrollingFloor();
-            floor.z = this.chen.z - 1000;
+            floor.z = this.chen.z - 2000;
             this.scene.addChild(floor);        
             
             var floor2 = new objScrollingFloor();
-            floor2.z = this.chen.z - 3000;
+            floor2.z = this.chen.z - 4000;
             this.scene.addChild(floor2);
             
             var testObj = game.assets[MODEL_TEST].colladaClone();

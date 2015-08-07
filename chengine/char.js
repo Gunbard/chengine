@@ -27,6 +27,10 @@ var objCharacter = Class.create(PhyCapsule,
         this.modelOffset = {x: 0, y: 10, z: 0};
         this.modelRotationOffset = {x: 0, y: 0, z: 0};
         
+        this.targetPosition = null;
+        this.moveSpeed = null;
+        this.moveTime = 0;
+        
         // Change the alpha to see the physics object
         this.mesh.setBaseColor('rgba(0, 255, 0, 0.0)');
         
@@ -36,13 +40,13 @@ var objCharacter = Class.create(PhyCapsule,
         Ammo.destroy(ang);
         
         
-        var newLife = new chengine.component.life(99999);
+        /*var newLife = new chengine.component.life(99999);
         newLife.ondeath = function ()
         {
             //alert('ded');
         };
         newLife.ondeath = newLife.ondeath.bind(this);
-        chengine.component.add(this, newLife);   
+        chengine.component.add(this, newLife);*/   
     },
     
     addToScene: function (scene)
@@ -66,6 +70,21 @@ var objCharacter = Class.create(PhyCapsule,
     onenterframe: function ()
     {
         chengine.attach(this.model, this, this.modelOffset);
+        
+        if (this.targetPosition && this.moveTime > 0) 
+        {
+            this.x += chengine.smoothValue(this.x, this.targetPosition.x, this.moveSpeed);
+            this.y += chengine.smoothValue(this.y, this.targetPosition.y, this.moveSpeed);
+            this.z += chengine.smoothValue(this.z, this.targetPosition.z, this.moveSpeed);
+            
+            this.moveTime -= 1;
+            
+            if (this.moveTime == 0)
+            {
+                this.targetPosition = null;
+            }
+        }
+            
     },
     
     /**
@@ -98,5 +117,22 @@ var objCharacter = Class.create(PhyCapsule,
         
         this.isHolding = shouldHold;
         Ammo.destroy(gravityVector);
+    },
+    
+    moveTo: function (position, speed) 
+    {
+        this.x += chengine.smoothValue(this.x, position.x, speed);
+        this.y += chengine.smoothValue(this.y, position.y, speed);
+        this.z += chengine.smoothValue(this.z, position.z, speed);
+    },
+    
+    moveBy: function (position, speed)
+    {
+        if (!this.targetPosition)
+        {
+            this.targetPosition = {x: this.x + position.x, y: this.y + position.y, z: this.z + position.z};
+            this.moveSpeed = speed;
+            this.moveTime = speed;
+        }
     }
 });
