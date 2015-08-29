@@ -156,6 +156,7 @@ var testShoot = Class.create(objRoom,
             {
                 cam.offset = {x: 0, y: 0, z: -100};
                 that.scrolling = false;
+                //that.yukkuri.translate(0, 0, 400);
                 that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
             },
             1200: function ()
@@ -167,6 +168,8 @@ var testShoot = Class.create(objRoom,
                 that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
             }
         });
+        
+        this.scene.play();
     },
     
     enterframe: function (e) 
@@ -184,6 +187,12 @@ var testShoot = Class.create(objRoom,
         if (this.scrolling)
         {
             this.chen.forward(this.railMovementSpeed);
+        }
+        
+        if (this.yukkuri)
+        {
+            this.yukkuri.model.rotation = chengine.rotationTowards(this.yukkuri, this.chen);
+            this.yukkuri.model.rotateYaw(degToRad(180));
         }
         
         if (this.step % 100 == 0 && this.scrolling)

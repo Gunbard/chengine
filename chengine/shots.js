@@ -11,7 +11,7 @@ var objShot = Class.create(PhyCylinder,
 	initialize: function () 
     {
         //Sphere.call(this);
-        PhyCylinder.call(this, 2, 30, 8);
+        PhyCylinder.call(this, 2, 30, 0);
         mat4.rotateX(this.matrix, degToRad(90));
         //this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.mesh.setBaseColor('rgba(255, 200, 15, 0.6)');
@@ -24,7 +24,18 @@ var objShot = Class.create(PhyCylinder,
         this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.shininess = 0;
      
-        this.rigid.rotationSet(new enchant.gl.Quat(1, 0, 0, degToRad(90)));
+        //this.removeEventListener('timestep');
+        
+        /*var transform = new Ammo.btTransform();
+        transform.setIdentity();
+        var quat = new enchant.gl.Quat(1, 0, 0, degToRad(90));
+        var qq = quat._quat;
+        var q = new Ammo.btQuaternion(qq[0], qq[1], qq[2], qq[3]);
+        transform.setRotation(q);
+        this.rigid.rigidBody.setCenterOfMassTransform(transform);*/
+        
+        //this.rigid.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(90)));
+
 	},
 	
     onenterframe: function ()
@@ -43,7 +54,7 @@ var objShot = Class.create(PhyCylinder,
         this.glow.y = this.y;
         this.glow.z = this.z;
     
-		this.forward(-this.speed);
+		this.forward(this.speed);
         this.glow.forward(-this.speed);
         
         this.timer -= 1;

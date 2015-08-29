@@ -670,11 +670,13 @@ chengine.component.shoot = Class.create
             bullet.x = that.obj.x + that.options.offset.x;
             bullet.y = that.obj.y + that.options.offset.y;
             bullet.z = that.obj.z + that.options.offset.z;
-            bullet.rotation = chengine.copyRotation(that.obj.model.rotation, false);
-            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
-            bullet.forward(that.options.forwardOffset);
+            //bullet.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
+            var rot = getRot(that.obj.model.rotation);
+            bullet.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
+            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
+            bullet.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
+            bullet.forward(-that.options.forwardOffset);
             that.options.scene.addChild(bullet);     
-            
             if (that.options.sound)
             {
                 chengine.sound.play(that.options.sound);

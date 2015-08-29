@@ -18,7 +18,7 @@ var objCharacter = Class.create(PhyCapsule,
         // Default attributes for the collision capsule
         radius = radius || 4;
         height = height || 12;
-        mass = mass || 1;
+        mass = mass || 0;
     
         PhyCapsule.call(this, radius, height, mass);
         
@@ -40,13 +40,13 @@ var objCharacter = Class.create(PhyCapsule,
         Ammo.destroy(ang);
         
         
-        /*var newLife = new chengine.component.life(99999);
+        var newLife = new chengine.component.life(99999);
         newLife.ondeath = function ()
         {
             //alert('ded');
         };
         newLife.ondeath = newLife.ondeath.bind(this);
-        chengine.component.add(this, newLife);*/   
+        chengine.component.add(this, newLife);   
     },
     
     addToScene: function (scene)
@@ -73,9 +73,9 @@ var objCharacter = Class.create(PhyCapsule,
         
         if (this.targetPosition && this.moveTime > 0) 
         {
-            this.x += chengine.smoothValue(this.x, this.targetPosition.x, this.moveSpeed);
-            this.y += chengine.smoothValue(this.y, this.targetPosition.y, this.moveSpeed);
-            this.z += chengine.smoothValue(this.z, this.targetPosition.z, this.moveSpeed);
+            this.x += Math.floor(chengine.smoothValue(this.x, this.targetPosition.x, this.moveSpeed));
+            this.y += Math.floor(chengine.smoothValue(this.y, this.targetPosition.y, this.moveSpeed));
+            this.z += Math.floor(chengine.smoothValue(this.z, this.targetPosition.z, this.moveSpeed));
             
             this.moveTime -= 1;
             
@@ -83,8 +83,7 @@ var objCharacter = Class.create(PhyCapsule,
             {
                 this.targetPosition = null;
             }
-        }
-            
+        }    
     },
     
     /**
