@@ -356,19 +356,33 @@ enchant.gl.physics.World.prototype.contactPairTest = function (rigid1, rigid2)
 enchant.gl.physics.World.prototype.contactTest = function (rigid) 
 {
     var callback = new Ammo.ConcreteContactResultCallback();
-    var hitObject;
+    var hitInfo = {};
     
     callback.addSingleResult = function(cp, colObj0, partid0, index0, colObj1, partid1, index1) 
     {
+        var collisionPoint = Ammo.wrapPointer(cp, Ammo.btManifoldPoint);
+        //console.log(collisionPoint);
+        //alert(collisionPoint.get_m_positionWorldOnA().x() + ', ' + collisionPoint.get_m_positionWorldOnA().y() + ', ' + collisionPoint.get_m_positionWorldOnA().z());
         var collisionObj = Ammo.wrapPointer(colObj1, Ammo.btCollisionObjectWrapper);
         var body = Ammo.btRigidBody.prototype.upcast(collisionObj.getCollisionObject());
         var owner = scene.rigidOwner(body);
-        hitObject = owner;
+        hitInfo.hitObject = owner;
+        hitInfo.hitPointA = {
+                                x: collisionPoint.get_m_positionWorldOnA().x(), 
+                                y: collisionPoint.get_m_positionWorldOnA().y(), 
+                                z: collisionPoint.get_m_positionWorldOnA().z()
+                            };
+        hitInfo.hitPointB = {
+                                x: collisionPoint.get_m_positionWorldOnB().x(), 
+                                y: collisionPoint.get_m_positionWorldOnB().y(), 
+                                z: collisionPoint.get_m_positionWorldOnB().z()
+                            };
     };
+    
     
     this._dynamicsWorld.contactTest(rigid.rigidBody, callback);
     Ammo.destroy(callback);
-    return hitObject;
+    return hitInfo;
 };
 
 /**
@@ -687,6 +701,14 @@ enchant.gl.primitive.Beam = Class.create(enchant.gl.Sprite3D,
     initialize: function(r, h, v) 
     {
         Sprite3D.call(this);
+        this.mesh = enchant.gl.Mesh.createBeam(r, h, v);
+    }
+});
+ 
+enchant.gl.physics.PhyBeam = Class.create(enchant.gl.physics.PhySprite3D, {
+    initialize: function(r, h, v, mass) {
+        var rigid = new enchant.gl.physics.RigidCylinder(r, h, mass);
+        enchant.gl.physics.PhySprite3D.call(this, rigid);
         this.mesh = enchant.gl.Mesh.createBeam(r, h, v);
     }
 });

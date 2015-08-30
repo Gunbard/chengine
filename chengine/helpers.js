@@ -258,6 +258,23 @@ chengine.rotationTowards = function (objFrom, objTo, flip)
     return copyMat;
 };
 
+/**
+ Sets the object to match a rotation. Needed to ensure physics objects
+ are the same orientation as the Sprite3D
+ @param targetObj {Sprite3D} Object to manipulate
+ @param rotationToMatch {mat4} Rotation to set
+ @param flip {bool} Whether or not to flip about the y-axis 
+ */
+chengine.matchRotation = function (targetObj, rotationToMatch, flip)
+{
+    var flipSign = (flip) ? 1 : -1;
+    var rot = getRot(rotationToMatch);
+    targetObj.rotationSet(new enchant.gl.Quat(0, 0, 0, degToRad(0)));
+    targetObj.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
+    targetObj.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(rot.y * flipSign)));
+    targetObj.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
+}
+
 function updateMouse(e)
 {
     var x = (e.pageX) ? e.pageX : e.x;

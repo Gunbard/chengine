@@ -671,11 +671,7 @@ chengine.component.shoot = Class.create
             bullet.x = that.obj.x + that.options.offset.x;
             bullet.y = that.obj.y + that.options.offset.y;
             bullet.z = that.obj.z + that.options.offset.z;
-            var rot = getRot(that.obj.model.rotation);
-            bullet.rotationSet(new enchant.gl.Quat(0, 0, 0, degToRad(0)));
-            bullet.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
-            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
-            bullet.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
+            chengine.matchRotation(bullet, that.obj.model.rotation);
             bullet.forward(-that.options.forwardOffset);
             if (that.options.sound)
             {
@@ -758,11 +754,7 @@ chengine.component.charge = Class.create
             bullet.x = that.obj.x;
             bullet.y = that.obj.y;
             bullet.z = that.obj.z;
-            var rot = getRot(that.obj.model.rotation);
-            bullet.rotationSet(new enchant.gl.Quat(0, 0, 0, degToRad(0)));
-            bullet.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
-            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
-            bullet.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
+            chengine.matchRotation(bullet, that.obj.model.rotation);
             bullet.forward(-that.options.forwardOffset);
             that.options.scene.addChild(bullet);     
             

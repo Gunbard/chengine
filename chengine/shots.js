@@ -66,7 +66,8 @@ var objShot = Class.create(PhyCylinder,
             scene.removeChild(this);
         }
         
-        var hitObj = scene.world.contactTest(this.rigid);
+        var hitInfo = scene.world.contactTest(this.rigid);
+        var hitObj = hitInfo.hitObject;
         if (hitObj)
         {
             if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof Sprite3D))
@@ -106,17 +107,18 @@ var objBeam = Class.create(Beam,
         
         Beam.call(this, this.size, this.length, 8);
         mat4.rotateX(this.matrix, degToRad(90));
-        mat4.rotateZ(this.matrix, degToRad(180));
+        //mat4.rotateZ(this.matrix, degToRad(180));
+
+        this.mesh = enchant.gl.Mesh.createBeam(this.size, this.length, 6);
         chengine.unsetLighting(this.mesh);
-        this.mesh.setBaseColor('rgba(255, 0, 0, 0.8)');        
+        this.mesh.setBaseColor('rgba(255, 0, 0, 0.8)');
+              
         this.timer = 30;
         this.hit = false;
     },
     
     onenterframe: function ()
     {   
-        //this.length += 20;
-        
         if (!this.shrinking && this.size < this.sizeMax)
         {
             this.size += this.sizeRate;
@@ -152,11 +154,48 @@ var objBeam = Class.create(Beam,
         chengine.unsetLighting(this.mesh);
         this.mesh.setBaseColor('rgba(255, 0, 0, 0.8)');
         
-        
         if (this.hit)
         {
             return;
         }
+        
+        /*var hitInfo = scene.world.contactTest(this.rigid);
+        var hitObj = hitInfo.hitObject;
+        if (hitObj)
+        {
+            var hitpoint = hitInfo.hitPointA;
+        
+            //if (this.shrinking && !this.hit)
+            //{
+                if (hitObj instanceof PhyBox) //|| hitObj instanceof objCharacter)
+                {   
+                    //this.hit = true;
+                    
+                    var exp = new objExp(10);
+                    exp.x = hitpoint.x; //this.x;
+                    exp.y = hitpoint.y; //this.y;
+                    exp.z = hitpoint.z; //this.z;
+                    scene.addChild(exp);
+                    scene.removeChild(this);
+                    
+                    chengine.sound.play(SOUND_HIT);
+            
+                    var lifeComp = chengine.component.get(hitObj, chengine.component.life);
+                    if (lifeComp)
+                    {
+                        lifeComp.damage(1);
+                    }
+                    
+                    this.length = distanceToPoint(this, {x: hitpoint.x, y: hitpoint.y, z: hitpoint.z});
+                }
+                
+            //}            
+        }
+        else
+        {
+            this.length = this.scanLength;
+        }*/
+        
         
         // Collision detection
         var rx = this.rotation[8] * this.scanLength;
@@ -164,7 +203,7 @@ var objBeam = Class.create(Beam,
         var rz = this.rotation[10] * this.scanLength;
         
         var ray1 = new Ammo.btVector3(this.x, this.y, this.z);
-        var ray2 = new Ammo.btVector3(this.x - rx, this.y - ry, this.z - rz);
+        var ray2 = new Ammo.btVector3(this.x + rx, this.y + ry, this.z + rz);
         
         var rayCallback = new Ammo.ClosestRayResultCallback(ray1, ray2);
         scene.world._dynamicsWorld.rayTest(ray1, ray2, rayCallback); 
@@ -175,21 +214,22 @@ var objBeam = Class.create(Beam,
         
             if (this.shrinking && !this.hit)
             {
-                this.hit = true;
-
                 var collisionObj = rayCallback.get_m_collisionObject();
                 var body = Ammo.btRigidBody.prototype.upcast(collisionObj);
                 var owner = scene.rigidOwner(body);
                 
-                if (owner instanceof objTestBall)
-                {                                
+                if (owner instanceof objTestBall || owner instanceof PhyBox)
+                {
+                    this.hit = true;
+                    
                     var exp = new objExp(10);
                     exp.x = hitpoint.x();
                     exp.y = hitpoint.y();
                     exp.z = hitpoint.z();
                     scene.addChild(exp);
                     
-                    chengine.pushForward(this, body, 20);
+                    //chengine.pushForward(this, body, 20);
+                    chengine.sound.play(SOUND_HIT);
                     
                     var lifeComp = chengine.component.get(owner, chengine.component.life);
                     if (lifeComp)
@@ -197,9 +237,9 @@ var objBeam = Class.create(Beam,
                         lifeComp.damage(1);
                     }
                 }
+                
+                this.length = distanceToPoint(this, {x: hitpoint.x(), y: hitpoint.y(), z: hitpoint.z()});
             }
-            
-            this.length = distanceToPoint(this, {x: hitpoint.x(), y: hitpoint.y(), z: hitpoint.z()});
             
             //scene.removeChild(this);
         }
@@ -211,8 +251,6 @@ var objBeam = Class.create(Beam,
         Ammo.destroy(ray1);
         Ammo.destroy(ray2);
         Ammo.destroy(rayCallback);
-
-        
     }
 });
 
@@ -281,7 +319,9 @@ var objHomingShot = Class.create(PhySphere,
             scene.removeChild(this);
         }
         
-        var hitObj = scene.world.contactTest(this.rigid);
+
+        var hitInfo = scene.world.contactTest(this.rigid);
+        var hitObj = hitInfo.hitObject;
         if (hitObj)
         {
             if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || 

@@ -166,6 +166,10 @@ var testShoot = Class.create(objRoom,
             1400: function ()
             {
                 that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
+            },
+            1600: function ()
+            {
+                that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
             }
         });
         
@@ -252,6 +256,15 @@ var testShoot = Class.create(objRoom,
                 this.scene.getCamera().setChase(this.chen.model, -100, 50, 
                                                 {x: 0, y: 20, z: 0}, {x: 0, y: 30, z: 0});
             }
+        }
+        
+        if (chengine.input.keyPressed('h')) 
+        {
+            var beam = new objBeam(this.scene);
+            chengine.attach(beam, this.chen);
+            chengine.matchRotation(beam, this.chen.model.rotation);
+            beam.forward(20);
+            this.scene.addChild(beam);
         }
         
         if (chengine.input.keyPressed('f'))
