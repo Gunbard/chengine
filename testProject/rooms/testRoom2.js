@@ -34,12 +34,12 @@ var testRoom2 = Class.create(objRoom,
         
         chengine.component.add(scene.getCamera(), new chengine.component.controlCameraMovable(1, game.input, this.pad));
         
-        this.chen = new objCharacter(MODEL_HOLO);
+        this.chen = new objCharacter(MODEL_HOLO, null, null, 1);
         this.chen.y = 100;
         this.chen.z = 200;
         this.chen.addToScene(this.scene);
         
-        this.yukkuri = new objCharacter(MODEL_YUKKURI);
+        this.yukkuri = new objCharacter(MODEL_YUKKURI, null, null, 1);
         this.yukkuri.y = 100;
         this.yukkuri.z = 400;
         this.yukkuri.addToScene(this.scene);

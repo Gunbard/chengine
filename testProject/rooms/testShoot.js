@@ -89,7 +89,7 @@ var testShoot = Class.create(objRoom,
             bullet: objShot,
             scene: that.scene,
             cooldown: 5,
-            forwardOffset: -30,
+            forwardOffset: -50,
             bulletSpeed: 50,
             sound: SOUND_LASER
         }

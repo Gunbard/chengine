@@ -661,22 +661,22 @@ chengine.component.shoot = Class.create
         this.options.offset = this.options.offset || {x: 0, y: 0, z: 0};
         this.cooldownMax = this.options.cooldown;
         this.cooldown = this.options.cooldown;
-        this.bulletSpeed = this.options.bulletSpeed || 25;
+        this.bulletSpeed = 40; //this.options.bulletSpeed || 25;
         var that = this;
         this.fireAction = function ()
         {
             var bullet = new that.options.bullet();
+            that.options.scene.addChild(bullet);     
             bullet.speed = that.bulletSpeed;
             bullet.x = that.obj.x + that.options.offset.x;
             bullet.y = that.obj.y + that.options.offset.y;
             bullet.z = that.obj.z + that.options.offset.z;
-            //bullet.rotationSet(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
             var rot = getRot(that.obj.model.rotation);
+            bullet.rotationSet(new enchant.gl.Quat(0, 0, 0, degToRad(0)));
             bullet.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
             bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
             bullet.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
             bullet.forward(-that.options.forwardOffset);
-            that.options.scene.addChild(bullet);     
             if (that.options.sound)
             {
                 chengine.sound.play(that.options.sound);
@@ -758,9 +758,12 @@ chengine.component.charge = Class.create
             bullet.x = that.obj.x;
             bullet.y = that.obj.y;
             bullet.z = that.obj.z;
-            bullet.rotation = chengine.copyRotation(that.obj.model.rotation, false);
-            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
-            bullet.forward(that.options.forwardOffset);
+            var rot = getRot(that.obj.model.rotation);
+            bullet.rotationSet(new enchant.gl.Quat(0, 0, 0, degToRad(0)));
+            bullet.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
+            bullet.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
+            bullet.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
+            bullet.forward(-that.options.forwardOffset);
             that.options.scene.addChild(bullet);     
             
             if (that.options.sound)

@@ -11,13 +11,13 @@ var objShot = Class.create(PhyCylinder,
 	initialize: function () 
     {
         //Sphere.call(this);
-        PhyCylinder.call(this, 2, 30, 0);
+        PhyCylinder.call(this, 2, 40, 0);
         mat4.rotateX(this.matrix, degToRad(90));
         //this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.mesh.setBaseColor('rgba(255, 200, 15, 0.6)');
-        this.speed = 25;
+        this.speed = 10;
         this.timer = 30;
-        this.bounding.threshold = 100;
+        //this.bounding.threshold = 100;
         this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
         this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
@@ -36,6 +36,7 @@ var objShot = Class.create(PhyCylinder,
         
         //this.rigid.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(90)));
 
+        this.rigid.rigidBody.getCollisionShape().setMargin(2);
 	},
 	
     onenterframe: function ()
@@ -222,7 +223,7 @@ var objHomingShot = Class.create(PhySphere,
 {
 	initialize: function (target) 
     {
-        PhySphere.call(this, 2);
+        PhySphere.call(this, 2, 0);
         this.mesh.setBaseColor('rgba(245, 240, 30, 1.0)');
         this.speed = 8;
         this.timer = 100;
@@ -249,7 +250,11 @@ var objHomingShot = Class.create(PhySphere,
         else if (this.target)
         {
             this.speed = 15;
-            this.rotation = chengine.rotationTowards(this, this.target);
+            var rot = getRot(chengine.rotationTowards(this, this.target, true));
+            this.rotationSet(new enchant.gl.Quat(1, 0, 0, degToRad(180)))
+            this.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
+            this.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
+            this.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
         }
     
         // Add glow effect
@@ -265,8 +270,8 @@ var objHomingShot = Class.create(PhySphere,
         this.glow.y = this.y;
         this.glow.z = this.z;
     
-		this.forward(-this.speed);
-        this.glow.forward(-this.speed);
+		this.forward(this.speed);
+        this.glow.forward(this.speed);
         
         this.timer -= 1;
         

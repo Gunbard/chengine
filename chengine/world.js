@@ -483,7 +483,7 @@ var objTestEnemy = Class.create(PhyBox,
 {
     initialize: function ()
     {
-        PhyBox.call(this, 10, 10, 10, 0);
+        PhyBox.call(this, 20, 20, 20, 0);
         this.mesh.setBaseColor('rgba(255, 255, 255, 1.0');
         this.mesh.texture = new Texture(game.assets['images/tex.jpg']);
         this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
