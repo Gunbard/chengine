@@ -100,8 +100,8 @@ var objBeam = Class.create(Beam,
     {
         this.length = 1;
         this.size = 0.2;
-        this.sizeMax = 1;
-        this.sizeRate = 0.1;
+        this.sizeMax = 5;
+        this.sizeRate = 0.25;
         this.shrinking = false;
         this.scanLength = 1000;
         
@@ -146,7 +146,7 @@ var objBeam = Class.create(Beam,
         }
         else
         {
-            scene.removeChild(this);
+            //scene.removeChild(this);
         }
 
         // This is inefficient as SHIT. FIX IT
@@ -236,9 +236,13 @@ var objBeam = Class.create(Beam,
                     {
                         lifeComp.damage(1);
                     }
+                    
+                    this.length = distanceToPoint(this, {x: hitpoint.x(), y: hitpoint.y(), z: hitpoint.z()});
                 }
-                
-                this.length = distanceToPoint(this, {x: hitpoint.x(), y: hitpoint.y(), z: hitpoint.z()});
+            }
+            else
+            {
+                this.length = this.scanLength;
             }
             
             //scene.removeChild(this);

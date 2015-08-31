@@ -163,6 +163,42 @@ var testShoot = Class.create(objRoom,
             {
                 that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
             },
+            1300: function ()
+            {
+                var beam = new objBeam(that.scene);
+                chengine.attach(beam, that.yukkuri);
+                beam.sidestep(-50);
+                beam.altitude(50);
+                beam.rotation = chengine.rotationTowards(beam, that.chen.model);
+                beam.rotateYaw(degToRad(180));
+                that.scene.addChild(beam);
+                
+                var beam2 = new objBeam(that.scene);
+                chengine.attach(beam2, that.yukkuri);
+                beam2.sidestep(50);
+                beam2.altitude(50);
+                beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
+                beam2.rotateYaw(degToRad(180));
+                that.scene.addChild(beam2);
+            },
+            1380: function ()
+            {
+                var beam = new objBeam(that.scene);
+                chengine.attach(beam, that.yukkuri);
+                beam.sidestep(-50);
+                beam.altitude(50);
+                beam.rotation = chengine.rotationTowards(beam, that.chen.model);
+                beam.rotateYaw(degToRad(180));
+                that.scene.addChild(beam);
+                
+                var beam2 = new objBeam(that.scene);
+                chengine.attach(beam2, that.yukkuri);
+                beam2.sidestep(50);
+                beam2.altitude(50);
+                beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
+                beam2.rotateYaw(degToRad(180));
+                that.scene.addChild(beam2);
+            },
             1400: function ()
             {
                 that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
