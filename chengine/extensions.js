@@ -61,12 +61,12 @@ enchant.gl.Sprite3D.prototype.colladaClone = function (world)
         for (var i = 0, l = this.childNodes.length; i < l; i++) 
         {
             var childClone = this.childNodes[i].clone();
-            childClone.collada = world;
+            childClone.world = world;
             clone.addChild(childClone);
         }
     }
     
-    clone.collada = world;
+    clone.world = world;
     
     return clone;
 };

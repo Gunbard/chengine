@@ -535,7 +535,7 @@ var objScrollingFloor = Class.create(PhyBox,
         this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.shininess = 0;
-
+        this.world = true;
         //this.deathTimer = 2000;
     },
     
