@@ -60,12 +60,14 @@ enchant.gl.Sprite3D.prototype.colladaClone = function ()
     {
         for (var i = 0, l = this.childNodes.length; i < l; i++) 
         {
-            clone.addChild(this.childNodes[i].clone());
+            var childClone = this.childNodes[i].clone();
+            childClone.collada = true;
+            clone.addChild(childClone);
         }
     }
     
-    this.bounding = new enchant.gl.collision.AABB();
-
+    clone.collada = true;
+    
     return clone;
 };
 

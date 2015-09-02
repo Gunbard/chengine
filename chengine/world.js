@@ -204,6 +204,7 @@ var objRoom = Class.create(
     {
         radius = radius || 1500;
         this.skybox = new Sphere(radius);
+        this.skybox.skybox = true;
         this.skybox.mesh.reverse();
         this.skybox.mesh.texture = new Texture(game.assets[texture]);
         this.skybox.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
