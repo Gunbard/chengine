@@ -11,7 +11,7 @@
  Inits Sprite3D as PhySprite3D and adds rigid bodies to nodes.
  This is necessary as collada files init as Sprite3Ds rather than PhySprite3Ds.
  */
-enchant.gl.Sprite3D.prototype.colladaClone = function () 
+enchant.gl.Sprite3D.prototype.colladaClone = function (world) 
 {   
     if (!(this instanceof enchant.gl.collada.RootColladaSprite3D))
     {
@@ -25,7 +25,7 @@ enchant.gl.Sprite3D.prototype.colladaClone = function ()
     shape = new Ammo.btBoxShape(scale);
     Ammo.destroy(scale);
 
-    var rigid = new enchant.gl.physics.Rigid(shape, 1);
+    var rigid = new enchant.gl.physics.Rigid(shape, 0);
     var clone = new enchant.gl.physics.PhySprite3D(rigid);
 
     for (var prop in this) 
@@ -61,12 +61,12 @@ enchant.gl.Sprite3D.prototype.colladaClone = function ()
         for (var i = 0, l = this.childNodes.length; i < l; i++) 
         {
             var childClone = this.childNodes[i].clone();
-            childClone.collada = true;
+            childClone.collada = world;
             clone.addChild(childClone);
         }
     }
     
-    clone.collada = true;
+    clone.collada = world;
     
     return clone;
 };

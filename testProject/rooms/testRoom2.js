@@ -20,7 +20,8 @@ var testRoom2 = Class.create(objRoom,
         this.createSkybox(TEXTURE_SKYDOME);
         this.scene.setFogDistance(200.0, 1550.0);
         
-        this.area = game.assets[WORLD_HFIELD].colladaClone();
+        this.area = game.assets[WORLD_HFIELD].colladaClone(true);
+        this.area.world = true;
         this.area.updateRigid(0, 1, this.area.getVertices());
         scene.addChild(this.area);
         

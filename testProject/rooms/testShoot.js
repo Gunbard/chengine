@@ -50,6 +50,15 @@ var testShoot = Class.create(objRoom,
         floor3.z = this.chen.z + 1000;
         this.scene.addChild(floor3);
         
+        for (var i = 0; i < 50; i++) 
+        {
+            var tree = game.assets[MODEL_TREE].colladaClone(true);
+            mat4.rotateX(tree.matrix, degToRad(-90));
+            tree.x = rand(-1000, 2000);
+            tree.z = -rand(-1000, 2000);
+            this.scene.addChild(tree);
+        }
+        
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
         

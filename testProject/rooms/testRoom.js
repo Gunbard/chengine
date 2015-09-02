@@ -30,7 +30,7 @@ var testRoom = Class.create(objRoom,
         
         this.createSkybox(TEXTURE_SKYDOME, 1500);
         
-        this.area = game.assets[WORLD_BATTLEFIELD].colladaClone();
+        this.area = game.assets[WORLD_BATTLEFIELD].colladaClone(true);
         this.area.updateRigid(0, 1, this.area.getVertices());
         scene.addChild(this.area);
                     
