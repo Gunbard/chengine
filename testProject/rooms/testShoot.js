@@ -26,6 +26,36 @@ var testShoot = Class.create(objRoom,
         this.scene.setFogColor(0.1, 0.3, 0.5, 1.0);
         this.scene.setFogDistance(1200.0, 1550.0);
         
+        /*this.area = game.assets[WORLD_BATTLEFIELD].colladaClone(true);
+        this.area.updateRigid(0, 1, this.area.getVertices());
+        this.area.x += 1000;
+        this.area.rotateYaw(degToRad(130));
+        scene.addChild(this.area);*/
+        
+        /*this.area = game.assets[WORLD_GROUND3].colladaClone(true);
+        this.area.updateRigid(0, 1, this.area.getVertices());
+        this.area.z -= 1000;
+        this.area.y += 30;
+        scene.addChild(this.area);*/
+        
+        var floor = game.assets[WORLD_GROUND3].colladaClone(true);
+        floor.updateRigid(0, 1, floor.getVertices());
+        //floor.z -= 1000;
+        floor.y += 30;
+        scene.addChild(floor);
+        
+        var floor2 = game.assets[WORLD_GROUND3].colladaClone(true);
+        floor2.updateRigid(0, 1, floor2.getVertices());
+        floor2.z -= 2000;
+        floor2.y += 30;
+        scene.addChild(floor2);        
+        
+        var floor3 = game.assets[WORLD_GROUND3].colladaClone(true);
+        floor3.updateRigid(0, 1, floor3.getVertices());
+        floor3.z -= 4000;
+        floor3.y += 30;
+        scene.addChild(floor3);
+        
         // Make CHEN! HONK HONK
         this.chen = new objCharacter(MODEL_CHEN);
         chengine.attach(this.chen, this.scene.getCamera());
@@ -38,7 +68,7 @@ var testShoot = Class.create(objRoom,
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
         
         // Get some scrolling ground going
-        var floor = new objScrollingFloor();
+        /*var floor = new objScrollingFloor();
         floor.z = this.chen.z - 1000;
         this.scene.addChild(floor);        
         
@@ -49,6 +79,7 @@ var testShoot = Class.create(objRoom,
         var floor3 = new objScrollingFloor();
         floor3.z = this.chen.z + 1000;
         this.scene.addChild(floor3);
+        */
         
         /*for (var i = 0; i < 50; i++) 
         {
@@ -253,7 +284,7 @@ var testShoot = Class.create(objRoom,
             scene.addChild(newBox);
         }
         
-        if (this.step % 1000 == 0 && this.scrolling)
+        /*if (this.step % 1000 == 0 && this.scrolling)
         {
             var floor = new objScrollingFloor();
             floor.z = this.chen.z - 2000;
@@ -283,7 +314,7 @@ var testShoot = Class.create(objRoom,
             testObj.x -= 50 + rand(0, 300);
             testObj.z = this.chen.z - 2000;
             this.scene.addChild(testObj);
-        }
+        }*/
         
         if (chengine.input.keyPressed('i'))
         {   

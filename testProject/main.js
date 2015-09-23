@@ -11,6 +11,7 @@ enchant();
 WORLD_BATTLEFIELD = 'model/battlefield/battlefield.dae';
 WORLD_CASTLE = 'model/castle/castle.dae';
 WORLD_HFIELD = 'model/hfield/hfield.dae';
+WORLD_GROUND3 = 'model/ground3/ground3.dae';
 MODEL_PATH = 'model/asuka/Asuka.pmd';
 MODEL_REI_PATH = 'model/rei/Rei.pmd';
 MOTION_PATH = 'motion/walk.vmd';
@@ -71,6 +72,7 @@ window.onload = function ()
         WORLD_BATTLEFIELD,
         WORLD_HFIELD,
         WORLD_CASTLE,
+        WORLD_GROUND3,
         MUSIC_CORNERIA,
         SOUND_LASER,
         SOUND_EXPLODE,
