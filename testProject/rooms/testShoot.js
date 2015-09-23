@@ -18,29 +18,16 @@ var testShoot = Class.create(objRoom,
         
         // Make a pad
         this.pad = new APad();
-        this.pad.x = 20;
-        this.pad.y = 220;
+        this.pad.x = viewportX(5);
+        this.pad.y = viewportY(60);
         
         this.createSkybox(TEXTURE_SKYDOME, 1500);
         this.scene.setFog(1.0);
         this.scene.setFogColor(0.1, 0.3, 0.5, 1.0);
         this.scene.setFogDistance(1200.0, 1550.0);
         
-        /*this.area = game.assets[WORLD_BATTLEFIELD].colladaClone(true);
-        this.area.updateRigid(0, 1, this.area.getVertices());
-        this.area.x += 1000;
-        this.area.rotateYaw(degToRad(130));
-        scene.addChild(this.area);*/
-        
-        /*this.area = game.assets[WORLD_GROUND3].colladaClone(true);
-        this.area.updateRigid(0, 1, this.area.getVertices());
-        this.area.z -= 1000;
-        this.area.y += 30;
-        scene.addChild(this.area);*/
-        
         var floor = game.assets[WORLD_GROUND3].colladaClone(true);
         floor.updateRigid(0, 1, floor.getVertices());
-        //floor.z -= 1000;
         floor.y += 30;
         scene.addChild(floor);
         
@@ -64,43 +51,19 @@ var testShoot = Class.create(objRoom,
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.addToScene(this.scene);
 
-        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.4, game.input, this.pad, {upIsForward: false}));
+        chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.5, game.input, this.pad, {upIsForward: false}));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
-        
-        // Get some scrolling ground going
-        /*var floor = new objScrollingFloor();
-        floor.z = this.chen.z - 1000;
-        this.scene.addChild(floor);        
-        
-        var floor2 = new objScrollingFloor();
-        floor2.z = this.chen.z - 3000;
-        this.scene.addChild(floor2);
-        
-        var floor3 = new objScrollingFloor();
-        floor3.z = this.chen.z + 1000;
-        this.scene.addChild(floor3);
-        */
-        
-        /*for (var i = 0; i < 50; i++) 
-        {
-            var tree = game.assets[MODEL_TREE].colladaClone(true);
-            mat4.rotateX(tree.matrix, degToRad(-90));
-            tree.x = rand(-1000, 2000);
-            tree.z = -rand(-1000, 2000);
-            this.scene.addChild(tree);
-        }*/
         
         // Needs to be on top of everything to get touches
         this.scene.scene2D.addChild(this.pad);
         
         this.button = new Button("", "light");
-        this.button.width = 50;
-        this.button.height = 50;
-        this.button.moveTo(560, 260);
-        this.button.opacity = 0.6;
+        this.button.width = 60;
+        this.button.height = 60;
+        this.button.moveTo(viewportX(80), viewportY(65));
+        this.button.opacity = 0.4;
         scene.scene2D.addChild(this.button);
         
-        //this.scene.getCamera().rotateYaw(degToRad(10));
         this.scene.getCamera().forward(500);
         this.scene.getCamera().sidestep(100);
         this.scene.getCamera().altitude(100);
@@ -188,9 +151,33 @@ var testShoot = Class.create(objRoom,
             {
                 that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
                 that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
-                that.yukkuri.y += 30;
+                that.yukkuri.y += 60;
                 that.yukkuri.z = that.chen.z - 2000;
                 that.yukkuri.addToScene(that.scene);
+            },
+            800: function ()
+            {
+                return;
+                var testObj = game.assets[MODEL_TEST].colladaClone();
+                var objScale = 0.5;
+                testObj.scale(objScale, objScale, objScale);
+                testObj.updateRigid(0, objScale, testObj.getVertices());
+                
+                var newLife = new chengine.component.life(20);
+                newLife.ondeath = function ()
+                {
+                    var bigExp = new objBigExp(that, null);
+                    bigExp.x = that.x;
+                    bigExp.y = that.y;
+                    bigExp.z = that.z;
+                    scene.addChild(bigExp);
+                };
+                newLife.ondeath = newLife.ondeath.bind(testObj);
+                chengine.component.add(testObj, newLife);   
+                
+                testObj.rotatePitch(degToRad(270));
+                testObj.z = that.chen.z - 1000;
+                that.scene.addChild(testObj);
             },
             1000: function ()
             {
@@ -275,46 +262,25 @@ var testShoot = Class.create(objRoom,
             this.yukkuri.model.rotateYaw(degToRad(180));
         }
         
-        if (this.step % 100 == 0 && this.scrolling)
+        /*if (this.step % 100 == 0 && this.scrolling)
         {
             var newBox = new objTestEnemy();
             newBox.x = this.chen.x + Math.floor(Math.random() * 200) - 100;
             newBox.y = this.chen.y + Math.floor(Math.random() * 200) - 100;
             newBox.z = this.chen.z - 1500;
             scene.addChild(newBox);
-        }
+        }*/
         
-        /*if (this.step % 1000 == 0 && this.scrolling)
+        if (this.step % 1000 == 0 && this.scrolling)
         {
-            var floor = new objScrollingFloor();
+            /**var floor = new objScrollingFloor();
             floor.z = this.chen.z - 2000;
             this.scene.addChild(floor);        
             
             var floor2 = new objScrollingFloor();
             floor2.z = this.chen.z - 4000;
-            this.scene.addChild(floor2);
-            
-            var testObj = game.assets[MODEL_TEST].colladaClone();
-            testObj.scale(0.25, 0.25, 0.25);
-            testObj.updateRigid(0, 0.25, testObj.getVertices());
-            
-            var newLife = new chengine.component.life(20);
-            newLife.ondeath = function ()
-            {
-                var bigExp = new objBigExp(this, null);
-                bigExp.x = this.x;
-                bigExp.y = this.y;
-                bigExp.z = this.z;
-                scene.addChild(bigExp);
-            };
-            newLife.ondeath = newLife.ondeath.bind(testObj);
-            chengine.component.add(testObj, newLife);   
-            
-            testObj.rotatePitch(degToRad(270));
-            testObj.x -= 50 + rand(0, 300);
-            testObj.z = this.chen.z - 2000;
-            this.scene.addChild(testObj);
-        }*/
+            this.scene.addChild(floor2);*/
+        }
         
         if (chengine.input.keyPressed('i'))
         {   

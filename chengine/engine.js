@@ -101,6 +101,26 @@ function resizeGame()
     enchant.Core.instance.scale = scale.x;
 }
 
+/**
+ Calculates a value based on percentage of game's width
+ @param percent {number} Value between 0 and 100
+ @return {number} Percent value relative to the game's width
+ */
+function viewportX(percent)
+{
+    return GAME_WIDTH * (percent / 100);
+}
+
+/**
+ Calculates a value based on percentage of game's width
+ @param percent {number} Value between 0 and 100
+ @return {number} Percent value relative to the game's width
+ */
+function viewportY(percent)
+{
+    return GAME_HEIGHT * (percent / 100);
+}
+
 window.addEventListener('resize', resizeGame, false);
 window.addEventListener('orientationchange', resizeGame, false);
   
