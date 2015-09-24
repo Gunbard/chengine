@@ -133,6 +133,11 @@ var testShoot = Class.create(objRoom,
         var chen = this.chen.model;
         this.timeline.cue
         ({
+            100: function ()
+            {
+                var windowTest = new objWindow({text: 'Ran<br>You can do it, Chen!', image: SPRITE_RAN});
+                that.scene.scene2D.addChild(windowTest);
+            },
             200: function () 
             {
                 cam.x += 200;
@@ -141,6 +146,9 @@ var testShoot = Class.create(objRoom,
             },
             500: function () 
             {
+                var windowTest = new objWindow({text: 'Ran<br>Go, Chen, go!!', image: SPRITE_RAN});
+                that.scene.scene2D.addChild(windowTest);
+                
                 cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
             },
             600: function ()

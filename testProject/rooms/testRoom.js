@@ -115,7 +115,7 @@ var testRoom = Class.create(objRoom,
         cockpit.y -= 50;
         //game.rootScene.addChild(cockpit);
         
-        var windowTest = new objWindow(100, 10, 320, 64, '???<br>What the crap is this?');
+        var windowTest = new objWindow({text: 'Huh'});
         this.scene.scene2D.addChild(windowTest);
 
         var line = new Sprite(GAME_WIDTH, GAME_HEIGHT);

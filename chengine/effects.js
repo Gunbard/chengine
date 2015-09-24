@@ -229,34 +229,68 @@ var objBigExp = Class.create(Sprite3D,
  the window is full. Closes when text finishes.
  TODO: Lookahead for <br>. If found, add whole thing rather than typing it out
        and waiting for the actual break to happen
- @param x {float} X-position
- @param y {float} Y-position
- @param width {float} Width of window
- @param height {float} Height of window
- @param text {string} Text to display
+
+ @param params {obj} Parameters
+    {
+        x {float} X-position
+        y {float} Y-position
+        width {float} Width of window
+        height {float} Height of window
+        text {string} Text to display
+        font {font family} Font to display text in
+        color {string} Hex string representing text color
+        bgColor {string} Hex string representing background color
+        opacity {number} Alpha value between 0 and 1
+        timer {number} Time (in game steps) before the window auto closes (after all the text is displayed)
+        textSpeed {number} Number of chars to display per frame
+    }
  */
 var objWindow = Class.create(Label,
 {
-    initialize: function(x, y, width, height, text) 
+    initialize: function(params) 
     {
         Label.call(this);
-        this.x = x;
-        this.y = y;
-        this.widthMax = width;
-        this.heightMax = height;
+        
+        if (!params)
+        {
+            params = {};
+        }
+        
+        this.x = params.x || 200;
+        this.y = params.y || 10;
+        this.widthMax = params.width || 320;
+        this.heightMax = params.height || 64;
+        this.backgroundColor = params.bgColor || '#000000';
+        this.opacity = params.opacity || 0.5;
+        this.autocloseTimer = params.timer || 200; // In game steps
+        
+        if (params.position)
+        {
+            switch (params.position)
+            {
+                case 'top':
+                default:
+                    this.x = 200;
+                    this.y = 10;
+                    break;
+            }
+        }
+        
+        // Current dimensions
         this.width = 1;
         this.height = 1;
-        this.backgroundColor = '#000000';
-        this.opacity = 0.5;
+
+        // Text color
+        this.color = params.color || DEFAULT_MSGTEXT_COLOR;
         
-        this.color = DEFAULT_MSGTEXT_COLOR;
-        this.font = DEFAULT_MSGTEXT_FONT;
+        // Font to use
+        this.font = params.font || DEFAULT_MSGTEXT_FONT;
         
         // Number of chars to type at a time
-        this.textSpeed = 1;
+        this.textSpeed = params.textSpeed || 1;
         
         // The full text that will be typed out
-        this.textData = text;
+        this.textData = params.text || '';
         
         // Current position of the cursor
         this.textPos = 0;
@@ -267,8 +301,22 @@ var objWindow = Class.create(Label,
         // If waiting for user input to continue
         this.waiting = false;
         
+        // Text finished showing
+        this.finished = false;
+        
         // If closing
         this.closing = false;
+        
+        if (params.image)
+        {
+            this.image = new Sprite(80, 80);
+            this.image.x = this.x - 80 - 4;
+            this.image.y = this.y;
+            this.image.image = game.assets[params.image];
+            var scene = enchant.Core.instance.GL.currentScene3D;
+            scene.scene2D.addChild(this.image);
+        }
+    
     },
     
     onenterframe: function()
@@ -318,7 +366,11 @@ var objWindow = Class.create(Label,
                         }
                     }
                 }
-            }            
+            }
+            else
+            {
+                this.finished = true;
+            }
         }
         
         if (game.input.space)
@@ -335,6 +387,19 @@ var objWindow = Class.create(Label,
             }
         }
         
+        if (this.finished)
+        {
+            if (this.autocloseTimer > 0)
+            {
+                this.autocloseTimer -= 1;
+            }
+            else
+            {
+                this.text = '';
+                this.closing = true;
+            }
+        }
+            
         if (this.closing)
         {
             if (this.height > (0.2 * this.heightMax))
@@ -343,6 +408,11 @@ var objWindow = Class.create(Label,
             }
             else
             {
+                if (this.image)
+                {
+                    var scene = enchant.Core.instance.GL.currentScene3D;
+                    scene.scene2D.removeChild(this.image);
+                }
                 chengine.instanceDestroy(this);
             }
         }

@@ -35,6 +35,7 @@ SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
 MODEL_TEST = 'model/modeltest2.dae';
 MODEL_YUKKURI = 'model/reimuyukkuri/reimuyukkuribig.pmd';
 MODEL_TREE = 'model/tree/tree.dae';
+SPRITE_RAN = 'images/ran.png';
 
 // Globalize these for testing purposes 
 var game;
@@ -83,7 +84,8 @@ window.onload = function ()
         SOUND_CHARGELASEREXPLODE,
         MODEL_TEST,
         MODEL_YUKKURI,
-        MODEL_TREE
+        MODEL_TREE,
+        SPRITE_RAN
     );
     
     game.onload = function ()
