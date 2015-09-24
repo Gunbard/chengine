@@ -388,3 +388,72 @@ var objHomingShot = Class.create(PhySphere,
         Ammo.destroy(rayCallback); */
 	}
 });
+
+/**
+ A basic missile
+ */
+var objMissile = Class.create(PhyCylinder, 
+{
+	initialize: function (target) 
+    {
+        PhyCylinder.call(this, 3, 5, 0);
+        mat4.rotateX(this.matrix, degToRad(90));
+        this.mesh.setBaseColor('rgba(100, 100, 100, 1.0)');
+        this.speed = 10;
+        this.timer = 999999;
+        this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
+        this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.shininess = 0;
+
+        this.target = target;
+        
+        this.rigid.rigidBody.getCollisionShape().setMargin(2);
+	},
+	
+    onenterframe: function ()
+    {
+        if (this.target)
+        {
+            this.speed = 5;
+            var rot = getRot(chengine.rotationTowards(this, this.target, true));
+            this.rotationSet(new enchant.gl.Quat(1, 0, 0, degToRad(180)))
+            this.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
+            this.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(-rot.y)));
+            this.rotationApply(new enchant.gl.Quat(0, 0, 1, degToRad(rot.z)));
+        }
+        
+		this.forward(this.speed);
+        
+        this.timer -= 1;
+        
+        if (this.timer <= 0)
+        {
+            scene.removeChild(this);
+        }
+        
+        var hitInfo = scene.world.contactTest(this.rigid);
+        var hitObj = hitInfo.hitObject;
+        if (hitObj)
+        {
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox)
+            {                                
+                var exp = new objExp(10);
+                exp.x = this.x;
+                exp.y = this.y;
+                exp.z = this.z;
+                scene.addChild(exp);
+                scene.removeChild(this);
+                
+                chengine.sound.play(SOUND_HIT);
+                
+                var lifeComp = chengine.component.get(hitObj, chengine.component.life);
+                if (lifeComp)
+                {
+                    lifeComp.damage(1);
+                }
+            }
+        }
+	}
+});

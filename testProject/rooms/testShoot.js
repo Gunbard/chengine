@@ -135,7 +135,7 @@ var testShoot = Class.create(objRoom,
         ({
             100: function ()
             {
-                var windowTest = new objWindow({text: 'Ran<br>You can do it, Chen!', image: SPRITE_RAN});
+                var windowTest = new objWindow({text: 'Ran<br>"You can do it, Chen!"', image: SPRITE_RAN});
                 that.scene.scene2D.addChild(windowTest);
             },
             200: function () 
@@ -146,7 +146,7 @@ var testShoot = Class.create(objRoom,
             },
             500: function () 
             {
-                var windowTest = new objWindow({text: 'Ran<br>Go, Chen, go!!', image: SPRITE_RAN});
+                var windowTest = new objWindow({text: 'Ran<br>"Go, Chen, go!!"', image: SPRITE_RAN});
                 that.scene.scene2D.addChild(windowTest);
                 
                 cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
@@ -165,6 +165,9 @@ var testShoot = Class.create(objRoom,
             },
             800: function ()
             {
+                var windowTest = new objWindow({text: 'Ran<br>"Watch out! There\'s a huge stupid thing approaching fast!"', image: SPRITE_RAN});
+                that.scene.scene2D.addChild(windowTest);
+                
                 return;
                 var testObj = game.assets[MODEL_TEST].colladaClone();
                 var objScale = 0.5;
@@ -191,7 +194,6 @@ var testShoot = Class.create(objRoom,
             {
                 cam.offset = {x: 0, y: 0, z: -100};
                 that.scrolling = false;
-                //that.yukkuri.translate(0, 0, 400);
                 that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
             },
             1200: function ()
@@ -327,6 +329,13 @@ var testShoot = Class.create(objRoom,
             {
                 this.scene.setFog(0.0);
             }
+        }
+        
+        if (chengine.input.keyPressed('b'))
+        {
+            var missile = new objMissile(this.chen);
+            chengine.attach(missile, this.yukkuri);
+            this.scene.addChild(missile);
         }
     }    
 });
