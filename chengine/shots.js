@@ -396,27 +396,49 @@ var objMissile = Class.create(PhyCylinder,
 {
 	initialize: function (target) 
     {
-        PhyCylinder.call(this, 3, 5, 0);
+        PhyCylinder.call(this, 3, 6, 0);
         mat4.rotateX(this.matrix, degToRad(90));
-        this.mesh.setBaseColor('rgba(100, 100, 100, 1.0)');
-        this.speed = 10;
-        this.timer = 999999;
-        this.mesh.texture.ambient = [1.0, 1.0, 1.0, 1.0];
-        this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
-        this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
-        this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
-        this.mesh.texture.shininess = 0;
+        this.speed = 5;
+        this.timer = 60;
+        this.targetingTimer = 50;
+        this.targetingMinDistance = 300;
+        
+        this.mesh.texture = new Texture(game.assets[TEX_METAL]);
 
         this.target = target;
         
+        this.targeting = false;
+        
         this.rigid.rigidBody.getCollisionShape().setMargin(2);
+        
+        this.frame = 0;
+        
+        this.thruster = new Plane(5);
+        this.thruster.mesh.texture = new Texture(game.assets[TEX_CIRCLE_WHITE]);
+        this.thruster.mesh.setBaseColor('rgba(255, 255, 255, 0.5)');
+        chengine.unsetLighting(this.thruster.mesh);
+        chengine.getScene().addChild(this.thruster);
 	},
-	
+    
     onenterframe: function ()
     {
-        if (this.target)
+        this.frame += 1;
+        
+        if (this.frame % 4 === 0)
         {
-            this.speed = 5;
+            this.thruster.mesh.setBaseColor('rgba(255, 255, 255, 0.5)');
+        }
+        else
+        {
+            this.thruster.mesh.setBaseColor('rgba(255, 255, 255, 0.0)');
+        }
+        
+        chengine.attach(this.thruster, this);
+        this.thruster.rotation = chengine.rotationTowards(this.thruster, this);     
+        this.thruster.forward(-20);
+        
+        if (this.target && this.targeting)
+        {
             var rot = getRot(chengine.rotationTowards(this, this.target, true));
             this.rotationSet(new enchant.gl.Quat(1, 0, 0, degToRad(180)))
             this.rotationApply(new enchant.gl.Quat(1, 0, 0, degToRad(rot.x)));
@@ -425,25 +447,48 @@ var objMissile = Class.create(PhyCylinder,
         }
         
 		this.forward(this.speed);
-        
-        this.timer -= 1;
-        
+                
         if (this.timer <= 0)
         {
+            var exp = new objExp(10);
+            exp.x = this.x;
+            exp.y = this.y;
+            exp.z = this.z;
+            scene.addChild(exp);
+            scene.removeChild(this.thruster);
             scene.removeChild(this);
+            chengine.sound.play(SOUND_HIT);
+        }
+        
+        if (this.targetingTimer > 0)
+        {
+            this.targetingTimer -= 1;
+        }
+        else
+        {
+            if (distanceToPoint(this, this.target) < this.targetingMinDistance)
+            {
+                this.targeting = false;
+                this.timer -= 1;
+            }
+            else
+            {
+                this.targeting = true;
+            }
         }
         
         var hitInfo = scene.world.contactTest(this.rigid);
         var hitObj = hitInfo.hitObject;
         if (hitObj)
         {
-            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox)
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof objCharacter && !hitObj.yukkuri))
             {                                
                 var exp = new objExp(10);
                 exp.x = this.x;
                 exp.y = this.y;
                 exp.z = this.z;
                 scene.addChild(exp);
+                scene.removeChild(this.thruster);
                 scene.removeChild(this);
                 
                 chengine.sound.play(SOUND_HIT);
@@ -451,7 +496,7 @@ var objMissile = Class.create(PhyCylinder,
                 var lifeComp = chengine.component.get(hitObj, chengine.component.life);
                 if (lifeComp)
                 {
-                    lifeComp.damage(1);
+                    lifeComp.damage(0);
                 }
             }
         }

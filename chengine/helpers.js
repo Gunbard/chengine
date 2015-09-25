@@ -467,7 +467,7 @@ chengine.rayTest = function (startPoint, endPoint)
 }
 
 
-chengine.rayTestObj = function (startPoint, endPoint, obj)
+chengine.rayTestObj = function (startPoint, endPoint, targetableObjects)
 {    
     var ray1 = new Ammo.btVector3(startPoint.x, startPoint.y, startPoint.z);
     var ray2 = new Ammo.btVector3(endPoint.x, endPoint.y, endPoint.z);
@@ -482,13 +482,17 @@ chengine.rayTestObj = function (startPoint, endPoint, obj)
         var body = Ammo.btRigidBody.prototype.upcast(collisionObj);
         var owner = scene.rigidOwner(body);
         
-        if (owner instanceof obj)
+        for (var i = 0; i < targetableObjects.length; i++)
         {
-            Ammo.destroy(ray1);
-            Ammo.destroy(ray2);
-            Ammo.destroy(rayCallback);
-    
-            return owner;
+            var obj = targetableObjects[i];
+            if (owner instanceof obj)
+            {
+                Ammo.destroy(ray1);
+                Ammo.destroy(ray2);
+                Ammo.destroy(rayCallback);
+        
+                return owner;
+            }
         }
     }
     
@@ -632,4 +636,15 @@ chengine.smoothValue = function (currentValue, finalValue, speed)
     }
     
     return ((finalValue - currentValue) / speed);
+};
+
+chengine.getScene = function () 
+{
+    return enchant.Core.instance.GL.currentScene3D;
+};
+
+chengine.getScene2D = function ()
+{
+    var scene = chengine.getScene();
+    return scene.scene2D;
 };

@@ -158,6 +158,7 @@ var testShoot = Class.create(objRoom,
             700: function ()
             {
                 that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
+                that.yukkuri.yukkuri = true;
                 that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
                 that.yukkuri.y += 60;
                 that.yukkuri.z = that.chen.z - 2000;

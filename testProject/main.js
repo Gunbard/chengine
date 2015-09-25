@@ -24,6 +24,8 @@ TEX_CROSSHAIRS = 'images/crosshairs.png';
 TEX_CROSSHAIRS2 = 'images/crosshairs2.png';
 TEX_CROSSHAIRS2RED = 'images/crosshairs2red.png';
 TEX_GRASS = 'images/grass.jpg';
+TEX_METAL = 'images/metal.jpg';
+TEX_CIRCLE_WHITE = 'images/whitecircle.png';
 MUSIC_CORNERIA = 'sounds/corneria.mp3';
 SOUND_LASER = 'sounds/laser_single.mp3';
 SOUND_EXPLODE = 'sounds/exp.mp3';
@@ -32,6 +34,8 @@ SOUND_TARGET = 'sounds/target.mp3';
 SOUND_TARGETLOCK = 'sounds/targetLock.mp3';
 SOUND_CHARGELASER = 'sounds/chargeLaser.mp3';
 SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
+SOUND_RADIOSTART = 'sounds/radioStart.mp3';
+SOUND_RADIOEND = 'sounds/radioEnd.mp3';
 MODEL_TEST = 'model/modeltest2.dae';
 MODEL_YUKKURI = 'model/reimuyukkuri/reimuyukkuribig.pmd';
 MODEL_TREE = 'model/tree/tree.dae';
@@ -69,6 +73,8 @@ window.onload = function ()
         TEX_CROSSHAIRS,
         TEX_CROSSHAIRS2,
         TEX_CROSSHAIRS2RED,
+        TEX_METAL,
+        TEX_CIRCLE_WHITE,
         TEXTURE_SKYDOME,
         WORLD_BATTLEFIELD,
         WORLD_HFIELD,
@@ -82,6 +88,8 @@ window.onload = function ()
         SOUND_TARGETLOCK,
         SOUND_CHARGELASER,
         SOUND_CHARGELASEREXPLODE,
+        SOUND_RADIOSTART,
+        SOUND_RADIOEND,
         MODEL_TEST,
         MODEL_YUKKURI,
         MODEL_TREE,

@@ -316,7 +316,22 @@ var objWindow = Class.create(Label,
             var scene = enchant.Core.instance.GL.currentScene3D;
             scene.scene2D.addChild(this.image);
         }
+        
+        this.onOpen();
+    },
     
+    onOpen: function ()
+    {
+        chengine.sound.play(SOUND_RADIOSTART);
+    },
+    
+    onClose: function ()
+    {
+        chengine.sound.play(SOUND_RADIOEND);
+    },
+    
+    onTick: function ()
+    {
     },
     
     onenterframe: function()
@@ -326,6 +341,7 @@ var objWindow = Class.create(Label,
         {   
             if (this.textPos < this.textData.length)
             {
+                this.onTick();
                 this.textPos += this.textSpeed;
                 this.text = this.textData.substring(this.newLinePosition, this.textPos);
                 
@@ -384,6 +400,7 @@ var objWindow = Class.create(Label,
             {
                 this.text = '';
                 this.closing = true;
+                this.onClose();
             }
         }
         
@@ -393,10 +410,11 @@ var objWindow = Class.create(Label,
             {
                 this.autocloseTimer -= 1;
             }
-            else
+            else if (!this.closing)
             {
                 this.text = '';
                 this.closing = true;
+                this.onClose();
             }
         }
             

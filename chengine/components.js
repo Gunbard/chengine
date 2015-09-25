@@ -844,7 +844,7 @@ chengine.component.charge = Class.create
                         z: startPos.z + that.obj.model.rotation[10] * targetingRange
                     }
                     
-                    var hitObj = chengine.rayTestObj(startPos, endPos, objTestEnemy);
+                    var hitObj = chengine.rayTestObj(startPos, endPos, [objTestEnemy, objMissile]);
                     if (hitObj)
                     {
                         if (!this.target)
