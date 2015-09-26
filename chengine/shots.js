@@ -70,7 +70,8 @@ var objShot = Class.create(PhyCylinder,
         var hitObj = hitInfo.hitObject;
         if (hitObj)
         {
-            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || (hitObj instanceof Sprite3D))
+            if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || 
+                hitObj instanceof Sprite3D)
             {                                
                 var exp = new objExp(10);
                 exp.x = this.x;
@@ -398,8 +399,8 @@ var objMissile = Class.create(PhyCylinder,
     {
         PhyCylinder.call(this, 3, 6, 0);
         mat4.rotateX(this.matrix, degToRad(90));
-        this.speed = 5;
-        this.timer = 60;
+        this.speed = 4;
+        this.timer = 80;
         this.targetingTimer = 50;
         this.targetingMinDistance = 300;
         
@@ -413,11 +414,27 @@ var objMissile = Class.create(PhyCylinder,
         
         this.frame = 0;
         
-        this.thruster = new Plane(5);
-        this.thruster.mesh.texture = new Texture(game.assets[TEX_CIRCLE_WHITE]);
+        this.thruster = new Sphere(5, 7, 8);
         this.thruster.mesh.setBaseColor('rgba(255, 255, 255, 0.5)');
         chengine.unsetLighting(this.thruster.mesh);
         chengine.getScene().addChild(this.thruster);
+        
+        var that = this;
+        var newLife = new chengine.component.life(1);
+        newLife.ondeath = function ()
+        {
+            var exp = new objExp(10);
+            exp.x = that.x;
+            exp.y = that.y;
+            exp.z = that.z;
+            chengine.getScene().addChild(exp);
+            chengine.getScene().removeChild(that.thruster);
+            chengine.getScene().removeChild(that);
+            
+            chengine.sound.play(SOUND_HIT);
+        };
+        newLife.ondeath = newLife.ondeath.bind(this);
+        chengine.component.add(this, newLife);   
 	},
     
     onenterframe: function ()
@@ -435,7 +452,7 @@ var objMissile = Class.create(PhyCylinder,
         
         chengine.attach(this.thruster, this);
         this.thruster.rotation = chengine.rotationTowards(this.thruster, this);     
-        this.thruster.forward(-20);
+        this.thruster.forward(-10);
         
         if (this.target && this.targeting)
         {
@@ -448,7 +465,7 @@ var objMissile = Class.create(PhyCylinder,
         
 		this.forward(this.speed);
                 
-        if (this.timer <= 0)
+        if (this.timer === 0)
         {
             var exp = new objExp(10);
             exp.x = this.x;

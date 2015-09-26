@@ -5,6 +5,7 @@ var testShoot = Class.create(objRoom,
         objRoom.call(this, parentScene);
         this.name = "testShoot";
         this.railMovementSpeed = 2;
+        this.moveBackCam = false;
     }, 
     
     prepare: function ()
@@ -239,6 +240,7 @@ var testShoot = Class.create(objRoom,
             },
             1400: function ()
             {
+                that.moveBackCam = true;
                 that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
             },
             1600: function ()
@@ -246,7 +248,7 @@ var testShoot = Class.create(objRoom,
                 that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
             }
         });
-        
+
         this.scene.play();
     },
     
@@ -256,6 +258,11 @@ var testShoot = Class.create(objRoom,
         objRoom.prototype.enterframe.call(this);
         chengine.debugCamera(this.scene, this.scene.getCamera());
 
+        if (this.moveBackCam)
+        {
+            this.scene.getCamera().forward(-1);
+        }
+        
         chengine.attach(this.target, this.chen.model, {y: -10, z: -200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);        
         
