@@ -130,6 +130,29 @@ var testShoot = Class.create(objRoom,
         
         chengine.component.add(this.chen, chargeComp);
         
+        var fireMissiles = function ()
+        {
+            for (var i = 0; i < 3; i++) 
+            {
+                var direction = i * 20;
+                var missile = new objMissile(that.chen);
+                chengine.attach(missile, that.yukkuri);
+                missile.rotatePitch(degToRad(90));
+                missile.rotateYaw(degToRad(90 + direction));
+                that.scene.addChild(missile);
+            }
+            
+            for (var i = 0; i < 3; i++) 
+            {
+                var direction = i * 20;
+                var missile = new objMissile(that.chen);
+                chengine.attach(missile, that.yukkuri);
+                missile.rotatePitch(degToRad(90));
+                missile.rotateYaw(degToRad(-90 - direction));
+                that.scene.addChild(missile);
+            }
+        }
+        
         var cam = this.scene.getCamera();
         var chen = this.chen.model;
         this.timeline.cue
@@ -243,9 +266,17 @@ var testShoot = Class.create(objRoom,
                 that.moveBackCam = true;
                 that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
             },
+            1500: function ()
+            {                
+                fireMissiles();
+            },
             1600: function ()
             {
                 that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
+            },
+            1700: function ()
+            {
+                fireMissiles();
             }
         });
 
