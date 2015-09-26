@@ -430,7 +430,7 @@ chengine.flash = function (obj)
  @param objReceiver {Sprite3D} Object to receiving attachment
  @param offset {point} Offset of the attachment
  */
-chengine.attach = function (objToAttach, objReceiver, offset)
+chengine.attach = function (objToAttach, objReceiver, offset, absolute)
 {
     objToAttach.x = objReceiver.x;
     objToAttach.y = objReceiver.y;
@@ -438,7 +438,14 @@ chengine.attach = function (objToAttach, objReceiver, offset)
 
     if (offset)
     {
-        objToAttach.setOffset(offset, objReceiver);
+        if (absolute)
+        {
+            objToAttach.setOffset(offset, objReceiver);
+        }
+        else
+        {
+            objToAttach.setRelativeOffset(offset, objReceiver);
+        }
     } 
 }
 

@@ -71,7 +71,7 @@ var objShot = Class.create(PhyCylinder,
         if (hitObj)
         {
             if (hitObj instanceof objTestBall || hitObj instanceof PhyBox || 
-                hitObj instanceof Sprite3D)
+                (hitObj instanceof Sprite3D && !(hitObj instanceof objCharacter)))
             {                                
                 var exp = new objExp(10);
                 exp.x = this.x;
@@ -86,6 +86,11 @@ var objShot = Class.create(PhyCylinder,
                 if (lifeComp)
                 {
                     lifeComp.damage(1);
+                }
+                
+                if (hitObj instanceof objWeakPoint)
+                {
+                    hitObj.onHit();
                 }
             }
         }
@@ -397,7 +402,7 @@ var objMissile = Class.create(PhyCylinder,
 {
 	initialize: function (target) 
     {
-        PhyCylinder.call(this, 3, 6, 0);
+        PhyCylinder.call(this, 3, 4, 0);
         mat4.rotateX(this.matrix, degToRad(90));
         this.speed = 4;
         this.timer = 80;

@@ -187,6 +187,23 @@ var testShoot = Class.create(objRoom,
                 that.yukkuri.y += 60;
                 that.yukkuri.z = that.chen.z - 2000;
                 that.yukkuri.addToScene(that.scene);
+                
+                var hitEvent = function ()
+                {
+                    var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
+                    if (lifeComp)
+                    {
+                        lifeComp.damage(1);
+                    }
+                };
+                
+                var weakpoint = new objWeakPoint(15, that.yukkuri.model, {x: -45, y: -100, z: -80});
+                weakpoint.onHit = hitEvent;
+                that.scene.addChild(weakpoint);
+                
+                var weakpoint2 = new objWeakPoint(15, that.yukkuri.model, {x: 45, y: -100, z: -80});
+                weakpoint2.onHit = hitEvent;
+                that.scene.addChild(weakpoint2);
             },
             800: function ()
             {
@@ -277,6 +294,10 @@ var testShoot = Class.create(objRoom,
             1700: function ()
             {
                 fireMissiles();
+            },
+            1900: function ()
+            {
+                that.moveBackCam = false;
             }
         });
 
@@ -299,7 +320,7 @@ var testShoot = Class.create(objRoom,
         
         chengine.attach(this.targetFar, this.chen.model, {y: -10, z: -500});
         this.targetFar.rotation = chengine.rotationTowards(this.targetFar, this.chen.model);
-
+        
         if (this.scrolling)
         {
             this.chen.forward(this.railMovementSpeed);

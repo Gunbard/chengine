@@ -168,7 +168,7 @@ enchant.gl.Sprite3D.prototype.setAltitude = function (distance, ref)
     this.setTranslation(x, y, z);
 };
 
-enchant.gl.Sprite3D.prototype.setOffset = function (offset, ref)
+enchant.gl.Sprite3D.prototype.setRelativeOffset = function (offset, ref)
 {   
     var x = ref.x;
     var y = ref.y;
@@ -196,9 +196,37 @@ enchant.gl.Sprite3D.prototype.setOffset = function (offset, ref)
     }
     
     this.setTranslation(x, y, z);
-}
+};
 
-
+enchant.gl.Sprite3D.prototype.setOffset = function (offset, ref)
+{   
+    var x = ref.x;
+    var y = ref.y;
+    var z = ref.z;
+    
+    if (offset.x)
+    {
+        x = ref._rotation[0] * offset.x;
+        y = ref._rotation[1] * offset.x;
+        z = ref._rotation[2] * offset.x;
+    }
+    
+    if (offset.y)
+    {
+        x = ref._rotation[4] * offset.y;
+        y = ref._rotation[5] * offset.y;
+        z = ref._rotation[6] * offset.y;
+    }
+    
+    if (offset.z)
+    {
+        x = ref._rotation[8] * offset.z;
+        y = ref._rotation[9] * offset.z;
+        z = ref._rotation[10] * offset.z;
+    }
+    
+    this.setTranslation(x, y, z);
+};
 
 /**********
  MSprite3D

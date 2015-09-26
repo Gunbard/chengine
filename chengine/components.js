@@ -472,12 +472,12 @@ chengine.component.controlBehindMovable = Class.create
         
         if (this.input.up)
         {
-            directionY -= 25;
+            directionY -= 40;
         }
         
         if (this.input.down)
         {
-            directionY += 25;
+            directionY += 40;
         }
         
         if (this.pad && this.pad.isTouched)

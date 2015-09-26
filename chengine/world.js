@@ -549,3 +549,50 @@ var objScrollingFloor = Class.create(PhyBox,
         }
     }
 });
+
+/** 
+ Proxy collision mesh for some object
+ */
+var objWeakPoint = Class.create(PhySphere,
+{
+    initialize: function (radius, target, relativeOffset)
+    {
+        PhySphere.call(this, radius, 0);
+        
+        this.relativeOffset = relativeOffset || {x: 0, y: 0, z: 0};
+        this.relativeOffset.x = this.relativeOffset.x || 0;
+        this.relativeOffset.y = this.relativeOffset.y || 0;
+        this.relativeOffset.z = this.relativeOffset.z || 0;
+        
+        this.alpha = 0.1;
+        this.target = target;
+        
+        this.mesh.setBaseColor('rgba(255, 255, 0,' + this.alpha.toString() + ')');
+        chengine.unsetLighting(this.mesh);
+        
+        this.frame = 0;
+    },
+
+    onHit: function ()
+    {
+        // Override me
+    },
+    
+    onenterframe: function ()
+    {
+        this.frame += 1;
+        
+        if (this.frame % 8 === 0)
+        {
+            this.mesh.setBaseColor('rgba(255, 0, 0,' + this.alpha.toString() + ')');
+        }
+        else
+        {
+            this.mesh.setBaseColor('rgba(255, 255, 0,' + this.alpha.toString() + ')');
+        }
+        
+        // Attach weak point to object. Set offset relative to the target's position and rotation
+        chengine.attach(this, this.target, this.relativeOffset);
+        this.rotation = chengine.rotationTowards(this, this.target);        
+    }
+});
