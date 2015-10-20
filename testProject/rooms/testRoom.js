@@ -412,18 +412,6 @@ var testRoom = Class.create(objRoom,
             this.scene.addChild(ball);
         }
         
-        if (chengine.input.keyPressed('zero'))
-        {
-            if (chengine.debug.visible)
-            {
-                chengine.debug.remove(this.scene);
-            }
-            else
-            {
-                chengine.debug.add(this.scene);
-            }
-        }
-        
         if (chengine.input.keyPressed('r'))
         {
             var rigid = mikuPhy.rigid.rigidBody;

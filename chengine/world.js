@@ -161,6 +161,16 @@ var objRoom = Class.create(
         this.timelineHolder = new Sprite();
         this.timeline = this.timelineHolder.tl;
         this.scene.scene2D.addChild(this.timelineHolder);
+        
+        /** 
+         Array of trigger event objects
+         Trigger event:
+         {
+            condition: [some anonymous function returning a boolean]
+            action: [some anonymous function]
+         }
+         */
+        this.triggeredEvents = [];
     },
     
     prepare: function ()
@@ -170,7 +180,6 @@ var objRoom = Class.create(
     
     clean: function ()
     {
-        debugger;
         this.scene.scene2D.removeChild(this.timelineHolder);
         this.scene.tearDown();
     },
@@ -183,22 +192,36 @@ var objRoom = Class.create(
         {
             chengine.attach(this.skybox, this.scene.getCamera());
         }
+        
+        for (var i = 0; i < this.triggeredEvents.length; i++)
+        {
+            var evt = this.triggeredEvents[i];
+            if (evt.condition())
+            {
+                evt.action();
+                this.triggeredEvents.splice(i, 1);
+            }
+        }
+        
+        // Add debug toggle to all rooms
+        if (chengine.input.keyPressed('zero'))
+        {
+            if (chengine.debug.visible)
+            {
+                chengine.debug.remove(this.scene);
+            }
+            else
+            {
+                chengine.debug.add(this.scene);
+            }
+        }
     },
     
-    touchstart: function (e)
-    {
+    touchstart: function (e) {},
     
-    },
+    touchend: function (e) {}, 
     
-    touchend: function (e)
-    {
-    
-    }, 
-    
-    touchmove: function (e)
-    {
-    
-    },
+    touchmove: function (e) {},
     
     createSkybox: function (texture, radius)
     {

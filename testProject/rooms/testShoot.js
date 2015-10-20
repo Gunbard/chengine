@@ -153,6 +153,19 @@ var testShoot = Class.create(objRoom,
             }
         }
         
+        // Test triggered events
+        /*var cond = function ()
+        {
+            return (that.yukkuri);
+        };
+        
+        var act = function ()
+        {
+            alert('wat');
+        };
+        
+        this.triggeredEvents.push({condition: cond, action: act})*/
+        
         var cam = this.scene.getCamera();
         var chen = this.chen.model;
         this.timeline.cue

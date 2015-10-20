@@ -11,7 +11,10 @@ chengine.debug.add = function (scene)
 { 
     chengine.debug.visible = true;
     chengine.debug.fps = 0;
-    
+
+    var offsetX = 4;
+    var offsetY = 16;
+  
     var debugFont = 'arial';
     var debugFontColor = '#BB0000';
     var debugFontShadowColor = '#111111';
@@ -19,14 +22,15 @@ chengine.debug.add = function (scene)
     var labelDebugShadow = new Label();
     labelDebugShadow.color = debugFontShadowColor;
     labelDebugShadow.font = debugFont;
-    labelDebugShadow.y = 5;
-    labelDebugShadow.x = 1;
+    labelDebugShadow.y = offsetY + 1;
+    labelDebugShadow.x = offsetX - 1;
     scene.scene2D.insertBefore(labelDebugShadow, game.rootScene.firstChild);
     
     var labelDebug = new Label();
     labelDebug.color = debugFontColor;
     labelDebug.font = debugFont;
-    labelDebug.y = 4;
+    labelDebug.x = offsetX;
+    labelDebug.y = offsetY;
     scene.scene2D.addChild(labelDebug);
     
     chengine.debug.labels = [labelDebug, labelDebugShadow];
@@ -42,84 +46,20 @@ chengine.debug.add = function (scene)
     {
         c++;
         
-        // Update every 10th frame since setting Label text is expensive due
+        // Update every 16th frame since setting Label text is expensive due
         // to the getMetrics call. Ignore if no debug is visible.
-        if (c % 10 != 0 || !chengine.debug.labels || chengine.debug.labels.length == 0)
+        if (c % 16 != 0 || !chengine.debug.labels || chengine.debug.labels.length == 0)
         {
             return;
         }
-
-        /*var tr1 = new Ammo.btTransform();
-        tr1.setIdentity();
-        var or1 = new Ammo.btVector3(mikuPhy.x, mikuPhy.y, mikuPhy.z);
-        tr1.setOrigin(or1);
-        
-        var tr2 = new Ammo.btTransform();
-        tr2.setIdentity();
-        var or2 = new Ammo.btVector3(mikuPhy.x, mikuPhy.y - 10, mikuPhy.z);
-        tr2.setOrigin(or2);
-        
-        var sphere = new Ammo.btSphereShape(1);
-        
-        var convexCallback = new Ammo.ClosestConvexResultCallback(tr1, tr2);
-        scene.world._dynamicsWorld.convexSweepTest(sphere, tr1, tr2, convexCallback, 0);
-        */
-        
-        
-        //var ray1 = new Ammo.btVector3(mikuPhy.x, mikuPhy.y, mikuPhy.z);
-        //var ray2 = new Ammo.btVector3(mikuPhy.x, mikuPhy.y - 10, mikuPhy.z);
-        
-        //var rayCallback = new Ammo.ClosestRayResultCallback(ray1, ray2);
-        //scene.world._dynamicsWorld.rayTest(ray1, ray2, rayCallback); 
-        
-        // var padAngle = 0;
-        // if (pad.vx != 0 && pad.vy != 0)
-        // {
-            // padAngle = Math.atan2(pad.vy, pad.vx);
-            // if (padAngle < 0) 
-            // {
-                // padAngle += 2 * Math.PI;
-            // }
-            
-        // }
-        //var heading = (mikuPhy.heading) ? getRot(mikuPhy.heading).y : 0;
-        var falling = chengine.rigidIsFalling(mikuPhy.rigid.rigidBody);
-        var groundTest = chengine.rayTest({x: mikuPhy.x, y: mikuPhy.y, z: mikuPhy.z}, {x: mikuPhy.x, y: mikuPhy.y - 10, z: mikuPhy.z});
         
         labelDebug.text = 
-        'FPS: ' + chengine.debug.fps + '<br>' +
-        'CharPos [' + 
-        Math.round(mikuPhy.x) + ', ' + 
-        Math.round(mikuPhy.y) + ', ' + 
-        Math.round(mikuPhy.z) + ']' + '<br>' +
-        
-        'CamPos [' + 
-        Math.round(camera.x) + ', ' + 
-        Math.round(camera.y) + ', ' + 
-        Math.round(camera.z) + ']' + '<br>' +
-        
-        'Apad [' + radToDeg(pad.rad) + ', ' + pad.dist + ']' + '<br>' +
-        //'Apad angle: ' + radToDeg(padAngle) + '<br>' + 
-        
-        // 'CharRot [' + 
-        // (getRotation(mikuPhy).x | 0) + ', ' + 
-        // (getRotation(mikuPhy).y | 0) + ', ' + 
-        // (getRotation(mikuPhy).z | 0) + ']<br>' +
-        
+        'FPS: ' + chengine.debug.fps + '<br>' +        
         'Physics on: ' + scene.isPlaying + '<br>' +
-        'Falling: ' + falling + '<br>' +
-        'Ground: ' + groundTest + '<br>' +
         '3D Objects: ' + scene.childNodes.length + '<br>' +
         '2D Objects: ' + scene.scene2D.childNodes.length + '<br>';                  
                           
-                          
         labelDebugShadow.text = labelDebug.text;
-        
-        /*Ammo.destroy(tr1);
-        Ammo.destroy(tr2);
-        Ammo.destroy(convexCallback);
-        Ammo.destroy(sphere);
-        */
     });
 };
 
