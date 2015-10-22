@@ -43,7 +43,7 @@ var testRoom = Class.create(objRoom,
         floor.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
         floor.mesh.texture.shininess = 0;
              
-        mikuPhy = new objCharacter(MODEL_PATH);
+        mikuPhy = new objCharacter(MODEL_PATH, null, null, 1);
         reiPhy = new objCharacter(MODEL_REI_PATH);
         reiPhy.hold(true);
         

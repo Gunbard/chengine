@@ -472,12 +472,12 @@ chengine.component.controlBehindMovable = Class.create
         
         if (this.input.up)
         {
-            directionY -= 40;
+            directionY -= 15;
         }
         
         if (this.input.down)
         {
-            directionY += 40;
+            directionY += 15;
         }
         
         if (this.pad && this.pad.isTouched)
@@ -618,8 +618,15 @@ chengine.component.controlBehindMovable = Class.create
                     rotAmtX = Math.abs(360 - targetRotX - xRotation);
                 }
                 
-                var amtY = Math.abs(targetRotY - yRotation) / (yRotation * rotationSpeed);
-                var amtX = rotAmtX / (1 / (rotationSpeed / 8));
+                var rotAmtY = Math.abs(targetRotY - yRotation);
+                if (rotAmtY >= 180)
+                {
+                    rotAmtY = Math.abs(360 - targetRotY - yRotation);
+                }
+                
+                //var amtY = Math.abs(targetRotY - yRotation) / (yRotation * rotationSpeed);
+                var amtX = rotAmtX / (1 / (rotationSpeed / 4));
+                var amtY = rotAmtY / (1 / (rotationSpeed / 8));
                 amtY *= dirY;
                 amtX *= dirX;
                 

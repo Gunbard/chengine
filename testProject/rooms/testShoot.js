@@ -331,7 +331,7 @@ var testShoot = Class.create(objRoom,
         chengine.attach(this.target, this.chen.model, {y: -10, z: -200});
         this.target.rotation = chengine.rotationTowards(this.target, this.chen.model);        
         
-        chengine.attach(this.targetFar, this.chen.model, {y: -10, z: -500});
+        chengine.attach(this.targetFar, this.chen.model, {y: -10, z: -600});
         this.targetFar.rotation = chengine.rotationTowards(this.targetFar, this.chen.model);
         
         if (this.scrolling)
