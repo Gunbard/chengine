@@ -171,6 +171,16 @@ var objRoom = Class.create(
          }
          */
         this.triggeredEvents = [];
+        
+        /**
+         Array of timed event objects
+         Timed event:
+         {
+            frame: Frame number (relative to the current room's step)
+            action: [some anonyomus function]
+         }
+         */
+        this.timedEvents = [];
     },
     
     prepare: function ()
@@ -184,6 +194,17 @@ var objRoom = Class.create(
         this.scene.tearDown();
     },
     
+    /**
+     Adds a timed event to the timed event queue
+     @param time {number} Frame to execute the action. This is relative to the current step when
+            the event is scheduled.
+     @param eventAction {function} An action to execute
+     */
+    scheduleEvent: function (time, eventAction)
+    {
+        this.timedEvents.push({frame: this.step + time, action: eventAction})
+    },
+    
     enterframe: function (e)
     {
         this.step++;
@@ -193,6 +214,7 @@ var objRoom = Class.create(
             chengine.attach(this.skybox, this.scene.getCamera());
         }
         
+        // Process triggered events
         for (var i = 0; i < this.triggeredEvents.length; i++)
         {
             var evt = this.triggeredEvents[i];
@@ -200,6 +222,17 @@ var objRoom = Class.create(
             {
                 evt.action();
                 this.triggeredEvents.splice(i, 1);
+            }
+        }
+
+        // Process timed events
+        for (var i = 0; i < this.timedEvents.length; i++)
+        {
+            var evt = this.timedEvents[i];
+            if (this.step >= evt.frame)
+            {
+                evt.action();
+                this.timedEvents.splice(i, 1);
             }
         }
         

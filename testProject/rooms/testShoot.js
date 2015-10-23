@@ -168,150 +168,162 @@ var testShoot = Class.create(objRoom,
         
         var cam = this.scene.getCamera();
         var chen = this.chen.model;
-        this.timeline.cue
-        ({
-            100: function ()
+        
+        this.scheduleEvent(100, function ()
+        {
+            var windowTest = new objWindow({text: 'Ran<br>"You can do it, Chen!"', image: SPRITE_RAN});
+            that.scene.scene2D.addChild(windowTest);
+        });
+        
+        this.scheduleEvent(200, function () 
+        {
+            cam.x += 200;
+            cam.z -= 400;
+            cam.y -= 100;
+        });
+        
+        this.scheduleEvent(500, function () 
+        {
+            var windowTest = new objWindow({text: 'Ran<br>"Go, Chen, go!!"', image: SPRITE_RAN});
+            that.scene.scene2D.addChild(windowTest);
+            
+            cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
+        });
+        
+        this.scheduleEvent(600, function ()
+        {
+            cam.setInView(chen);
+        });
+        
+        this.scheduleEvent(700, function ()
+        {
+            that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
+            that.yukkuri.yukkuri = true;
+            that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
+            that.yukkuri.y += 60;
+            that.yukkuri.z = that.chen.z - 2000;
+            that.yukkuri.addToScene(that.scene);
+            
+            var hitEvent = function ()
             {
-                var windowTest = new objWindow({text: 'Ran<br>"You can do it, Chen!"', image: SPRITE_RAN});
-                that.scene.scene2D.addChild(windowTest);
-            },
-            200: function () 
-            {
-                cam.x += 200;
-                cam.z -= 400;
-                cam.y -= 100;
-            },
-            500: function () 
-            {
-                var windowTest = new objWindow({text: 'Ran<br>"Go, Chen, go!!"', image: SPRITE_RAN});
-                that.scene.scene2D.addChild(windowTest);
-                
-                cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
-            },
-            600: function ()
-            {
-                cam.setInView(chen);
-            },
-            700: function ()
-            {
-                that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
-                that.yukkuri.yukkuri = true;
-                that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
-                that.yukkuri.y += 60;
-                that.yukkuri.z = that.chen.z - 2000;
-                that.yukkuri.addToScene(that.scene);
-                
-                var hitEvent = function ()
+                var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
+                if (lifeComp)
                 {
-                    var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
-                    if (lifeComp)
-                    {
-                        lifeComp.damage(1);
-                    }
-                };
-                
-                var weakpoint = new objWeakPoint(15, that.yukkuri.model, {x: -45, y: -100, z: -80});
-                weakpoint.onHit = hitEvent;
-                that.scene.addChild(weakpoint);
-                
-                var weakpoint2 = new objWeakPoint(15, that.yukkuri.model, {x: 45, y: -100, z: -80});
-                weakpoint2.onHit = hitEvent;
-                that.scene.addChild(weakpoint2);
-            },
-            800: function ()
+                    lifeComp.damage(1);
+                }
+            };
+            
+            var weakpoint = new objWeakPoint(15, that.yukkuri.model, {x: -45, y: -100, z: -80});
+            weakpoint.onHit = hitEvent;
+            that.scene.addChild(weakpoint);
+            
+            var weakpoint2 = new objWeakPoint(15, that.yukkuri.model, {x: 45, y: -100, z: -80});
+            weakpoint2.onHit = hitEvent;
+            that.scene.addChild(weakpoint2);
+        });
+        
+        this.scheduleEvent(800, function ()
+        {
+            var windowTest = new objWindow({text: 'Ran<br>"Watch out! There\'s a huge stupid thing approaching fast!"', image: SPRITE_RAN});
+            that.scene.scene2D.addChild(windowTest);
+            
+            return;
+            var testObj = game.assets[MODEL_TEST].colladaClone();
+            var objScale = 0.5;
+            testObj.scale(objScale, objScale, objScale);
+            testObj.updateRigid(0, objScale, testObj.getVertices());
+            
+            var newLife = new chengine.component.life(20);
+            newLife.ondeath = function ()
             {
-                var windowTest = new objWindow({text: 'Ran<br>"Watch out! There\'s a huge stupid thing approaching fast!"', image: SPRITE_RAN});
-                that.scene.scene2D.addChild(windowTest);
-                
-                return;
-                var testObj = game.assets[MODEL_TEST].colladaClone();
-                var objScale = 0.5;
-                testObj.scale(objScale, objScale, objScale);
-                testObj.updateRigid(0, objScale, testObj.getVertices());
-                
-                var newLife = new chengine.component.life(20);
-                newLife.ondeath = function ()
-                {
-                    var bigExp = new objBigExp(that, null);
-                    bigExp.x = that.x;
-                    bigExp.y = that.y;
-                    bigExp.z = that.z;
-                    scene.addChild(bigExp);
-                };
-                newLife.ondeath = newLife.ondeath.bind(testObj);
-                chengine.component.add(testObj, newLife);   
-                
-                testObj.rotatePitch(degToRad(270));
-                testObj.z = that.chen.z - 1000;
-                that.scene.addChild(testObj);
-            },
-            1000: function ()
-            {
-                cam.offset = {x: 0, y: 0, z: -100};
-                that.scrolling = false;
-                that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
-            },
-            1200: function ()
-            {
-                that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
-            },
-            1300: function ()
-            {
-                var beam = new objBeam(that.scene);
-                chengine.attach(beam, that.yukkuri);
-                beam.sidestep(-50);
-                beam.altitude(50);
-                beam.rotation = chengine.rotationTowards(beam, that.chen.model);
-                beam.rotateYaw(degToRad(180));
-                that.scene.addChild(beam);
-                
-                var beam2 = new objBeam(that.scene);
-                chengine.attach(beam2, that.yukkuri);
-                beam2.sidestep(50);
-                beam2.altitude(50);
-                beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
-                beam2.rotateYaw(degToRad(180));
-                that.scene.addChild(beam2);
-            },
-            1380: function ()
-            {
-                var beam = new objBeam(that.scene);
-                chengine.attach(beam, that.yukkuri);
-                beam.sidestep(-50);
-                beam.altitude(50);
-                beam.rotation = chengine.rotationTowards(beam, that.chen.model);
-                beam.rotateYaw(degToRad(180));
-                that.scene.addChild(beam);
-                
-                var beam2 = new objBeam(that.scene);
-                chengine.attach(beam2, that.yukkuri);
-                beam2.sidestep(50);
-                beam2.altitude(50);
-                beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
-                beam2.rotateYaw(degToRad(180));
-                that.scene.addChild(beam2);
-            },
-            1400: function ()
-            {
-                that.moveBackCam = true;
-                that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
-            },
-            1500: function ()
-            {                
-                fireMissiles();
-            },
-            1600: function ()
-            {
-                that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
-            },
-            1700: function ()
-            {
-                fireMissiles();
-            },
-            1900: function ()
-            {
-                that.moveBackCam = false;
-            }
+                var bigExp = new objBigExp(that, null);
+                bigExp.x = that.x;
+                bigExp.y = that.y;
+                bigExp.z = that.z;
+                scene.addChild(bigExp);
+            };
+            newLife.ondeath = newLife.ondeath.bind(testObj);
+            chengine.component.add(testObj, newLife);   
+            
+            testObj.rotatePitch(degToRad(270));
+            testObj.z = that.chen.z - 1000;
+            that.scene.addChild(testObj);
+        });
+        
+        this.scheduleEvent(1000, function ()
+        {
+            cam.offset = {x: 0, y: 0, z: -100};
+            that.scrolling = false;
+            that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
+        });
+        
+        this.scheduleEvent(1200, function ()
+        {
+            that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
+        });
+        
+        this.scheduleEvent(1300, function ()
+        {
+            var beam = new objBeam(that.scene);
+            chengine.attach(beam, that.yukkuri);
+            beam.sidestep(-50);
+            beam.altitude(50);
+            beam.rotation = chengine.rotationTowards(beam, that.chen.model);
+            beam.rotateYaw(degToRad(180));
+            that.scene.addChild(beam);
+            
+            var beam2 = new objBeam(that.scene);
+            chengine.attach(beam2, that.yukkuri);
+            beam2.sidestep(50);
+            beam2.altitude(50);
+            beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
+            beam2.rotateYaw(degToRad(180));
+            that.scene.addChild(beam2);
+        });
+        
+        this.scheduleEvent(1380, function ()
+        {
+            var beam = new objBeam(that.scene);
+            chengine.attach(beam, that.yukkuri);
+            beam.sidestep(-50);
+            beam.altitude(50);
+            beam.rotation = chengine.rotationTowards(beam, that.chen.model);
+            beam.rotateYaw(degToRad(180));
+            that.scene.addChild(beam);
+            
+            var beam2 = new objBeam(that.scene);
+            chengine.attach(beam2, that.yukkuri);
+            beam2.sidestep(50);
+            beam2.altitude(50);
+            beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
+            beam2.rotateYaw(degToRad(180));
+            that.scene.addChild(beam2);
+        });
+        
+        this.scheduleEvent(1400, function ()
+        {
+            that.moveBackCam = true;
+            that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
+        });
+        
+        this.scheduleEvent(1500, function ()
+        {                
+            fireMissiles();
+        });
+        
+        this.scheduleEvent(1600, function ()
+        {
+            that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
+        });
+        
+        this.scheduleEvent(1700, function ()
+        {
+            fireMissiles();
+        });
+        
+        this.scheduleEvent(1900, function ()
+        {
+            that.moveBackCam = false;
         });
 
         this.scene.play();
