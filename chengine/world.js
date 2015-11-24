@@ -4,6 +4,16 @@
  ***************************************/
  
 /**
+ Event model
+ {
+    frame: Frame to execute action. Overrides condition.
+    condition: Boolean used to determine whether to execute action
+    cancelCondition: Boolean used to determine whether to remove this from the queue
+    action: Some anonymous function to execute
+ }
+ */
+ 
+/**
  Scene that supports 3D and physics. Manages cameras, lighting, objects, etc.
  This is a singleton.
  */
@@ -200,9 +210,9 @@ var objRoom = Class.create(
             the event is scheduled.
      @param eventAction {function} An action to execute
      */
-    scheduleEvent: function (time, eventAction)
+    scheduleEvent: function (time, eventAction, stopCondition)
     {
-        this.timedEvents.push({frame: this.step + time, action: eventAction})
+        this.timedEvents.push({frame: this.step + time, action: eventAction, cancelCondition: stopCondition})
     },
     
     enterframe: function (e)
@@ -218,6 +228,12 @@ var objRoom = Class.create(
         for (var i = 0; i < this.triggeredEvents.length; i++)
         {
             var evt = this.triggeredEvents[i];
+            if (evt.cancelCondition && evt.cancelCondition())
+            {
+                this.triggeredEvents.splice(i, 1);
+                continue;
+            }
+            
             if (evt.condition())
             {
                 evt.action();
@@ -229,6 +245,12 @@ var objRoom = Class.create(
         for (var i = 0; i < this.timedEvents.length; i++)
         {
             var evt = this.timedEvents[i];
+            if (evt.cancelCondition && evt.cancelCondition())
+            {
+                this.timedEvents.splice(i, 1);
+                continue;
+            }
+            
             if (this.step >= evt.frame)
             {
                 evt.action();

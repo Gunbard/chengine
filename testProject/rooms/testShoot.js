@@ -195,9 +195,12 @@ var testShoot = Class.create(objRoom,
             cam.setInView(chen);
         });
         
+        this.yukkuriDed = false;
+        
         this.scheduleEvent(700, function ()
         {
             that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
+            
             that.yukkuri.yukkuri = true;
             that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
             that.yukkuri.y += 60;
@@ -220,6 +223,17 @@ var testShoot = Class.create(objRoom,
             var weakpoint2 = new objWeakPoint(15, that.yukkuri.model, {x: 45, y: -100, z: -80});
             weakpoint2.onHit = hitEvent;
             that.scene.addChild(weakpoint2);
+            
+            var newLife = new chengine.component.life(10);
+            newLife.ondeath = function ()
+            {
+                this.removeFromScene(that.scene);
+                that.scene.removeChild(weakpoint);
+                that.scene.removeChild(weakpoint2);
+                that.yukkuriDed = true;
+            };
+            newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
+            chengine.component.add(that.yukkuri, newLife);   
         });
         
         this.scheduleEvent(800, function ()
@@ -255,12 +269,12 @@ var testShoot = Class.create(objRoom,
             cam.offset = {x: 0, y: 0, z: -100};
             that.scrolling = false;
             that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1200, function ()
         {
             that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1300, function ()
         {
@@ -279,7 +293,7 @@ var testShoot = Class.create(objRoom,
             beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
             beam2.rotateYaw(degToRad(180));
             that.scene.addChild(beam2);
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1380, function ()
         {
@@ -298,33 +312,33 @@ var testShoot = Class.create(objRoom,
             beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
             beam2.rotateYaw(degToRad(180));
             that.scene.addChild(beam2);
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1400, function ()
         {
             that.moveBackCam = true;
             that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1500, function ()
         {                
             fireMissiles();
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1600, function ()
         {
             that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1700, function ()
         {
             fireMissiles();
-        });
+        }, function () { return that.yukkuriDed; });
         
         this.scheduleEvent(1900, function ()
         {
             that.moveBackCam = false;
-        });
+        }, function () { return that.yukkuriDed; });
 
         this.scene.play();
     },

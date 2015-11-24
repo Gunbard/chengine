@@ -402,7 +402,7 @@ var objMissile = Class.create(PhyCylinder,
 {
 	initialize: function (target) 
     {
-        PhyCylinder.call(this, 3, 4, 0);
+        PhyCylinder.call(this, 6, 10, 0);
         mat4.rotateX(this.matrix, degToRad(90));
         this.speed = 4;
         this.timer = 80;
@@ -419,7 +419,7 @@ var objMissile = Class.create(PhyCylinder,
         
         this.frame = 0;
         
-        this.thruster = new Sphere(5, 7, 8);
+        this.thruster = new Sphere(10, 7, 8);
         this.thruster.mesh.setBaseColor('rgba(255, 255, 255, 0.5)');
         chengine.unsetLighting(this.thruster.mesh);
         chengine.getScene().addChild(this.thruster);

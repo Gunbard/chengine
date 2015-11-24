@@ -10,10 +10,11 @@
  @param radius {float} Radius of the capsule. Optional.
  @param height {float} Height of the capsule. Optional.
  @param mass {float} Mass of the capsule. Optional.
+ @param hp {int} Initial HP amount. Optional. TODO: Update
  */ 
 var objCharacter = Class.create(PhyCapsule,
 {
-    initialize: function (model, radius, height, mass)
+    initialize: function (model, radius, height, mass, hp)
     {
         // Default attributes for the collision capsule
         radius = radius || 4;
@@ -40,13 +41,13 @@ var objCharacter = Class.create(PhyCapsule,
         Ammo.destroy(ang);
         
         
-        var newLife = new chengine.component.life(99999);
+        /*var newLife = new chengine.component.life(99999);
         newLife.ondeath = function ()
         {
             //alert('ded');
         };
         newLife.ondeath = newLife.ondeath.bind(this);
-        chengine.component.add(this, newLife);   
+        chengine.component.add(this, newLife);  */ 
     },
     
     addToScene: function (scene)
