@@ -4,16 +4,6 @@
  ***************************************/
  
 /**
- Event model
- {
-    frame: Frame to execute action. Overrides condition.
-    condition: Boolean used to determine whether to execute action
-    cancelCondition: Boolean used to determine whether to remove this from the queue
-    action: Some anonymous function to execute
- }
- */
- 
-/**
  Scene that supports 3D and physics. Manages cameras, lighting, objects, etc.
  This is a singleton.
  */
@@ -168,10 +158,6 @@ var objRoom = Class.create(
         this.scene = parentScene;
         this.step = 0;
         
-        this.timelineHolder = new Sprite();
-        this.timeline = this.timelineHolder.tl;
-        this.scene.scene2D.addChild(this.timelineHolder);
-        
         /** 
          Array of trigger event objects
          Trigger event:
@@ -191,6 +177,9 @@ var objRoom = Class.create(
          }
          */
         this.timedEvents = [];
+        
+        this.mainTimeline = new objTimeline();
+        this.scene.scene2D.addChild(this.mainTimeline);
     },
     
     prepare: function ()
@@ -200,19 +189,17 @@ var objRoom = Class.create(
     
     clean: function ()
     {
-        this.scene.scene2D.removeChild(this.timelineHolder);
+        this.scene.scene2D.removeChild(this.mainTimeline);
         this.scene.tearDown();
     },
     
     /**
-     Adds a timed event to the timed event queue
-     @param time {number} Frame to execute the action. This is relative to the current step when
-            the event is scheduled.
-     @param eventAction {function} An action to execute
+        TODO: Update for custom timeline object
      */
     scheduleEvent: function (time, eventAction, stopCondition)
     {
-        this.timedEvents.push({frame: this.step + time, action: eventAction, cancelCondition: stopCondition})
+        var evt = {frame: time, action: eventAction, cancelCondition: stopCondition};
+        this.mainTimeline.addTimedEvent(evt);
     },
     
     enterframe: function (e)
@@ -672,5 +659,70 @@ var objWeakPoint = Class.create(PhySphere,
         // Attach weak point to object. Set offset relative to the target's position and rotation
         chengine.attach(this, this.target, this.relativeOffset);
         this.rotation = chengine.rotationTowards(this, this.target);        
+    }
+});
+
+/**
+ Custom timeline. TODO: Add pause/continue
+ Event model
+ {
+    frame: Frame to execute action. Overrides condition.
+    condition: Boolean used to determine whether to execute action
+    action: Some anonymous function to execute
+ }
+ */
+var objTimeline = Class.create(Sprite,
+{
+    initialize: function ()
+    {
+        Sprite.call(this);
+        
+        this.step = 0;
+        this.timedEvents = [];
+        this.triggeredEvents = [];
+    },
+    
+    onenterframe: function ()
+    {
+        this.step++;
+        
+        // Process triggered events
+        for (var i = 0; i < this.triggeredEvents.length; i++)
+        {
+            var evt = this.triggeredEvents[i];
+            if (evt.condition())
+            {
+                evt.action();
+                this.triggeredEvents.splice(i, 1);
+            }
+        }
+
+        // Process timed events
+        for (var i = 0; i < this.timedEvents.length; i++)
+        {
+            var evt = this.timedEvents[i];
+            if (this.step >= evt.frame)
+            {
+                evt.action();
+                this.timedEvents.splice(i, 1);
+            }
+        }
+    },
+    
+    /**
+     Adds a timed event to the timed event queue
+     @param evt {timeline event} Event to add
+     */
+    addTimedEvent: function (evt)
+    {
+        this.timedEvents.push(evt);
+    },
+    
+    /**
+     Remove from scene
+     */
+    destroy: function ()
+    {
+        chengine.scene.scene2D.removeChild(this);
     }
 });
