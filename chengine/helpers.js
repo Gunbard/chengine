@@ -23,6 +23,11 @@ chengine.LOG_LEVEL =
  Whether or not a transition is in progress
  */
 chengine.isTransitioning = false;
+
+/**
+ Used to generate unique IDs
+ */
+chengine.idCount = 0;
  
 /**
  Logs a chengine-specific message
@@ -654,4 +659,12 @@ chengine.getScene2D = function ()
 {
     var scene = chengine.getScene();
     return scene.scene2D;
+};
+
+/**
+ @return A unique identifier suitable for the life of the engine
+ */
+chengine.genId = function ()
+{
+    return chengine.idCount++;
 };

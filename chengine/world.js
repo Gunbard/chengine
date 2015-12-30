@@ -189,16 +189,17 @@ var objRoom = Class.create(
     
     clean: function ()
     {
-        this.scene.scene2D.removeChild(this.mainTimeline);
+        // NOTE: This will stop/destroy all timelines, too.
+        // EVERYTHING gets cleaned out from the scene!
         this.scene.tearDown();
     },
     
     /**
-        TODO: Update for custom timeline object
+     Adds a timed event to the main timeline for the current room
      */
-    scheduleEvent: function (time, eventAction, stopCondition)
+    scheduleEvent: function (time, eventAction)
     {
-        var evt = {frame: time, action: eventAction, cancelCondition: stopCondition};
+        var evt = {frame: time, action: eventAction};
         this.mainTimeline.addTimedEvent(evt);
     },
     
@@ -279,6 +280,39 @@ var objRoom = Class.create(
         this.skybox.mesh.texture.shininess = 0;
         this.skybox.rotatePitch(degToRad(180));
         this.scene.addChild(this.skybox);
+    },
+    
+    /**
+     @param id {int} Id of the requested timeline
+     @return {objTimeline} Timeline with the id, null otherwise
+     */
+    getTimeline: function (id)
+    {
+        if (this.mainTimeline.id == id)
+        {
+            return this.mainTimeline;
+        }
+        
+        for (var i = 0; i < this.scene.scene2D.childNodes.length; i++)
+        {
+            var child = this.scene.scene2D.childNodes[i];
+            if (child instanceof objTimeline && child.id == id)
+            {
+                return child;
+            }
+        }
+        
+        return null;
+    },
+    
+    /**
+     Adds a timeline to run in this room. Consumers should keep track of ids 
+     themselves when creating a timeline.
+     @param timeline {objTimeline} A timeline to add
+     */
+    addTimeline: function (timeline)
+    {
+        this.scene.scene2D.addChild(timeline);
     }
 });
 
@@ -673,13 +707,21 @@ var objWeakPoint = Class.create(PhySphere,
  */
 var objTimeline = Class.create(Sprite,
 {
-    initialize: function ()
+    initialize: function (room)
     {
         Sprite.call(this);
         
+        // Used for keeping track of timed events
         this.step = 0;
+
+        // Will execute if the current step is equal to the event's frame
         this.timedEvents = [];
+
+        // Will execute if the trigger condition is met
         this.triggeredEvents = [];
+
+        // A unique id to provide access to different timelines in a room
+        this.id = chengine.genId();
     },
     
     onenterframe: function ()

@@ -225,9 +225,15 @@ var testShoot = Class.create(objRoom,
             var newLife = new chengine.component.life(10);
             newLife.ondeath = function ()
             {
-                this.removeFromScene(that.scene);
+                var other = this;
+                var exp = new objBigExp(this, function () 
+                {
+                    other.removeFromScene(that.scene);
+                });
+                
                 that.scene.removeChild(weakpoint);
                 that.scene.removeChild(weakpoint2);
+                that.scene.addChild(exp);
                 that.mainTimeline.destroy();
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);

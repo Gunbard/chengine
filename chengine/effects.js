@@ -33,14 +33,14 @@ chengine.TRANSITION_SPEED =
  */
 var objExp = Class.create(Sphere, 
 {
-	initialize: function (maxScale) 
+	initialize: function (maxScale, growthRate) 
     {
         Sphere.call(this, 1, 7, 8);
         this.mesh.setBaseColor('rgba(245, 240, 30, 0.8)');
         this.scale = 1;
         this.maxScale = maxScale;
         this.alpha = 0.8;
-        this.growthRate = 1;
+        this.growthRate = growthRate || 1;
         
         this.mesh.texture.shininess = 0;
 	},
@@ -71,12 +71,16 @@ var objExp = Class.create(Sphere,
 /**
  A light ray effect that rotates randomly around a point.
  @param target {point} Point to rotate about
+ @param size {number} Outer radius
+ @param length {number} Length of cone 
  */
 var objRay = Class.create(Conic,
 {
-    initialize: function (target)
+    initialize: function (target, size, length)
     {
-        Conic.call(this, 10, 0.1, 200, 10);
+        size = size || 10;
+        length = length || 200;
+        Conic.call(this, size, 0.1, length, 5);
         chengine.unsetLighting(this.mesh);
         
         this.alpha = 0.0;
@@ -124,10 +128,10 @@ var objBigExp = Class.create(Sprite3D,
     initialize: function (target, finishCallback)
     {
         Sprite3D.call(this);
-        this.timer = 200;
-        this.expTimer = 8;
+        this.timer = 300;
+        this.expTimer = 6;
         this.rayTimer = 30;
-        this.range = 40;
+        this.range = 200;
         this.rays = [];
         this.target = target;
         this.finishCallback = finishCallback;
@@ -164,7 +168,7 @@ var objBigExp = Class.create(Sprite3D,
             }
             else
             {
-                var ray = new objRay(this.target);
+                var ray = new objRay(this.target, 25, 500);
                 chengine.attach(ray, this);
                 
                 var rotateX = Math.round(Math.random());
@@ -191,7 +195,7 @@ var objBigExp = Class.create(Sprite3D,
                 scene.removeChild(this.rays[i]);
             }
             
-            var bigExp = new objExp(50);
+            var bigExp = new objExp(200, 4);
             chengine.attach(bigExp, this.target);
             scene.addChild(bigExp);
             
@@ -200,7 +204,7 @@ var objBigExp = Class.create(Sprite3D,
             //scene.addChild(whiteFlash);
             
             //TODO: Don't use rootScene
-            var fade = new objFade(true, 0.02, '#FFFFFF', function ()
+            /*var fade = new objFade(true, 0.02, '#FFFFFF', function ()
             {
                 var fadeOut = new objFade(false, 0.02, '#FFFFFF', function ()
                 {
@@ -211,7 +215,7 @@ var objBigExp = Class.create(Sprite3D,
                 game.rootScene.removeChild(this);
             });
             
-            game.rootScene.addChild(fade);
+            game.rootScene.addChild(fade);*/
             
             scene.removeChild(this.target);
             scene.removeChild(this);
