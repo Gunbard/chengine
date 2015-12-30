@@ -25,24 +25,23 @@ chengine.sound.play = function (asset, point)
         enchant.Sound == enchant.WebAudioSound;
     }
     
-    game.assets[asset].clone().play();
-    
-    //var cachedSound = chengine.sound._getCachedSound(asset); 
-    //cachedSound.play(true);
-    
-    /*var distance = distanceToPoint(camera, point);
-    
-    // Volume/gain appears broken on some machines...
-    if ((chengine.SOUND_MAX_DISTANCE - distance) > 0)
-    {
-        //sound.volume = (SOUND_MAX_DISTANCE - distance) / SOUND_MAX_DISTANCE;
+    var sound = game.assets[asset].clone();
+    if (point)
+    {        
+        var distance = distanceToPoint(chengine.getScene().getCamera(), point);
+        
+        // Volume/gain appears broken on some machines...
+        if ((chengine.SOUND_MAX_DISTANCE - distance) > 0)
+        {
+            sound.volume = (SOUND_MAX_DISTANCE - distance) / SOUND_MAX_DISTANCE;
+        }
+        else 
+        {
+            sound.volume = 0.01;
+        }
     }
-    else 
-    {
-        //sound.volume = 0.01;
-    }
     
-    sound.play();*/
+    sound.play();
 };
 
 /**

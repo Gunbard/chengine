@@ -189,6 +189,9 @@ var testShoot = Class.create(objRoom,
             action: function () 
             {
                 chen.pushAnimation(game.assets[MOTION_TEST]);
+                
+                var windowTest = new objWindow({text: 'Yay for Chen!'});
+                that.scene.scene2D.addChild(windowTest);
             }
         });
 

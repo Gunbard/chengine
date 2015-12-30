@@ -697,7 +697,7 @@ var objWeakPoint = Class.create(PhySphere,
 });
 
 /**
- Custom timeline. TODO: Add pause/continue
+ Custom timeline for simple event execution
  Event model
  {
     frame: Frame to execute action. Overrides condition.
@@ -722,10 +722,24 @@ var objTimeline = Class.create(Sprite,
 
         // A unique id to provide access to different timelines in a room
         this.id = chengine.genId();
+        
+        // Constants for running state
+        this.STATE_TYPES =
+        {
+            RUNNING: 0,
+            PAUSED: 1
+        };
+        
+        this.state = this.STATE_TYPES.RUNNING; 
     },
     
     onenterframe: function ()
     {
+        if (this.state == this.STATE_TYPES.PAUSED)
+        {
+            return;
+        }
+        
         this.step++;
         
         // Process triggered events
@@ -758,6 +772,31 @@ var objTimeline = Class.create(Sprite,
     addTimedEvent: function (evt)
     {
         this.timedEvents.push(evt);
+    },
+    
+    /**
+     Set timeline to run
+     */
+    start: function ()
+    {
+        this.state = this.STATE_TYPES.RUNNING;
+    },
+
+    /**
+     Set timeline to stop and keep frame position
+     */
+    pause: function ()
+    {
+        this.state = this.STATE_TYPES.PAUSED;
+    },
+    
+    /**
+     Restarts the timeline
+     */
+    reset: function ()
+    {
+        this.step = 0;
+        this.start();
     },
     
     /**
