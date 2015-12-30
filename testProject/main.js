@@ -63,6 +63,7 @@ window.onload = function ()
         MODEL_HOLO,
         MOTION_PATH, 
         MOTION_JUMP_PATH,
+        MOTION_TEST,
         'images/tex.jpg',  
         TEX_GRASS, 
         'images/tex.png',

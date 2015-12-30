@@ -164,11 +164,34 @@ var testShoot = Class.create(objRoom,
             alert('wat');
         };
         
-        this.triggeredEvents.push({condition: cond, action: act})*/
+        this.triggeredEvents.push({condition: cond, action: act})*/        
         
         var cam = this.scene.getCamera();
         var chen = this.chen.model;
         
+        // Victory timeline
+        var victoryTimeline = new objTimeline();
+        victoryTimeline.addTimedEvent
+        ({
+            frame: 400, 
+            action: function () 
+            {
+                chengine.sound.stop(MUSIC_CORNERIA);
+                chen.clearAnimation();
+                cam.z -= 500;
+                cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
+            }
+        });
+
+        victoryTimeline.addTimedEvent
+        ({
+            frame: 450, 
+            action: function () 
+            {
+                chen.pushAnimation(game.assets[MOTION_TEST]);
+            }
+        });
+
         this.scheduleEvent(100, function ()
         {
             var windowTest = new objWindow({text: 'Ran<br>"You can do it, Chen!"', image: SPRITE_RAN});
@@ -235,6 +258,7 @@ var testShoot = Class.create(objRoom,
                 that.scene.removeChild(weakpoint2);
                 that.scene.addChild(exp);
                 that.mainTimeline.destroy();
+                that.addTimeline(victoryTimeline);
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
             chengine.component.add(that.yukkuri, newLife);   
@@ -344,6 +368,8 @@ var testShoot = Class.create(objRoom,
             that.moveBackCam = false;
         });
 
+        
+        
         this.scene.play();
     },
     

@@ -707,7 +707,7 @@ var objWeakPoint = Class.create(PhySphere,
  */
 var objTimeline = Class.create(Sprite,
 {
-    initialize: function (room)
+    initialize: function ()
     {
         Sprite.call(this);
         

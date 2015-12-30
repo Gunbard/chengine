@@ -51,8 +51,20 @@ chengine.sound.play = function (asset, point)
  */
 chengine.sound.stop = function (asset) 
 {
-    var cachedSound = chengine.sound._getCachedSound(asset);     
-    cachedSound.stop();
+    var cachedSound = chengine.sound._getCachedSound(asset);   
+    if (cachedSound)
+    {
+        for (var i = 0; i < chengine.sound.loopedSounds.length; i++)
+        {
+            var sound = chengine.sound.loopedSounds[i];
+            if (sound.assetId && sound.assetId == asset)
+            {
+                chengine.sound.loopedSounds.splice(i);
+                break;
+            }
+        }
+        cachedSound.stop();
+    }
 };
 
 /**
@@ -70,7 +82,8 @@ chengine.sound.loop = function (asset, start, end, times)
     
     var newLoopSound = 
     {
-        asset: cachedSound
+        asset: cachedSound,
+        assetId: asset
     };
     
     chengine.sound.loopedSounds.push(newLoopSound);
@@ -83,27 +96,24 @@ chengine.sound.loop = function (asset, start, end, times)
  */    
 chengine.sound._getCachedSound = function (asset)
 {
-    var cachedSound;
     for (var i = 0; i < chengine.sound.loadedSounds.length; i++)
     {
         var sound = chengine.sound.loadedSounds[i];
-        if (sound == game.assets[asset])
+        if (sound.asset && sound.assetId && sound.assetId == asset)
         {
-            cachedSound = sound;
-            break;
+            return sound.asset;
         }
     }
+
+    var newSound = game.assets[asset].clone();
+    var newSoundContainer = 
+    {
+        asset: newSound,
+        assetId: asset
+    };
     
-    if (!cachedSound)
-    {
-        var newSound = game.assets[asset].clone();
-        chengine.sound.loadedSounds.push(newSound);
-        return newSound;
-    }
-    else
-    {
-        return cachedSound;
-    }
+    chengine.sound.loadedSounds.push(newSoundContainer);
+    return newSound;
 };
 
 /**

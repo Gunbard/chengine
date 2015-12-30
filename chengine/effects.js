@@ -80,7 +80,7 @@ var objRay = Class.create(Conic,
     {
         size = size || 10;
         length = length || 200;
-        Conic.call(this, size, 0.1, length, 5);
+        Conic.call(this, size, 0.1, length, 10);
         chengine.unsetLighting(this.mesh);
         
         this.alpha = 0.0;
@@ -203,19 +203,18 @@ var objBigExp = Class.create(Sprite3D,
             //chengine.attach(whiteFlash, this.target);
             //scene.addChild(whiteFlash);
             
-            //TODO: Don't use rootScene
-            /*var fade = new objFade(true, 0.02, '#FFFFFF', function ()
+            var fade = new objFade(chengine.TRANSITION_TYPE.FADE_IN, 0.02, '#FFFFFF', function ()
             {
-                var fadeOut = new objFade(false, 0.02, '#FFFFFF', function ()
+                var fadeOut = new objFade(chengine.TRANSITION_TYPE.FADE_OUT, 0.02, '#FFFFFF', function ()
                 {
-                    game.rootScene.removeChild(this);
+                    scene.scene2D.removeChild(this);
                 });
                 
-                game.rootScene.addChild(fadeOut);
-                game.rootScene.removeChild(this);
+                scene.scene2D.addChild(fadeOut);
+                scene.scene2D.removeChild(this);
             });
             
-            game.rootScene.addChild(fade);*/
+            scene.scene2D.addChild(fade);
             
             scene.removeChild(this.target);
             scene.removeChild(this);
@@ -502,7 +501,7 @@ var objWhiteFlashSlow = Class.create(Plane,
 {
     initialize: function (fadeSpeed)
     {
-        Plane.call(this, 1000);        
+        Plane.call(this, 10000);        
         chengine.unsetLighting(this.mesh);
         
         this.rotation = scene._camera.invMat;
