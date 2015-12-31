@@ -19,12 +19,6 @@ chengine.sound.loopedSounds = [];
  */
 chengine.sound.play = function (asset, point)
 {
-    // Override framework sound for now
-    if (enchant.Sound !== enchant.WebAudioSound)
-    {
-        enchant.Sound == enchant.WebAudioSound;
-    }
-    
     var sound = game.assets[asset].clone();
     if (point)
     {        

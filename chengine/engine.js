@@ -38,6 +38,9 @@ mouseY = 0;
  */
 chengine.draw_distance = DEFAULT_DRAW_DISTANCE;
 
+// Force DOMSound since WebAudioSound causes Failed in Deferred on some devices
+enchant.ENV.USE_WEBAUDIO = false;
+
 /**
  Enters fullscreen mode
  */
