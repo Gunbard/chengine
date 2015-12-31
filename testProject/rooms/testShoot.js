@@ -151,20 +151,7 @@ var testShoot = Class.create(objRoom,
                 missile.rotateYaw(degToRad(-90 - direction));
                 that.scene.addChild(missile);
             }
-        }
-        
-        // Test triggered events
-        /*var cond = function ()
-        {
-            return (that.yukkuri);
-        };
-        
-        var act = function ()
-        {
-            alert('wat');
-        };
-        
-        this.triggeredEvents.push({condition: cond, action: act})*/        
+        }    
         
         var cam = this.scene.getCamera();
         var chen = this.chen.model;
@@ -177,9 +164,12 @@ var testShoot = Class.create(objRoom,
             action: function () 
             {
                 chengine.sound.stop(MUSIC_CORNERIA);
+                that.scene.removeChild(that.target);
+                that.scene.removeChild(that.targetFar);
                 chen.clearAnimation();
                 cam.z -= 500;
                 cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
+                chen.pushAnimation(game.assets[MOTION_TEST]);
             }
         });
 
@@ -187,9 +177,7 @@ var testShoot = Class.create(objRoom,
         ({
             frame: 450, 
             action: function () 
-            {
-                chen.pushAnimation(game.assets[MOTION_TEST]);
-                
+            {                
                 var windowTest = new objWindow({text: 'Yay for Chen!'});
                 that.scene.scene2D.addChild(windowTest);
             }

@@ -259,24 +259,24 @@ var objWindow = Class.create(Label,
             params = {};
         }
         
-        this.x = params.x || 200;
-        this.y = params.y || 10;
         this.widthMax = params.width || 320;
         this.heightMax = params.height || 64;
         this.backgroundColor = params.bgColor || '#000000';
         this.opacity = params.opacity || 0.5;
         this.autocloseTimer = params.timer || 200; // In game steps
+        this.soundOpen = params.soundOpen;
+        this.soundClose = params.soundClose;
+        this.soundTick = params.soundTick;
+
+        params.position = params.position || 'top';
         
-        if (params.position)
+        switch (params.position)
         {
-            switch (params.position)
-            {
-                case 'top':
-                default:
-                    this.x = 200;
-                    this.y = 10;
-                    break;
-            }
+            case 'top':
+            default:
+                this.x = (params.image) ? 200 : 140;
+                this.y = 10;
+                break;
         }
         
         // Current dimensions
@@ -325,12 +325,18 @@ var objWindow = Class.create(Label,
     
     onOpen: function ()
     {
-        chengine.sound.play(SOUND_RADIOSTART);
+        if (!this.soundOpen)
+        {
+            chengine.sound.play(SOUND_RADIOSTART);
+        }
     },
     
     onClose: function ()
     {
-        chengine.sound.play(SOUND_RADIOEND);
+        if (!this.soundClose)
+        {
+            chengine.sound.play(SOUND_RADIOEND);
+        }
     },
     
     onTick: function ()
