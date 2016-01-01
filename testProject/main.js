@@ -33,6 +33,7 @@ SOUND_HIT = 'sounds/expSm.wav';
 SOUND_TARGET = 'sounds/target.mp3';
 SOUND_TARGETLOCK = 'sounds/targetLock.mp3';
 SOUND_CHARGELASER = 'sounds/chargeLaser.mp3';
+SOUND_BEAM = 'sounds/beamRifle.wav';
 SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
 SOUND_RADIOSTART = 'sounds/radioStart.mp3';
 SOUND_RADIOEND = 'sounds/radioEnd.mp3';
@@ -89,6 +90,7 @@ window.onload = function ()
         SOUND_TARGETLOCK,
         SOUND_CHARGELASER,
         SOUND_CHARGELASEREXPLODE,
+        SOUND_BEAM,
         SOUND_RADIOSTART,
         SOUND_RADIOEND,
         MODEL_TEST,

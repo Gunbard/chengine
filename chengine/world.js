@@ -194,15 +194,6 @@ var objRoom = Class.create(
         this.scene.tearDown();
     },
     
-    /**
-     Adds a timed event to the main timeline for the current room
-     */
-    scheduleEvent: function (time, eventAction)
-    {
-        var evt = {frame: time, action: eventAction};
-        this.mainTimeline.addTimedEvent(evt);
-    },
-    
     enterframe: function (e)
     {
         this.step++;
@@ -717,7 +708,8 @@ var objTimeline = Class.create(Sprite,
         // Will execute if the current step is equal to the event's frame
         this.timedEvents = [];
 
-        // Will execute if the trigger condition is met
+        // Will execute if the trigger condition is met. They will be removed from
+        // the list once executed.
         this.triggeredEvents = [];
 
         // A unique id to provide access to different timelines in a room
@@ -757,21 +749,21 @@ var objTimeline = Class.create(Sprite,
         for (var i = 0; i < this.timedEvents.length; i++)
         {
             var evt = this.timedEvents[i];
-            if (this.step >= evt.frame)
+            if (this.step == evt.frame)
             {
                 evt.action();
-                this.timedEvents.splice(i, 1);
             }
         }
     },
     
     /**
      Adds a timed event to the timed event queue
-     @param evt {timeline event} Event to add
+     @param step {number} Frame number to execute on
+     @param act {function} Stuff to execute
      */
-    addTimedEvent: function (evt)
+    addTimedEvent: function (step, act)
     {
-        this.timedEvents.push(evt);
+        this.timedEvents.push({frame: step, action: act});
     },
     
     /**
@@ -797,6 +789,15 @@ var objTimeline = Class.create(Sprite,
     {
         this.step = 0;
         this.start();
+    },
+    
+    /**
+     Rewinds or fast forwards the timeline to a specific step
+     @param frame {number} Step to jump to
+     */
+    setFrame: function (frame)
+    {
+        this.step = frame;
     },
     
     /**

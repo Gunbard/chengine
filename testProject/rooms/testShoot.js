@@ -17,6 +17,15 @@ var testShoot = Class.create(objRoom,
         this.scrolling = true;
         this.scene.getCamera().altitude(50);
         
+        // Fade from black
+        var fadeOut = 
+        new objFade(chengine.TRANSITION_TYPE.FADE_OUT, chengine.TRANSITION_SPEED.FAST, '#000000', function ()
+        {
+            scene.scene2D.removeChild(this);
+        });
+        
+        this.scene.scene2D.addChild(fadeOut);
+        
         // Make a pad
         this.pad = new APad();
         this.pad.x = viewportX(5);
@@ -59,10 +68,10 @@ var testShoot = Class.create(objRoom,
         this.scene.scene2D.addChild(this.pad);
         
         this.button = new Button("", "light");
-        this.button.width = 60;
-        this.button.height = 60;
-        this.button.moveTo(viewportX(80), viewportY(65));
-        this.button.opacity = 0.4;
+        this.button.width = GAME_WIDTH / 2;
+        this.button.height = GAME_HEIGHT;
+        this.button.moveTo(viewportX(50), viewportY(0));
+        this.button.opacity = 0;
         scene.scene2D.addChild(this.button);
         
         this.scene.getCamera().forward(500);
@@ -158,45 +167,57 @@ var testShoot = Class.create(objRoom,
         
         // Victory timeline
         var victoryTimeline = new objTimeline();
-        victoryTimeline.addTimedEvent
-        ({
-            frame: 400, 
-            action: function () 
-            {
-                chengine.sound.stop(MUSIC_CORNERIA);
-                that.scene.removeChild(that.target);
-                that.scene.removeChild(that.targetFar);
-                chen.clearAnimation();
-                cam.z -= 500;
-                cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
-                chen.pushAnimation(game.assets[MOTION_TEST]);
-            }
+        victoryTimeline.addTimedEvent(400, function () 
+        {
+            chengine.sound.stop(MUSIC_CORNERIA);
+            that.scene.removeChild(that.target);
+            that.scene.removeChild(that.targetFar);
+            chen.clearAnimation();
+            cam.z -= 500;
+            cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
+            chen.pushAnimation(game.assets[MOTION_TEST]);
         });
 
-        victoryTimeline.addTimedEvent
-        ({
-            frame: 450, 
-            action: function () 
-            {                
-                var windowTest = new objWindow({text: 'Yay for Chen!'});
-                that.scene.scene2D.addChild(windowTest);
-            }
+        victoryTimeline.addTimedEvent(450, function () 
+        {                
+            var windowTest = new objWindow({text: 'Yay for Chen!<br>Will add score results here.'});
+            that.scene.scene2D.addChild(windowTest);
+        });
+        
+        victoryTimeline.addTimedEvent(850, function () 
+        {                
+            cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 40, y: 10, z: -30});
+        });
+        
+        victoryTimeline.addTimedEvent(1450, function () 
+        {                
+            cam.setChase(chen, 10, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 10, z: -10});
+        });
+        
+        victoryTimeline.addTimedEvent(1850, function () 
+        {                
+            cam.setChase(chen, 10, 50, {x: 0, y: 5, z: 0}, {x: -30, y: 20, z: -10});
         });
 
-        this.scheduleEvent(100, function ()
+        victoryTimeline.addTimedEvent(2200, function () 
+        {                
+            victoryTimeline.setFrame(500);
+        });
+        
+        this.mainTimeline.addTimedEvent(100, function ()
         {
             var windowTest = new objWindow({text: 'Ran<br>"You can do it, Chen!"', image: SPRITE_RAN});
             that.scene.scene2D.addChild(windowTest);
         });
         
-        this.scheduleEvent(200, function () 
+        this.mainTimeline.addTimedEvent(200, function () 
         {
             cam.x += 200;
             cam.z -= 400;
             cam.y -= 100;
         });
         
-        this.scheduleEvent(500, function () 
+        this.mainTimeline.addTimedEvent(500, function () 
         {
             var windowTest = new objWindow({text: 'Ran<br>"Go, Chen, go!!"', image: SPRITE_RAN});
             that.scene.scene2D.addChild(windowTest);
@@ -204,12 +225,12 @@ var testShoot = Class.create(objRoom,
             cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
         });
         
-        this.scheduleEvent(600, function ()
+        this.mainTimeline.addTimedEvent(600, function ()
         {
             cam.setInView(chen);
         });
         
-        this.scheduleEvent(700, function ()
+        this.mainTimeline.addTimedEvent(700, function ()
         {
             that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
             
@@ -228,11 +249,11 @@ var testShoot = Class.create(objRoom,
                 }
             };
             
-            var weakpoint = new objWeakPoint(15, that.yukkuri.model, {x: -45, y: -100, z: -80});
+            var weakpoint = new objWeakPoint(20, that.yukkuri.model, {x: -45, y: -100, z: -80});
             weakpoint.onHit = hitEvent;
             that.scene.addChild(weakpoint);
             
-            var weakpoint2 = new objWeakPoint(15, that.yukkuri.model, {x: 45, y: -100, z: -80});
+            var weakpoint2 = new objWeakPoint(20, that.yukkuri.model, {x: 45, y: -100, z: -80});
             weakpoint2.onHit = hitEvent;
             that.scene.addChild(weakpoint2);
             
@@ -245,6 +266,7 @@ var testShoot = Class.create(objRoom,
                     other.removeFromScene(that.scene);
                 });
                 
+                that.moveBackCam = false;
                 that.scene.removeChild(weakpoint);
                 that.scene.removeChild(weakpoint2);
                 that.scene.addChild(exp);
@@ -255,7 +277,7 @@ var testShoot = Class.create(objRoom,
             chengine.component.add(that.yukkuri, newLife);   
         });
         
-        this.scheduleEvent(800, function ()
+        this.mainTimeline.addTimedEvent(800, function ()
         {
             var windowTest = new objWindow({text: 'Ran<br>"Watch out! There\'s a huge stupid thing approaching fast!"', image: SPRITE_RAN});
             that.scene.scene2D.addChild(windowTest);
@@ -283,19 +305,19 @@ var testShoot = Class.create(objRoom,
             that.scene.addChild(testObj);
         });
         
-        this.scheduleEvent(1000, function ()
+        this.mainTimeline.addTimedEvent(1000, function ()
         {
             cam.offset = {x: 0, y: 0, z: -100};
             that.scrolling = false;
             that.yukkuri.moveBy({x: 10, y: 10, z: 400}, 60);
         });
         
-        this.scheduleEvent(1200, function ()
+        this.mainTimeline.addTimedEvent(1200, function ()
         {
             that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
         });
         
-        this.scheduleEvent(1300, function ()
+        this.mainTimeline.addTimedEvent(1300, function ()
         {
             var beam = new objBeam(that.scene);
             chengine.attach(beam, that.yukkuri);
@@ -312,9 +334,11 @@ var testShoot = Class.create(objRoom,
             beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
             beam2.rotateYaw(degToRad(180));
             that.scene.addChild(beam2);
+            
+            chengine.sound.play(SOUND_BEAM);
         });
         
-        this.scheduleEvent(1380, function ()
+        this.mainTimeline.addTimedEvent(1380, function ()
         {
             var beam = new objBeam(that.scene);
             chengine.attach(beam, that.yukkuri);
@@ -331,32 +355,35 @@ var testShoot = Class.create(objRoom,
             beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
             beam2.rotateYaw(degToRad(180));
             that.scene.addChild(beam2);
+            
+            chengine.sound.play(SOUND_BEAM);
         });
         
-        this.scheduleEvent(1400, function ()
+        this.mainTimeline.addTimedEvent(1400, function ()
         {
             that.moveBackCam = true;
             that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
         });
         
-        this.scheduleEvent(1500, function ()
+        this.mainTimeline.addTimedEvent(1500, function ()
         {                
             fireMissiles();
         });
         
-        this.scheduleEvent(1600, function ()
+        this.mainTimeline.addTimedEvent(1600, function ()
         {
             that.yukkuri.moveBy({x: 200, y: 0, z: 0}, 60);
         });
         
-        this.scheduleEvent(1700, function ()
+        this.mainTimeline.addTimedEvent(1700, function ()
         {
             fireMissiles();
         });
         
-        this.scheduleEvent(1900, function ()
+        this.mainTimeline.addTimedEvent(1900, function ()
         {
             that.moveBackCam = false;
+            that.mainTimeline.setFrame(1601);
         });
 
         
