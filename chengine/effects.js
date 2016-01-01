@@ -712,3 +712,57 @@ var objCrossfade = Class.create(Sprite,
         }
     }
 });
+
+
+/**
+ Shakes the camera up a bit.
+ @param intensity {number} How strong the shake will be
+ @param duration {number} How many frames before the shaker kills itself
+ */
+var objCameraShaker = Class.create(Sprite,
+{
+    initialize: function (intensity, duration)
+    {   
+        Sprite.call(this);
+        this.step = 0;
+        this.reset = false; // Will flip between frames and should help with drift
+        this.intensity = intensity || 0.1;
+        this.duration = duration;
+    },
+    
+    onenterframe: function ()
+    {          
+        this.step++;
+    
+        if (this.duration && this.step == this.duration)
+        {
+            chengine.instanceDestroy(this);
+            return;
+        }
+        
+        
+        var cam = chengine.getScene().getCamera();
+
+        if (this.reset)
+        {
+            cam.x = this.prevPos.x;
+            cam.y = this.prevPos.y;
+            cam.z = this.prevPos.z;
+            this.reset = false;
+        }
+        else
+        {
+            cam.x += rand(-this.intensity, (2 * this.intensity));
+            cam.y += rand(-this.intensity, (2 * this.intensity));
+            cam.z += rand(-this.intensity, (2 * this.intensity));
+            this.reset = true;
+        }
+        
+        this.prevPos = 
+        {
+            x: cam.x,
+            y: cam.y,
+            z: cam.z,
+        };
+    }
+});

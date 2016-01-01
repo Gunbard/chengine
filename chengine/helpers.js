@@ -87,11 +87,11 @@ chengine.instanceDestroy = function (obj)
 {
     if (obj instanceof Sprite3D)
     {
-        scene.removeChild(obj);
+        chengine.getScene().removeChild(obj);
     }
     else
     {
-        game.rootScene.removeChild(obj);
+        chengine.getScene2D().removeChild(obj);
     }
 };
 

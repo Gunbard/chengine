@@ -172,6 +172,7 @@ var testShoot = Class.create(objRoom,
             chengine.sound.stop(MUSIC_CORNERIA);
             that.scene.removeChild(that.target);
             that.scene.removeChild(that.targetFar);
+            that.scene.scene2D.removeChild(that.camShaker);
             chen.clearAnimation();
             cam.z -= 500;
             cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
@@ -240,6 +241,8 @@ var testShoot = Class.create(objRoom,
             that.yukkuri.z = that.chen.z - 2000;
             that.yukkuri.addToScene(that.scene);
             
+            that.camShaker = new objCameraShaker();
+            
             var hitEvent = function ()
             {
                 var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
@@ -272,6 +275,7 @@ var testShoot = Class.create(objRoom,
                 that.scene.addChild(exp);
                 that.mainTimeline.destroy();
                 that.addTimeline(victoryTimeline);
+                that.scene.scene2D.addChild(that.camShaker);
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
             chengine.component.add(that.yukkuri, newLife);   
