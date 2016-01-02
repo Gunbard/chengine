@@ -26,6 +26,7 @@ TEX_CROSSHAIRS2RED = 'images/crosshairs2red.png';
 TEX_GRASS = 'images/grass.jpg';
 TEX_METAL = 'images/metal.jpg';
 TEX_CIRCLE_WHITE = 'images/whitecircle.png';
+TEX_HEALTH = 'images/grass.gif';
 MUSIC_CORNERIA = 'sounds/corneria.mp3';
 SOUND_LASER = 'sounds/laser_single.mp3';
 SOUND_EXPLODE = 'sounds/exp.mp3';
@@ -67,6 +68,7 @@ window.onload = function ()
         MOTION_TEST,
         'images/tex.jpg',  
         TEX_GRASS, 
+        TEX_HEALTH, 
         'images/tex.png',
         'images/soccerball.png', 
         'sounds/tielaser.wav', 

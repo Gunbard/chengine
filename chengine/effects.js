@@ -766,3 +766,85 @@ var objCameraShaker = Class.create(Sprite,
         };
     }
 });
+
+/**
+ A traditional, rectangular health bar. Sprite will stretch as the watch value decreases.
+ @param params {healthParams} Health bar attributes
+ healthParams:
+ {
+    lifeComponent: {chengine.component.life} Contains HP and max HP values to watch
+    max: {number} Maximum HP variable
+    width: {number} Bar width
+    height: {number} Bar height
+    orientation: {char} 'h' for horizontal, 'v' for vertical 
+    scene: {objScene} Reference to scene this is in
+ }
+ */
+var objHealthBar = Class.create(Sprite,
+{
+    initialize: function (params)
+    {   
+        var longDefault = 100;
+        var shortDefault = 8;
+        
+        if (!params)
+        {
+            params = {};
+        }
+        
+        params.max = params.max || 100;
+        params.width = params.width || longDefault;
+        params.height = params.height || longDefault;
+        params.orientation = params.orientation || 'h';
+        this.params = params;
+        
+        if (this.params.orientation == 'h')
+        {
+            params.height = shortDefault;
+        }
+        else
+        {
+            params.width = shortDefault;
+        }
+        
+        this.maxWidth = params.width;
+        this.maxHeight = params.height;
+        
+        Sprite.call(this, this.maxWidth, this.maxHeight);
+        
+        // TODO: Handle engine-level textures
+        this.image = game.assets[TEX_HEALTH];
+        
+        this.background = new Sprite(this.maxWidth, this.maxHeight);
+        this.background.backgroundColor = '#000000';
+        this.background.opacity = 0.6;
+    },
+    
+    onenterframe: function ()
+    {          
+        chengine.attach(this.background, this);
+    
+        var newSize = this.params.lifeComponent.HP / this.params.lifeComponent.maxHP;
+        if (this.params.orientation == 'h')
+        {
+            this.width = newSize * this.maxWidth;
+        }
+        else
+        {
+            this.height = newSize * this.maxHeight;
+        }
+    },
+    
+    addToScene: function (scene)
+    {
+        this.scene = scene;
+        scene.addChild(this.background);
+        scene.addChild(this);
+    },
+    
+    removeFromScene: function ()
+    {
+        this.scene.removeChild(this.background);
+        this.scene.removeChild(this);
+    }
+});

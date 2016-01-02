@@ -275,10 +275,17 @@ var testShoot = Class.create(objRoom,
                 that.scene.addChild(exp);
                 that.mainTimeline.destroy();
                 that.addTimeline(victoryTimeline);
+                that.healthBar.removeFromScene();
                 that.scene.scene2D.addChild(that.camShaker);
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
-            chengine.component.add(that.yukkuri, newLife);   
+            chengine.component.add(that.yukkuri, newLife);
+            
+            // Make a health bar
+            var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
+            that.healthBar = new objHealthBar({lifeComponent: lifeComp, orientation: 'v'});
+            that.healthBar.moveTo(16, 48);
+            that.healthBar.addToScene(that.scene.scene2D);
         });
         
         this.mainTimeline.addTimedEvent(800, function ()
