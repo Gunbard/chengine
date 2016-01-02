@@ -784,31 +784,19 @@ var objHealthBar = Class.create(Sprite,
 {
     initialize: function (params)
     {   
-        var longDefault = 100;
-        var shortDefault = 8;
-        
         if (!params)
         {
             params = {};
         }
         
         params.max = params.max || 100;
-        params.width = params.width || longDefault;
-        params.height = params.height || longDefault;
-        params.orientation = params.orientation || 'h';
+        params.width = params.width || 200;
+        params.height = params.height || 10;
         this.params = params;
-        
-        if (this.params.orientation == 'h')
-        {
-            params.height = shortDefault;
-        }
-        else
-        {
-            params.width = shortDefault;
-        }
         
         this.maxWidth = params.width;
         this.maxHeight = params.height;
+        this.prevValue = params.max;
         
         Sprite.call(this, this.maxWidth, this.maxHeight);
         
@@ -818,20 +806,50 @@ var objHealthBar = Class.create(Sprite,
         this.background = new Sprite(this.maxWidth, this.maxHeight);
         this.background.backgroundColor = '#000000';
         this.background.opacity = 0.6;
+        
+        this.movingBackground = new Sprite(this.maxWidth, this.maxHeight);
+        this.movingBackground.backgroundColor = '#FFFFFF';
+        this.movingBackgroundDelay = 30;
+        this.movingBackgroundSpeed = 1;
+        
+        if (this.params.orientation && this.params.orientation == 'v')
+        {
+            var rot = 90;
+            this.originX = 0;
+            this.originY = 0;
+            this.background.originX = 0;
+            this.background.originY = 0;
+            this.movingBackground.originX = 0;
+            this.movingBackground.originY = 0;
+            this.rotation = rot;
+            this.background.rotation = rot;
+            this.movingBackground.rotation = rot;
+        }
     },
     
     onenterframe: function ()
     {          
         chengine.attach(this.background, this);
-    
-        var newSize = this.params.lifeComponent.HP / this.params.lifeComponent.maxHP;
-        if (this.params.orientation == 'h')
+        chengine.attach(this.movingBackground, this);
+        
+        this.width = (this.params.lifeComponent.HP / this.params.lifeComponent.maxHP) * this.maxWidth;
+        
+        if (this.prevValue != this.params.lifeComponent.HP)
         {
-            this.width = newSize * this.maxWidth;
+            this.movingBackgroundDelay = 30;
+            this.prevValue = this.params.lifeComponent.HP;
+        }
+        
+        if (this.movingBackgroundDelay > 0)
+        {
+            this.movingBackgroundDelay--;
         }
         else
         {
-            this.height = newSize * this.maxHeight;
+            if (this.movingBackground.width > this.width)
+            {
+                this.movingBackground.width -= this.movingBackgroundSpeed;
+            }                
         }
     },
     
@@ -839,12 +857,14 @@ var objHealthBar = Class.create(Sprite,
     {
         this.scene = scene;
         scene.addChild(this.background);
+        scene.addChild(this.movingBackground);
         scene.addChild(this);
     },
     
     removeFromScene: function ()
     {
         this.scene.removeChild(this.background);
+        this.scene.removeChild(this.movingBackground);
         this.scene.removeChild(this);
     }
 });
