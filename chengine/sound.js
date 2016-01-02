@@ -11,6 +11,9 @@ chengine.sound.loadedSounds = [];
 // Keep track of sounds that should be looped
 chengine.sound.loopedSounds = [];
 
+// Keep track of sounds that should be faded
+chengine.sound.fadingSounds = [];
+
 /**
  Plays a sound with its volume based on its distance
  to the camera
@@ -83,6 +86,25 @@ chengine.sound.loop = function (asset, start, end, times)
 };
 
 /**
+ 
+ */
+chengine.sound.fade = function (asset, volume, amount, finished)
+{
+    var cachedSound = chengine.sound._getCachedSound(asset);     
+    
+    var newFadeSound = 
+    {
+        asset: cachedSound,
+        assetId: asset,
+        targetVolume: volume,
+        fadeAmount: amount,
+        callback: finished
+    };
+    
+    chengine.sound.fadingSounds.push(newFadeSound);
+};
+
+/**
  Internal
  @param {String} asset The sound asset to get
  @return {sound asset} A cached sound
@@ -110,11 +132,11 @@ chengine.sound._getCachedSound = function (asset)
 };
 
 /**
- Internal. Checks status of looping sounds.
  Called on enterframe of 3D scene singleton.
  */
-chengine.sound._monitorLoop = function ()
+chengine.sound.enterframe = function (e)
 {
+    // Check status of looping sounds
     for (var i = 0; i < chengine.sound.loopedSounds.length; i++)
     {
         var sound = chengine.sound.loopedSounds[i];
@@ -135,6 +157,33 @@ chengine.sound._monitorLoop = function ()
                 }
             }
             sound.asset.play(true);
+        }
+    }
+    
+    // Handle fading
+    for (var i = 0; i < chengine.sound.fadingSounds.length; i++)
+    {
+        var sound = chengine.sound.fadingSounds[i];
+        if (!sound.asset)
+        {
+            continue;
+        }
+        
+        if (sound.asset.volume > sound.targetVolume &&
+           (sound.asset.volume - sound.fadeAmount) > 0)
+        {   
+            sound.asset.volume -= sound.fadeAmount;
+        }
+        else
+        {
+            sound.asset.volume = 0;
+            chengine.sound.fadingSounds.splice(i);
+            sound.asset.stop();
+            
+            if (sound.callback)
+            {
+                sound.callback();
+            }
         }
     }
 };

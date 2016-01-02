@@ -151,7 +151,7 @@ var objBigExp = Class.create(Sprite3D,
             }
             else
             {
-                var exp = new objExp(10);
+                var exp = new objExp(30);
                 exp.x = this.x - this.range + (Math.random() * (this.range * 2));
                 exp.y = this.y - this.range + (Math.random() * (this.range * 2));
                 exp.z = this.z - this.range + (Math.random() * (this.range * 2));
@@ -836,7 +836,11 @@ var objHealthBar = Class.create(Sprite,
         
         if (this.prevValue != this.params.lifeComponent.HP)
         {
-            this.movingBackgroundDelay = 30;
+            if (this.movingBackgroundDelay == 0)
+            {
+                this.movingBackgroundDelay = 30;
+            }
+            
             this.prevValue = this.params.lifeComponent.HP;
         }
         

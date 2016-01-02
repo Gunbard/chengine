@@ -28,6 +28,8 @@ TEX_METAL = 'images/metal.jpg';
 TEX_CIRCLE_WHITE = 'images/whitecircle.png';
 TEX_HEALTH = 'images/grass.gif';
 MUSIC_CORNERIA = 'sounds/corneria.mp3';
+MUSIC_BOSS = 'sounds/boss.mp3';
+MUSIC_VICTORY = 'sounds/victory.mp3';
 SOUND_LASER = 'sounds/laser_single.mp3';
 SOUND_EXPLODE = 'sounds/exp.mp3';
 SOUND_HIT = 'sounds/expSm.wav';
@@ -85,6 +87,8 @@ window.onload = function ()
         WORLD_CASTLE,
         WORLD_GROUND3,
         MUSIC_CORNERIA,
+        MUSIC_BOSS,
+        MUSIC_VICTORY,
         SOUND_LASER,
         SOUND_EXPLODE,
         SOUND_HIT,

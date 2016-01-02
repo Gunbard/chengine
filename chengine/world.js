@@ -78,7 +78,7 @@ var objScene = Class.create(PhyScene3D,
     
     enterframe: function (e)
     {   
-        chengine.sound._monitorLoop();
+        chengine.sound.enterframe(e);
         this.fpsCounter++;
         this.getCamera().enterframe(e);
     },

@@ -177,11 +177,12 @@ var testShoot = Class.create(objRoom,
             cam.z -= 500;
             cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
             chen.pushAnimation(game.assets[MOTION_TEST]);
+            chengine.sound.loop(MUSIC_VICTORY);
         });
 
         victoryTimeline.addTimedEvent(450, function () 
         {                
-            var windowTest = new objWindow({text: 'Yay for Chen!<br>Will add score results here.'});
+            var windowTest = new objWindow({text: 'Chen did it!<br>Will add score results here.'});
             that.scene.scene2D.addChild(windowTest);
         });
         
@@ -260,7 +261,7 @@ var testShoot = Class.create(objRoom,
             weakpoint2.onHit = hitEvent;
             that.scene.addChild(weakpoint2);
             
-            var newLife = new chengine.component.life(10);
+            var newLife = new chengine.component.life(50);
             newLife.ondeath = function ()
             {
                 var other = this;
@@ -277,6 +278,7 @@ var testShoot = Class.create(objRoom,
                 that.addTimeline(victoryTimeline);
                 that.healthBar.removeFromScene();
                 that.scene.scene2D.addChild(that.camShaker);
+                chengine.sound.fade(MUSIC_BOSS, 0.0, 0.005);
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
             chengine.component.add(that.yukkuri, newLife);
@@ -293,8 +295,12 @@ var testShoot = Class.create(objRoom,
             var windowTest = new objWindow({text: 'Ran<br>"Watch out! There\'s a huge stupid thing approaching fast!"', image: SPRITE_RAN});
             that.scene.scene2D.addChild(windowTest);
             
-            return;
-            var testObj = game.assets[MODEL_TEST].colladaClone();
+            chengine.sound.fade(MUSIC_CORNERIA, 0.0, 0.005, function () 
+            {
+                chengine.sound.loop(MUSIC_BOSS);
+            });
+            
+            /*var testObj = game.assets[MODEL_TEST].colladaClone();
             var objScale = 0.5;
             testObj.scale(objScale, objScale, objScale);
             testObj.updateRigid(0, objScale, testObj.getVertices());
@@ -313,7 +319,7 @@ var testShoot = Class.create(objRoom,
             
             testObj.rotatePitch(degToRad(270));
             testObj.z = that.chen.z - 1000;
-            that.scene.addChild(testObj);
+            that.scene.addChild(testObj);*/
         });
         
         this.mainTimeline.addTimedEvent(1000, function ()
