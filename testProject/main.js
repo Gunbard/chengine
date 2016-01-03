@@ -27,12 +27,13 @@ TEX_CROSSHAIRS2RED = 'images/crosshairs2red.png';
 TEX_GRASS = 'images/grass.jpg';
 TEX_METAL = 'images/metal.jpg';
 TEX_CIRCLE_WHITE = 'images/whitecircle.png';
-TEX_HEALTH = 'images/grass.gif';
+TEX_HEALTH = 'images/health.png';
 MUSIC_CORNERIA = 'sounds/corneria.mp3';
 MUSIC_BOSS = 'sounds/boss.mp3';
 MUSIC_VICTORY = 'sounds/victory.mp3';
 SOUND_LASER = 'sounds/laser_single.mp3';
 SOUND_EXPLODE = 'sounds/exp.mp3';
+SOUND_BIGEXPLODE = 'sounds/bigexplode.mp3';
 SOUND_HIT = 'sounds/expSm.wav';
 SOUND_TARGET = 'sounds/target.mp3';
 SOUND_TARGETLOCK = 'sounds/targetLock.mp3';
@@ -41,6 +42,7 @@ SOUND_BEAM = 'sounds/beamRifle.wav';
 SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
 SOUND_RADIOSTART = 'sounds/radioStart.mp3';
 SOUND_RADIOEND = 'sounds/radioEnd.mp3';
+SOUND_LOADHEALTH = 'sounds/loadhealth.mp3';
 MODEL_TEST = 'model/modeltest2.dae';
 MODEL_YUKKURI = 'model/reimuyukkuri/reimuyukkuribig.pmd';
 MODEL_TREE = 'model/tree/tree.dae';
@@ -93,9 +95,11 @@ window.onload = function ()
         MUSIC_VICTORY,
         SOUND_LASER,
         SOUND_EXPLODE,
+        SOUND_BIGEXPLODE,
         SOUND_HIT,
         SOUND_TARGET,
         SOUND_TARGETLOCK,
+        SOUND_LOADHEALTH,
         SOUND_CHARGELASER,
         SOUND_CHARGELASEREXPLODE,
         SOUND_BEAM,

@@ -199,6 +199,8 @@ var objBigExp = Class.create(Sprite3D,
             chengine.attach(bigExp, this.target);
             scene.addChild(bigExp);
             
+            chengine.sound.play(SOUND_BIGEXPLODE);
+            
             //var whiteFlash = new objWhiteFlashSlow();
             //chengine.attach(whiteFlash, this.target);
             //scene.addChild(whiteFlash);
@@ -797,6 +799,7 @@ var objHealthBar = Class.create(Sprite,
         this.maxWidth = params.width;
         this.maxHeight = params.height;
         this.prevValue = params.max;
+        this.animating = false;
         
         Sprite.call(this, this.maxWidth, this.maxHeight);
         
@@ -831,6 +834,21 @@ var objHealthBar = Class.create(Sprite,
     {          
         chengine.attach(this.background, this);
         chengine.attach(this.movingBackground, this);
+        
+        if (this.animating)
+        {
+            if (this.width < (this.params.lifeComponent.HP / this.params.lifeComponent.maxHP) * this.maxWidth)
+            {
+                this.width += 5;
+            }
+            else
+            {
+                this.animating = false;
+                this.movingBackground.opacity = 1;
+            }
+            
+            return;
+        }
         
         this.width = (this.params.lifeComponent.HP / this.params.lifeComponent.maxHP) * this.maxWidth;
         
@@ -870,5 +888,13 @@ var objHealthBar = Class.create(Sprite,
         this.scene.removeChild(this.background);
         this.scene.removeChild(this.movingBackground);
         this.scene.removeChild(this);
+    },
+    
+    animate: function ()
+    {
+        this.width = 0;
+        this.animating = true;
+        this.movingBackground.opacity = 0;
+        chengine.sound.play(SOUND_LOADHEALTH);
     }
 });

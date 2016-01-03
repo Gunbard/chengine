@@ -245,7 +245,7 @@ var testShoot = Class.create(objRoom,
         
         this.mainTimeline.addTimedEvent(700, function ()
         {            
-            that.ran.moveBy({x: -1000, y: 50, z: -1000}, 500, function () 
+            that.ran.moveBy({x: -1000, y: 50, z: -1000}, 100, function () 
             {
                 that.ran.removeFromScene(that.scene);
             });
@@ -298,12 +298,6 @@ var testShoot = Class.create(objRoom,
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
             chengine.component.add(that.yukkuri, newLife);
-            
-            // Make a health bar
-            var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
-            that.healthBar = new objHealthBar({lifeComponent: lifeComp, orientation: 'v'});
-            that.healthBar.moveTo(20, 48);
-            that.healthBar.addToScene(that.scene.scene2D);
         });
         
         this.mainTimeline.addTimedEvent(800, function ()
@@ -348,6 +342,16 @@ var testShoot = Class.create(objRoom,
         this.mainTimeline.addTimedEvent(1200, function ()
         {
             that.yukkuri.moveBy({x: 50, y: 10, z: 400}, 60);
+            
+            var windowTest = new objWindow({text: 'Ran<br>"Analyzing data now...<br>Aim for the eyes!"', image: SPRITE_RAN});
+            that.scene.scene2D.addChild(windowTest);
+            
+            // Make a health bar
+            var lifeComp = chengine.component.get(that.yukkuri, chengine.component.life);
+            that.healthBar = new objHealthBar({lifeComponent: lifeComp, orientation: 'v'});
+            that.healthBar.moveTo(20, 48);
+            that.healthBar.animate();
+            that.healthBar.addToScene(that.scene.scene2D);
         });
         
         this.mainTimeline.addTimedEvent(1300, function ()
