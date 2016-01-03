@@ -83,6 +83,11 @@ var objCharacter = Class.create(PhyCapsule,
             if (this.moveTime == 0)
             {
                 this.targetPosition = null;
+                if (this.moveCallback)
+                {
+                    this.moveCallback();
+                    this.moveCallback = null;
+                }
             }
         }    
     },
@@ -126,13 +131,14 @@ var objCharacter = Class.create(PhyCapsule,
         this.z += chengine.smoothValue(this.z, position.z, speed);
     },
     
-    moveBy: function (position, speed)
+    moveBy: function (position, speed, callback)
     {
         if (!this.targetPosition)
         {
             this.targetPosition = {x: this.x + position.x, y: this.y + position.y, z: this.z + position.z};
             this.moveSpeed = speed;
             this.moveTime = speed;
+            this.moveCallback = callback;
         }
     }
 });

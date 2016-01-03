@@ -60,6 +60,9 @@ var testShoot = Class.create(objRoom,
         this.chen.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.addToScene(this.scene);
+        
+        // Make Ran
+        this.ran = new objCharacter(MODEL_RAN);
 
         chengine.component.add(this.chen, new chengine.component.controlBehindMovable(0.5, game.input, this.pad, {upIsForward: false}));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);
@@ -225,6 +228,14 @@ var testShoot = Class.create(objRoom,
             that.scene.scene2D.addChild(windowTest);
             
             cam.setChase(chen, 100, 50, {x: 0, y: 10, z: 0}, {x: 0, y: 0, z: 100});
+            
+            chengine.attach(that.ran, that.chen);
+            that.ran.model.pushAnimation(game.assets[MOTION_PATH]);
+            that.ran.model.rotation = chengine.copyRotation(that.chen.model.rotation);
+            that.ran.x -= 50;
+            that.ran.y += 60;
+            that.ran.addToScene(that.scene);
+            that.ran.moveBy({x: 50, y: -50, z: -1000}, 200);
         });
         
         this.mainTimeline.addTimedEvent(600, function ()
@@ -233,7 +244,12 @@ var testShoot = Class.create(objRoom,
         });
         
         this.mainTimeline.addTimedEvent(700, function ()
-        {
+        {            
+            that.ran.moveBy({x: -1000, y: 50, z: -1000}, 500, function () 
+            {
+                that.ran.removeFromScene(that.scene);
+            });
+
             that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
             
             that.yukkuri.yukkuri = true;

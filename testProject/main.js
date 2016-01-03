@@ -19,6 +19,7 @@ MOTION_JUMP_PATH = 'motion/jumpfix2.vmd';
 MOTION_TEST = 'motion/everybody.vmd';
 TEXTURE_SKYDOME = 'images/skydome.jpg';
 MODEL_CHEN = 'model/chen/chenfix.pmd';
+MODEL_RAN = 'model/ran/ran.pmd';
 MODEL_HOLO = 'model/holo/holofix.pmd';
 TEX_CROSSHAIRS = 'images/crosshairs.png';
 TEX_CROSSHAIRS2 = 'images/crosshairs2.png';
@@ -65,6 +66,7 @@ window.onload = function ()
         MODEL_REI_PATH,
         MODEL_CHEN,
         MODEL_HOLO,
+        MODEL_RAN,
         MOTION_PATH, 
         MOTION_JUMP_PATH,
         MOTION_TEST,
