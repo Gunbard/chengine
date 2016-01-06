@@ -176,9 +176,8 @@ chengine.sound.enterframe = function (e)
         }
         else
         {
-            sound.asset.volume = 0;
-            chengine.sound.fadingSounds.splice(i);
             sound.asset.stop();
+            chengine.sound.fadingSounds.splice(i);
             
             if (sound.callback)
             {

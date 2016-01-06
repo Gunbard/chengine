@@ -426,7 +426,7 @@ chengine.flash = function (obj)
         obj.flash = 0.0;
     };
     
-    setTimeout(timeoutCallback, 100);
+    setTimeout(timeoutCallback, 10);
 };
 
 /**
