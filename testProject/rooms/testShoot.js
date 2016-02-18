@@ -180,6 +180,7 @@ var testShoot = Class.create(objRoom,
             cam.z -= 500;
             cam.setChase(chen, 30, 50, {x: 0, y: 5, z: 0}, {x: 0, y: 20, z: -30});
             chen.pushAnimation(game.assets[MOTION_TEST]);
+            chen.animationSpeed = 0.5;
             chengine.sound.loop(MUSIC_VICTORY);
         });
 
@@ -241,6 +242,27 @@ var testShoot = Class.create(objRoom,
         this.mainTimeline.addTimedEvent(600, function ()
         {
             cam.setInView(chen);
+            
+            var itemBox = new objItemBox();
+            itemBox.timer = 60;
+            chengine.attach(itemBox, that.ran);
+            that.scene.addChild(itemBox);
+            
+            // TODO: Add moveBy, moveTo to Sprite3D
+            var moveItemBox = 
+            {
+                condition: function () 
+                {
+                    return (itemBox && itemBox.timer > 0);
+                },
+                action: function ()
+                {
+                    itemBox.x += 1;
+                    itemBox.z -= 10;
+                    itemBox.timer--;
+                }
+            };
+            that.expirableEvents.push(moveItemBox);
         });
         
         this.mainTimeline.addTimedEvent(700, function ()
@@ -423,8 +445,6 @@ var testShoot = Class.create(objRoom,
             that.mainTimeline.setFrame(1601);
         });
 
-        
-        
         this.scene.play();
     },
     
@@ -454,26 +474,6 @@ var testShoot = Class.create(objRoom,
         {
             this.yukkuri.model.rotation = chengine.rotationTowards(this.yukkuri, this.chen);
             this.yukkuri.model.rotateYaw(degToRad(180));
-        }
-        
-        /*if (this.step % 100 == 0 && this.scrolling)
-        {
-            var newBox = new objTestEnemy();
-            newBox.x = this.chen.x + Math.floor(Math.random() * 200) - 100;
-            newBox.y = this.chen.y + Math.floor(Math.random() * 200) - 100;
-            newBox.z = this.chen.z - 1500;
-            scene.addChild(newBox);
-        }*/
-        
-        if (this.step % 1000 == 0 && this.scrolling)
-        {
-            /**var floor = new objScrollingFloor();
-            floor.z = this.chen.z - 2000;
-            this.scene.addChild(floor);        
-            
-            var floor2 = new objScrollingFloor();
-            floor2.z = this.chen.z - 4000;
-            this.scene.addChild(floor2);*/
         }
 
         if (chengine.input.keyPressed('i'))

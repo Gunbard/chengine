@@ -1,7 +1,7 @@
-/************
+/**********************************************
  Main
- Entry point
- ************/
+ Entry point. Assets need to be preloaded here.
+ **********************************************/
 
 // Initialize enchant.js 
 enchant();
