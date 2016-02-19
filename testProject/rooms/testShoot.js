@@ -220,7 +220,7 @@ var testShoot = Class.create(objRoom,
         {
             cam.x += 200;
             cam.z -= 400;
-            cam.y -= 100;
+            cam.y -= 100;            
         });
         
         this.mainTimeline.addTimedEvent(500, function () 
@@ -374,15 +374,23 @@ var testShoot = Class.create(objRoom,
             that.healthBar.moveTo(20, 48);
             that.healthBar.animate();
             that.healthBar.addToScene(that.scene.scene2D);
+        
+            that.yukkuri.targeting = new objTargeting(10, that.chen, 0.2, function ()
+            {
+                this.target = null;
+            });
+            that.scene.addChild(that.yukkuri.targeting);
         });
         
         this.mainTimeline.addTimedEvent(1300, function ()
         {
+            that.scene.removeChild(that.yukkuri.targeting);
+            
             var beam = new objBeam(that.scene);
             chengine.attach(beam, that.yukkuri);
             beam.sidestep(-50);
             beam.altitude(50);
-            beam.rotation = chengine.rotationTowards(beam, that.chen.model);
+            beam.rotation = chengine.rotationTowards(beam, that.yukkuri.targeting);
             beam.rotateYaw(degToRad(180));
             that.scene.addChild(beam);
             
@@ -390,36 +398,41 @@ var testShoot = Class.create(objRoom,
             chengine.attach(beam2, that.yukkuri);
             beam2.sidestep(50);
             beam2.altitude(50);
-            beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
+            beam2.rotation = chengine.rotationTowards(beam2, that.yukkuri.targeting);
             beam2.rotateYaw(degToRad(180));
             that.scene.addChild(beam2);
             
             chengine.sound.play(SOUND_BEAM);
-        });
-        
-        this.mainTimeline.addTimedEvent(1380, function ()
-        {
-            var beam = new objBeam(that.scene);
-            chengine.attach(beam, that.yukkuri);
-            beam.sidestep(-50);
-            beam.altitude(50);
-            beam.rotation = chengine.rotationTowards(beam, that.chen.model);
-            beam.rotateYaw(degToRad(180));
-            that.scene.addChild(beam);
             
-            var beam2 = new objBeam(that.scene);
-            chengine.attach(beam2, that.yukkuri);
-            beam2.sidestep(50);
-            beam2.altitude(50);
-            beam2.rotation = chengine.rotationTowards(beam2, that.chen.model);
-            beam2.rotateYaw(degToRad(180));
-            that.scene.addChild(beam2);
-            
-            chengine.sound.play(SOUND_BEAM);
+            that.yukkuri.targeting = new objTargeting(10, that.chen, 0.2, function ()
+            {
+                this.target = null;
+            });
+            that.scene.addChild(that.yukkuri.targeting);
         });
         
         this.mainTimeline.addTimedEvent(1400, function ()
         {
+            that.scene.removeChild(that.yukkuri.targeting);
+            
+            var beam = new objBeam(that.scene);
+            chengine.attach(beam, that.yukkuri);
+            beam.sidestep(-50);
+            beam.altitude(50);
+            beam.rotation = chengine.rotationTowards(beam, that.yukkuri.targeting);
+            beam.rotateYaw(degToRad(180));
+            that.scene.addChild(beam);
+            
+            var beam2 = new objBeam(that.scene);
+            chengine.attach(beam2, that.yukkuri);
+            beam2.sidestep(50);
+            beam2.altitude(50);
+            beam2.rotation = chengine.rotationTowards(beam2, that.yukkuri.targeting);
+            beam2.rotateYaw(degToRad(180));
+            that.scene.addChild(beam2);
+            
+            chengine.sound.play(SOUND_BEAM);
+            
             that.moveBackCam = true;
             that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
         });

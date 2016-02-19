@@ -898,3 +898,68 @@ var objHealthBar = Class.create(Sprite,
         chengine.sound.play(SOUND_LOADHEALTH);
     }
 });
+
+/**
+ Visual effect showing two separate crosshairs blinking and converging into one
+ @param scale {number} Size of the crosshairs
+ @param target {obj} Object that the crosshairs are attached to
+ @param speed {number} Convergence rate of the crosshairs
+ @param callback {function} Something to call when the convergence finishes
+ */
+var objTargeting = Class.create(Plane, 
+{
+    initialize: function (scale, target, speed, callback)
+    {
+        Plane.call(this, scale);
+        this.step = 0;
+        this.convergence = 10;
+        this.convergenceSpeed = speed || 0.1;
+        this.mesh.texture = new Texture(game.assets[TEX_CROSSHAIRS2RED]);
+        
+        chengine.unsetLighting(this.mesh);
+        
+        this.mesh.setBaseColor('rgba(255, 0, 0, 0.5)');    
+        
+        this.rotation = scene._camera.invMat;
+        this.target = target;
+        this.callback = callback;
+        
+        if (this.target)
+        {
+            chengine.attach(this, this.target);
+        }
+    },
+    
+    onenterframe: function ()
+    {
+        this.step++;
+        
+        if (this.target)
+        {
+            chengine.attach(this, this.target);
+        }
+        
+        if (this.convergence > 0)
+        {
+            this.convergence -= this.convergenceSpeed;
+        }
+        else if (this.callback)
+        {
+            this.callback();
+            this.callback = null;
+        }
+        
+        if (this.step % 2 == 0)
+        {
+            this.opacity = 0.0;
+            this.sidestep(-this.convergence);
+            this.altitude(-this.convergence);
+        }
+        else
+        { 
+            this.opacity = 0.9;
+            this.sidestep(this.convergence);
+            this.altitude(this.convergence);
+        }
+    }
+});
