@@ -21,6 +21,7 @@ TEXTURE_SKYDOME = 'images/skydome.jpg';
 MODEL_CHEN = 'model/chen/chenfix.pmd';
 MODEL_RAN = 'model/ran/ran.pmd';
 MODEL_HOLO = 'model/holo/holofix.pmd';
+MODEL_HONK = 'model/honk/honk.dae';
 TEX_CROSSHAIRS = 'images/crosshairs.png';
 TEX_CROSSHAIRS2 = 'images/crosshairs2.png';
 TEX_CROSSHAIRS2RED = 'images/crosshairs2red.png';
@@ -43,6 +44,7 @@ SOUND_CHARGELASEREXPLODE = 'sounds/chargeLaserExplode.mp3';
 SOUND_RADIOSTART = 'sounds/radioStart.mp3';
 SOUND_RADIOEND = 'sounds/radioEnd.mp3';
 SOUND_LOADHEALTH = 'sounds/loadhealth.mp3';
+SOUND_HONK = 'sounds/honk.mp3';
 MODEL_TEST = 'model/modeltest2.dae';
 MODEL_YUKKURI = 'model/reimuyukkuri/reimuyukkuribig.pmd';
 MODEL_TREE = 'model/tree/tree.dae';
@@ -69,6 +71,7 @@ window.onload = function ()
         MODEL_CHEN,
         MODEL_HOLO,
         MODEL_RAN,
+        MODEL_HONK,
         MOTION_PATH, 
         MOTION_JUMP_PATH,
         MOTION_TEST,
@@ -105,6 +108,7 @@ window.onload = function ()
         SOUND_BEAM,
         SOUND_RADIOSTART,
         SOUND_RADIOEND,
+        SOUND_HONK,
         MODEL_TEST,
         MODEL_YUKKURI,
         MODEL_TREE,

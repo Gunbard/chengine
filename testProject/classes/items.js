@@ -19,12 +19,16 @@ var objItemBox = Class.create(PhyBox,
         var newLife = new chengine.component.life(1);
         newLife.ondeath = function ()
         {
+            var testObj = new objItemHorn();
+            chengine.attach(testObj, that);
+            chengine.getScene().addChild(testObj);
+            
             var bigExp = new objExp(40);
             bigExp.x = that.x;
             bigExp.y = that.y;
             bigExp.z = that.z;
-            scene.addChild(bigExp);
-            scene.removeChild(that);
+            chengine.getScene().addChild(bigExp);
+            chengine.getScene().removeChild(that);
             chengine.sound.play(SOUND_EXPLODE);
         };
         newLife.ondeath = newLife.ondeath.bind(this);
@@ -43,4 +47,46 @@ var objItemBox = Class.create(PhyBox,
             scene.removeChild(this);
         }
     }
+});
+
+/**
+ A spinning honking horn
+ */
+var objItemHorn = Class.create(PhyBox,
+{
+    initialize: function ()
+    {
+        PhyBox.call(this, 10, 10, 10, 0);
+        this.mesh.setBaseColor('rgba(255, 255, 255, 0.0');
+        this.model = game.assets[MODEL_HONK].colladaClone(true); 
+    },
+    
+    onenterframe: function ()
+    {
+        chengine.attach(this.model, this);
+        this.model.rotationApply(new enchant.gl.Quat(0, 1, 1, degToRad(-5)));
+        
+        var hitInfo = chengine.getScene().world.contactTest(this.rigid);
+        var hitObj = hitInfo.hitObject;
+        if (hitObj)
+        {
+            if (hitObj instanceof objCharacter)
+            {                                
+                chengine.getScene().removeChild(this);
+                chengine.sound.play(SOUND_HONK);
+            }
+        }
+    },
+    
+    onaddedtoscene: function ()
+    {
+        chengine.getScene().addChild(this.model);
+    },
+    
+    onremovedfromscene: function ()
+    {
+        chengine.getScene().removeChild(this.model);
+        this.model = null;
+    }
+    
 });

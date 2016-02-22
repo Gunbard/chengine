@@ -50,12 +50,14 @@ var objCharacter = Class.create(PhyCapsule,
         chengine.component.add(this, newLife);  */ 
     },
     
+    // DEPRECATED: Use onaddedtoscene override
     addToScene: function (scene)
     {
         scene.addChild(this.model);
         scene.addChild(this);
     },
     
+    // DEPRECATED: Use onremovedfromscene override
     removeFromScene: function (scene)
     {
         this.model.clearEventListener();

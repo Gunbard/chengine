@@ -220,7 +220,7 @@ var testShoot = Class.create(objRoom,
         {
             cam.x += 200;
             cam.z -= 400;
-            cam.y -= 100;            
+            cam.y -= 100;
         });
         
         this.mainTimeline.addTimedEvent(500, function () 
@@ -258,7 +258,7 @@ var testShoot = Class.create(objRoom,
                 action: function ()
                 {
                     itemBox.x += 1;
-                    itemBox.z -= 10;
+                    itemBox.z -= 5;
                     itemBox.timer--;
                 }
             };
