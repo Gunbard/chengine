@@ -24,6 +24,7 @@ ASSET_LIST =
     TEX_METAL = 'images/metal.jpg',
     TEX_CIRCLE_WHITE = 'images/whitecircle.png',
     TEX_HEALTH = 'images/health.png',
+    TEX_TREE = 'images/tree.png',
     MUSIC_CORNERIA = 'sounds/corneria.mp3',
     MUSIC_BOSS = 'sounds/boss.mp3',
     MUSIC_VICTORY = 'sounds/victory.mp3',

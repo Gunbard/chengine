@@ -790,3 +790,20 @@ var objTimeline = Class.create(Sprite,
         chengine.scene.scene2D.removeChild(this);
     }
 });
+
+/**
+ Generic tree
+ */
+var obj2DTree = Class.create(Billboard,
+{
+    initialize: function ()
+    {
+        Billboard.call(this, 50);
+        this.mesh.texture = new Texture(game.assets[TEX_TREE]);
+        this.mesh.texture.ambient = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.emission = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.specular = [0.0, 0.0, 0.0, 0.0];
+        this.mesh.texture.shininess = 0;
+    }
+});
