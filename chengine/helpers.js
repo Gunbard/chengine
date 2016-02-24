@@ -634,6 +634,32 @@ chengine.transitionRoom = function (nextRoom, transitionType, transitionSpeed, c
 };
 
 /**
+ Converts a point in 3D space into 2D viewport space
+ @param point3D {point} Some object with {x, y, z}
+ @returns A 2D point (x, y) where the domain is {0 to GAME_WIDTH, 0 to GAME_HEIGHT}
+ */
+chengine.reverseRayPick = function (point3D)
+{
+    var cam = chengine.getScene().getCamera();
+    var viewProjectionMatrix = mat4.create();
+    mat4.multiply(cam.projMat, cam.mat, viewProjectionMatrix);
+    
+    var point = vec4.create();
+    point[0] = point3D.x;
+    point[1] = point3D.y;
+    point[2] = point3D.z;
+    point[3] = 1;
+    
+    var newPoint = vec4.create();
+    mat4.multiplyVec4(viewProjectionMatrix, point, newPoint);
+    
+    var winX = (1 + newPoint[0] / newPoint[3]) * (GAME_WIDTH / 2);
+    var winY = (1 - newPoint[1] / newPoint[3]) * (GAME_HEIGHT / 2);
+    
+    return {x: winX, y: winY};
+};
+
+/**
  Smoothly interpolates a value
  @param currentValue The value to smooth out
  @param finalValue Target value

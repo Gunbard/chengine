@@ -550,5 +550,17 @@ var testShoot = Class.create(objRoom,
             chengine.attach(missile, this.yukkuri);
             this.scene.addChild(missile);
         }
-    }    
+        
+        if (chengine.input.keyPressed('zero'))
+        {    
+            if (chengine.debug.visible)
+            {
+                chengine.debug.remove();
+            }
+            else
+            {
+                chengine.debug.add();
+            }
+        }
+    }   
 });
