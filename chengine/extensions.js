@@ -76,7 +76,6 @@ enchant.gl.Sprite3D.prototype.colladaClone = function (world)
  */
 enchant.gl.Sprite3D.prototype.getVertices = function ()
 {
-    debugger;
     var vertices = [];
     if (!this.mesh && this.childNodes.length > 0)
     {

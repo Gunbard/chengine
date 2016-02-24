@@ -540,11 +540,6 @@ chengine.component.controlBehindMovable = Class.create
             var yRotation = Math.round(rot.y);
             var xRotation = Math.round(rot.x);
             
-            if (game.input.down)
-            {
-                debugger;
-            }
-            
             if (xRotation >= 360)
             {
                 xRotation -= 360;

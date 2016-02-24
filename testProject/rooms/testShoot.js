@@ -54,18 +54,18 @@ var testShoot = Class.create(objRoom,
         scene.addChild(floor3);
         
         // Make some lazy trees
-        for (var i = 0; i < 50; i++)
+        for (var i = 0; i < 30; i++)
         {
             var tree = new obj2DTree();
-            tree.x = -300 + rand(-20, 20);
+            tree.x = -400 + rand(-20, 20);
             tree.y = 50 + rand(10, 20);
-            tree.z = 1000 - (i * 100);
+            tree.z = 1000 - (i * 180);
             scene.addChild(tree);
             
             var treeR = new obj2DTree();
-            treeR.x = 300 + rand(-20, 20);
+            treeR.x = 400 + rand(-20, 20);
             treeR.y = 50 + rand(10, 20);
-            treeR.z = 1000 - (i * 100);
+            treeR.z = 1000 - (i * 180);
             scene.addChild(treeR);
         }
         
