@@ -99,7 +99,7 @@ var testRoom = Class.create(objRoom,
         this.scene.addChild(ball);
         //this.scene.addChild(colladatest);
         
-        mikuPhy.addToScene(this.scene);
+        this.scene.addChild(mikuPhy);
         //reiPhy.addToScene(this.scene);
         
         this.scene.addChild(this.target2);

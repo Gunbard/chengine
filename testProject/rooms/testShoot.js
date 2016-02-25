@@ -75,7 +75,7 @@ var testShoot = Class.create(objRoom,
         this.chen.forward(-100);
         this.chen.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
         this.chen.model.rotationApply(new enchant.gl.Quat(0, 1, 0, degToRad(180)));
-        this.chen.addToScene(this.scene);
+        this.scene.addChild(this.chen);
         
         // Make Ran
         this.ran = new objCharacter(MODEL_RAN);
@@ -251,7 +251,7 @@ var testShoot = Class.create(objRoom,
             that.ran.model.rotation = chengine.copyRotation(that.chen.model.rotation);
             that.ran.x -= 50;
             that.ran.y += 60;
-            that.ran.addToScene(that.scene);
+            that.scene.addChild(that.ran);
             that.ran.moveBy({x: 50, y: -50, z: -1000}, 200);
         });
         
@@ -285,7 +285,7 @@ var testShoot = Class.create(objRoom,
         {            
             that.ran.moveBy({x: -1000, y: 50, z: -1000}, 100, function () 
             {
-                that.ran.removeFromScene(that.scene);
+                that.scene.removeChild(that.ran);
             });
 
             that.yukkuri = new objCharacter(MODEL_YUKKURI, 100, 30);
@@ -294,7 +294,7 @@ var testShoot = Class.create(objRoom,
             that.yukkuri.modelOffset = {x: 0, y: 60, z: 0};
             that.yukkuri.y += 60;
             that.yukkuri.z = that.chen.z - 2000;
-            that.yukkuri.addToScene(that.scene);
+            that.scene.addChild(that.yukkuri);
             
             that.camShaker = new objCameraShaker();
             
@@ -321,7 +321,7 @@ var testShoot = Class.create(objRoom,
                 var other = this;
                 var exp = new objBigExp(this, function () 
                 {
-                    other.removeFromScene(that.scene);
+                    that.scene.removeChild(other);
                 });
                 
                 that.moveBackCam = false;
@@ -330,7 +330,7 @@ var testShoot = Class.create(objRoom,
                 that.scene.addChild(exp);
                 that.mainTimeline.destroy();
                 that.addTimeline(victoryTimeline);
-                that.healthBar.removeFromScene();
+                that.scene.scene2D.removeChild(that.healthBar);
                 that.scene.scene2D.addChild(that.camShaker);
                 chengine.sound.fade(MUSIC_BOSS, 0.0, 0.005);
             };
@@ -389,8 +389,8 @@ var testShoot = Class.create(objRoom,
             that.healthBar = new objHealthBar({lifeComponent: lifeComp, orientation: 'v'});
             that.healthBar.moveTo(20, 48);
             that.healthBar.animate();
-            that.healthBar.addToScene(that.scene.scene2D);
-        
+            that.scene.scene2D.addChild(that.healthBar);
+            
             that.yukkuri.targeting = new objTargeting(10, that.chen, 0.2, function ()
             {
                 this.target = null;

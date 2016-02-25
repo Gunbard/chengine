@@ -39,12 +39,12 @@ var testRoom2 = Class.create(objRoom,
         this.chen.model.alwaysDraw = true;
         this.chen.y = 100;
         this.chen.z = 200;
-        this.chen.addToScene(this.scene);
+        this.scene.addChild(this.chen);
         
         this.yukkuri = new objCharacter(MODEL_YUKKURI, null, null, 1);
         this.yukkuri.y = 100;
         this.yukkuri.z = 400;
-        this.yukkuri.addToScene(this.scene);
+        this.scene.addChild(this.yukkuri);
         
         chengine.component.add(this.chen, new chengine.component.controlCameraMovable(0.25, game.input, this.pad));
         this.chen.model.pushAnimation(game.assets[MOTION_PATH]);

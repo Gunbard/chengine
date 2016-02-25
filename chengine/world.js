@@ -95,13 +95,6 @@ var objScene = Class.create(PhyScene3D,
         while (i--)
         {
             var child = this.childNodes[i];
-            
-            if (child instanceof objCharacter)
-            {
-                child.removeFromScene(this);
-                continue;
-            }
-            
             this.removeChild(child);
         }
         

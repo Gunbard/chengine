@@ -875,19 +875,16 @@ var objHealthBar = Class.create(Sprite,
         }
     },
     
-    addToScene: function (scene)
+    onaddedtoscene: function ()
     {
-        this.scene = scene;
-        scene.addChild(this.background);
-        scene.addChild(this.movingBackground);
-        scene.addChild(this);
+        chengine.getScene2D().insertBefore(this.background, this);
+        chengine.getScene2D().insertBefore(this.movingBackground, this);
     },
     
-    removeFromScene: function ()
+    onremovedfromscene: function ()
     {
-        this.scene.removeChild(this.background);
-        this.scene.removeChild(this.movingBackground);
-        this.scene.removeChild(this);
+        chengine.getScene2D().removeChild(this.background);
+        chengine.getScene2D().removeChild(this.movingBackground);
     },
     
     animate: function ()

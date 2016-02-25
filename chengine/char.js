@@ -50,24 +50,20 @@ var objCharacter = Class.create(PhyCapsule,
         chengine.component.add(this, newLife);  */ 
     },
     
-    // DEPRECATED: Use onaddedtoscene override
-    addToScene: function (scene)
+    onaddedtoscene: function ()
     {
-        scene.addChild(this.model);
-        scene.addChild(this);
+        chengine.getScene().addChild(this.model); 
     },
     
-    // DEPRECATED: Use onremovedfromscene override
-    removeFromScene: function (scene)
+    onremovedfromscene: function ()
     {
         this.model.clearEventListener();
         var i = this.model.skeleton.childNodes.length;
         while (i--)
         {
-            scene.removeChild(this.model.skeleton.childNodes[i]);
+            chengine.getScene().removeChild(this.model.skeleton.childNodes[i]);
         }
-        scene.removeChild(this.model);
-        scene.removeChild(this);
+        chengine.getScene().removeChild(this.model);
     },
     
     onenterframe: function ()
