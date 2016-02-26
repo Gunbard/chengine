@@ -131,6 +131,10 @@ var objCharacter = Class.create(PhyCapsule,
     
     moveBy: function (position, speed, callback)
     {
+        position.x = position.x || 0;
+        position.y = position.y || 0;
+        position.z = position.z || 0;
+        
         if (!this.targetPosition)
         {
             this.targetPosition = {x: this.x + position.x, y: this.y + position.y, z: this.z + position.z};

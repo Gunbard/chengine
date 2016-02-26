@@ -499,7 +499,7 @@ var objMissile = Class.create(PhyCylinder,
             }
         }
         
-        var hitInfo = scene.world.contactTest(this.rigid);
+        /*var hitInfo = scene.world.contactTest(this.rigid);
         var hitObj = hitInfo.hitObject;
         if (hitObj)
         {
@@ -521,6 +521,6 @@ var objMissile = Class.create(PhyCylinder,
                     lifeComp.damage(0);
                 }
             }
-        }
+        }*/
 	}
 });

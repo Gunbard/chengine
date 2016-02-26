@@ -186,6 +186,14 @@ var testShoot = Class.create(objRoom,
         
         // Victory timeline
         var victoryTimeline = new objTimeline();
+        victoryTimeline.addTimedEvent(200, function () 
+        {
+            that.yukkuri.moveBy({y: -20}, 400);
+            that.yukkuri.addEventListener('enterframe', function () {
+                this.model.rotationApply(new enchant.gl.Quat(1, 1, 0, degToRad(0.5)));
+            });
+        });
+        
         victoryTimeline.addTimedEvent(400, function () 
         {
             chengine.sound.stop(MUSIC_CORNERIA);
@@ -327,12 +335,14 @@ var testShoot = Class.create(objRoom,
                 that.moveBackCam = false;
                 that.scene.removeChild(weakpoint);
                 that.scene.removeChild(weakpoint2);
+                that.scene.removeAllOfType(objMissile);
                 that.scene.addChild(exp);
                 that.mainTimeline.destroy();
                 that.addTimeline(victoryTimeline);
                 that.scene.scene2D.removeChild(that.healthBar);
                 that.scene.scene2D.addChild(that.camShaker);
                 chengine.sound.fade(MUSIC_BOSS, 0.0, 0.005);
+                that.yukkuri.dead = true;
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
             chengine.component.add(that.yukkuri, newLife);
@@ -499,7 +509,7 @@ var testShoot = Class.create(objRoom,
             this.chen.forward(this.railMovementSpeed);
         }
         
-        if (this.yukkuri)
+        if (this.yukkuri && !this.yukkuri.dead)
         {
             this.yukkuri.model.rotation = chengine.rotationTowards(this.yukkuri, this.chen);
             this.yukkuri.model.rotateYaw(degToRad(180));

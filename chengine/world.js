@@ -71,6 +71,19 @@ var objScene = Class.create(PhyScene3D,
         }  
     },
     
+    removeAllOfType: function (type)
+    {
+        var i = this.childNodes.length;
+        while (i--)
+        {
+            var child = this.childNodes[i];
+            if (child instanceof type)
+            {
+                this.removeChild(child);
+            }
+        }
+    },
+    
     rigidOwner: function (rigidBody)
     {
         return this.rigidTable[rigidBody.ptr];
