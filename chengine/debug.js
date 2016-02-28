@@ -3,6 +3,7 @@
  *********************/
 
 chengine.debug = {};
+chengine.debug.drawn3DObjects = 0;
  
 /**
  Adds the debug panel
@@ -47,19 +48,7 @@ chengine.debug.add = function ()
     {
         c++;
         
-        var visible3DObjects = 0;
-        for (var i = 0; i < scene.childNodes.length; i++)
-        {
-            var obj = scene.childNodes[i];
-            if (obj.drawn)
-            {
-                visible3DObjects++;
-            }
-        }
-        
-        // Update every 16th frame since setting Label text is expensive due
-        // to the getMetrics call. Ignore if no debug is visible.
-        if (c % 16 != 0 || !chengine.debug.labels || chengine.debug.labels.length == 0)
+        if (!chengine.debug.labels || chengine.debug.labels.length == 0)
         {
             return;
         }
@@ -68,10 +57,12 @@ chengine.debug.add = function ()
         'FPS: ' + chengine.debug.fps + '<br>' +        
         'Physics on: ' + scene.isPlaying + '<br>' +
         '3D Objects: ' + scene.childNodes.length + '<br>' +
-        '3D Objects Visible: ' + visible3DObjects + '<br>' +
+        '3D Objects Visible: ' + chengine.debug.drawn3DObjects + '<br>' +
         '2D Objects: ' + scene.scene2D.childNodes.length + '<br>';                  
                           
         labelDebugShadow.text = labelDebug.text;
+        
+        chengine.debug.drawn3DObjects = 0;
     });
 };
 

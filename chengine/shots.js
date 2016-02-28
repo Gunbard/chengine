@@ -422,7 +422,6 @@ var objMissile = Class.create(PhyCylinder,
         this.thruster = new Sphere(10, 7, 8);
         this.thruster.mesh.setBaseColor('rgba(255, 255, 255, 0.5)');
         chengine.unsetLighting(this.thruster.mesh);
-        chengine.getScene().addChild(this.thruster);
         
         var that = this;
         var newLife = new chengine.component.life(1);
@@ -477,7 +476,6 @@ var objMissile = Class.create(PhyCylinder,
             exp.y = this.y;
             exp.z = this.z;
             scene.addChild(exp);
-            scene.removeChild(this.thruster);
             scene.removeChild(this);
             chengine.sound.play(SOUND_HIT);
         }
@@ -522,5 +520,15 @@ var objMissile = Class.create(PhyCylinder,
                 }
             }
         }*/
-	}
+	},
+    
+    onaddedtoscene: function () 
+    {
+        chengine.getScene().addChild(this.thruster);
+    },
+    
+    onremovedfromscene: function ()
+    {
+        chengine.getScene().removeChild(this.thruster);
+    }
 });

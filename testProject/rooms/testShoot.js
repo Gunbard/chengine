@@ -343,6 +343,7 @@ var testShoot = Class.create(objRoom,
                 that.scene.scene2D.addChild(that.camShaker);
                 chengine.sound.fade(MUSIC_BOSS, 0.0, 0.005);
                 that.yukkuri.dead = true;
+                that.finishTime = that.step;
             };
             newLife.ondeath = newLife.ondeath.bind(that.yukkuri);
             chengine.component.add(that.yukkuri, newLife);
