@@ -804,7 +804,7 @@ var obj2DTree = Class.create(Billboard,
 {
     initialize: function ()
     {
-        Billboard.call(this, 80);
+        Billboard.call(this, 128);
         this.mesh.texture = new Texture(game.assets[TEX_TREE]);
         this.mesh.texture.ambient = [0.0, 0.0, 0.0, 0.0];
         this.mesh.texture.diffuse = [0.0, 0.0, 0.0, 0.0];
