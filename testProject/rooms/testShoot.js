@@ -181,6 +181,27 @@ var testShoot = Class.create(objRoom,
             }
         }    
         
+        var fireLasers = function ()
+        {
+            var beam = new objBeam(that.scene);
+            chengine.attach(beam, that.yukkuri);
+            beam.sidestep(-50);
+            beam.altitude(50);
+            beam.rotation = chengine.rotationTowards(beam, that.yukkuri.targeting);
+            beam.rotateYaw(degToRad(180));
+            that.scene.addChild(beam);
+            
+            var beam2 = new objBeam(that.scene);
+            chengine.attach(beam2, that.yukkuri);
+            beam2.sidestep(50);
+            beam2.altitude(50);
+            beam2.rotation = chengine.rotationTowards(beam2, that.yukkuri.targeting);
+            beam2.rotateYaw(degToRad(180));
+            that.scene.addChild(beam2);
+            
+            chengine.sound.play(SOUND_BEAM);
+        };
+        
         var cam = this.scene.getCamera();
         var chen = this.chen.model;
         
@@ -413,23 +434,7 @@ var testShoot = Class.create(objRoom,
         {
             that.scene.removeChild(that.yukkuri.targeting);
             
-            var beam = new objBeam(that.scene);
-            chengine.attach(beam, that.yukkuri);
-            beam.sidestep(-50);
-            beam.altitude(50);
-            beam.rotation = chengine.rotationTowards(beam, that.yukkuri.targeting);
-            beam.rotateYaw(degToRad(180));
-            that.scene.addChild(beam);
-            
-            var beam2 = new objBeam(that.scene);
-            chengine.attach(beam2, that.yukkuri);
-            beam2.sidestep(50);
-            beam2.altitude(50);
-            beam2.rotation = chengine.rotationTowards(beam2, that.yukkuri.targeting);
-            beam2.rotateYaw(degToRad(180));
-            that.scene.addChild(beam2);
-            
-            chengine.sound.play(SOUND_BEAM);
+            fireLasers();
             
             that.yukkuri.targeting = new objTargeting(10, that.chen, 0.2, function ()
             {
@@ -442,23 +447,7 @@ var testShoot = Class.create(objRoom,
         {
             that.scene.removeChild(that.yukkuri.targeting);
             
-            var beam = new objBeam(that.scene);
-            chengine.attach(beam, that.yukkuri);
-            beam.sidestep(-50);
-            beam.altitude(50);
-            beam.rotation = chengine.rotationTowards(beam, that.yukkuri.targeting);
-            beam.rotateYaw(degToRad(180));
-            that.scene.addChild(beam);
-            
-            var beam2 = new objBeam(that.scene);
-            chengine.attach(beam2, that.yukkuri);
-            beam2.sidestep(50);
-            beam2.altitude(50);
-            beam2.rotation = chengine.rotationTowards(beam2, that.yukkuri.targeting);
-            beam2.rotateYaw(degToRad(180));
-            that.scene.addChild(beam2);
-            
-            chengine.sound.play(SOUND_BEAM);
+            fireLasers();
             
             that.moveBackCam = true;
             that.yukkuri.moveBy({x: -100, y: 10, z: 400}, 60);
@@ -479,7 +468,44 @@ var testShoot = Class.create(objRoom,
             fireMissiles();
         });
         
-        this.mainTimeline.addTimedEvent(1900, function ()
+        this.mainTimeline.addTimedEvent(2100, function ()
+        {
+            that.yukkuri.targeting = new objTargeting(10, that.chen, 0.2, function ()
+            {
+                this.target = null;
+            });
+            that.scene.addChild(that.yukkuri.targeting);
+        });
+        
+        this.mainTimeline.addTimedEvent(2300, function ()
+        {
+            that.scene.removeChild(that.yukkuri.targeting);
+            
+            fireLasers();
+            
+            that.yukkuri.targeting = new objTargeting(10, that.chen, 0.2, function ()
+            {
+                this.target = null;
+            });
+            that.scene.addChild(that.yukkuri.targeting);
+        }); 
+
+        this.mainTimeline.addTimedEvent(2600, function ()
+        {
+            that.scene.removeChild(that.yukkuri.targeting);
+            
+            fireLasers();
+            that.moveBackCam = true;
+        });
+        
+        this.mainTimeline.addTimedEvent(2800, function ()
+        {
+            that.scene.removeChild(that.yukkuri.targeting);
+            
+            fireMissiles();
+        });
+        
+        this.mainTimeline.addTimedEvent(3100, function ()
         {
             that.moveBackCam = false;
             that.mainTimeline.setFrame(1601);
